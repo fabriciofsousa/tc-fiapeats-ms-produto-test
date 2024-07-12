@@ -1,12 +1,13 @@
 name: fiapeats-environment
 services:
   postgres:
-    container_name: postgres_containner
+    container_name: postgres_container
     image: postgres
     environment:
       POSTGRES_USER: sa
       POSTGRES_PASSWORD: pass
       PGDATA: /data/postgres
+
     volumes:
       - postgres:/data/postgres
     ports:
@@ -24,17 +25,20 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
       - pgadmin:/var/lib/pgadmin
+
     ports:
       - "5050:80"
     networks:
       - postgres
+
     restart: unless-stopped
 
   fiapeats-api:
     container_name: api-container
     build:
       context: .
-    image: spring-api
+      dockerfile: Dockerfile
+    image: app:latest
     restart: on-failure
     ports:
       - "8080:8080"
@@ -42,6 +46,7 @@ services:
 networks:
   postgres:
     driver: bridge
+
 volumes:
   postgres:
   pgadmin:
