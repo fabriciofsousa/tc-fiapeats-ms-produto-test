@@ -8,9 +8,9 @@ spring:
     name: fiapeats
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: sa
-    password: pass
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
