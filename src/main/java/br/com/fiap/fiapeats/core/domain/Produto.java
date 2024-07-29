@@ -1,11 +1,13 @@
 package br.com.fiap.fiapeats.core.domain;
 
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.ProdutoRequest;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Produto {
 
-    private Long id;
+    private UUID id;
 
     private String nome;
 
@@ -15,18 +17,24 @@ public class Produto {
 
     private String categoria;
 
-    private byte[] foto;
+    private String foto;
 
-    public Produto(Long id, String nome, String descricao, BigDecimal valor, String categoria, byte[] foto) {
+    public Produto() {
+    }
+
+    public Produto(UUID id) {
+        this.id = id;
+    }
+
+    public Produto(UUID id, String nome, String descricao, BigDecimal valor, String categoria) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
-        this.foto = foto;
     }
 
-    public Produto(String nome, String descricao, BigDecimal valor, String categoria, byte[] foto) {
+    public Produto(String nome, String descricao, BigDecimal valor, String categoria, String foto) {
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
@@ -34,10 +42,14 @@ public class Produto {
         this.foto = foto;
     }
 
-    public Produto() {
+    public Produto(String nome, String descricao, BigDecimal valor, String categoria) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.categoria = categoria;
     }
 
-    public Long getId() { return id; }
+    public UUID getId() { return id; }
 
     public String getNome() { return nome; }
 
@@ -53,7 +65,5 @@ public class Produto {
         return categoria;
     }
 
-    public byte[] getFoto() {
-        return foto;
-    }
+    public String getFoto() { return foto; }
 }

@@ -7,7 +7,9 @@ import br.com.fiap.fiapeats.core.ports.out.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ProdutoRepositoryImpl implements ProdutoRepository {
@@ -21,7 +23,12 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public Optional<ProdutoEntity> consultar(Long id) {
+    public Optional<ProdutoEntity> consultar(UUID id) {
         return produtoRepositoryJPA.findById(id);
+    }
+
+    @Override
+    public void editar(Produto produto) {
+        produtoRepositoryJPA.save(new ProdutoEntity(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getValor(), produto.getCategoria(), produto.getFoto()));
     }
 }

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class ProdutoResponse {
 
-    private Long id;
+    private UUID id;
 
     private String nome;
 
@@ -15,23 +15,19 @@ public class ProdutoResponse {
 
     private BigDecimal valor;
 
-    private byte[] foto;
-
-    public ProdutoResponse(Long id, String nome, String descricao) {
+    public ProdutoResponse(UUID id) {
         this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
     }
 
-    public ProdutoResponse(String nome, String descricao, String categoria, BigDecimal valor, byte[] foto) {
+    public ProdutoResponse(UUID id, String nome, String descricao, String categoria, BigDecimal valor) {
+        this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.valor = valor;
-        this.foto = foto;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -47,5 +43,4 @@ public class ProdutoResponse {
 
     public BigDecimal getValor() { return valor; }
 
-    public byte[] getFoto() { return foto; }
 }

@@ -12,30 +12,41 @@ public class ProdutoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private UUID id;
 
     private String nome;
 
     private String descricao;
 
-    private byte[] foto;
+    private BigDecimal valor;
 
     private String categoria;
 
-    private BigDecimal valor;
-
-    public ProdutoEntity(String nome, String descricao, BigDecimal valor, String categoria, byte[] foto) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.valor = valor;
-        this.categoria = categoria;
-        this.foto = foto;
-    }
+    @Lob
+    private String foto;
 
     public ProdutoEntity(){
     }
 
-    public Long getId() {
+    public ProdutoEntity(UUID id, String nome, String descricao, BigDecimal valor, String categoria, String foto) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.foto= foto;
+    }
+
+
+    public ProdutoEntity(String nome, String descricao, BigDecimal valor, String categoria, String foto) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.foto= foto;
+    }
+
+    public UUID getId() {
         return id;
     }
 
@@ -47,9 +58,7 @@ public class ProdutoEntity {
         return descricao;
     }
 
-    public byte[] getFoto() {
-        return foto;
-    }
+    public String getFoto() { return foto; }
 
     public String getCategoria() {
         return categoria;
