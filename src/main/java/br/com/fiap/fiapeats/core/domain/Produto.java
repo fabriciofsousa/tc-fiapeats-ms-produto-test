@@ -17,7 +17,7 @@ public class Produto {
 
     private String categoria;
 
-    private String foto;
+    private String imagemUrl;
 
     public Produto() {
     }
@@ -26,20 +26,21 @@ public class Produto {
         this.id = id;
     }
 
-    public Produto(UUID id, String nome, String descricao, BigDecimal valor, String categoria) {
+    public Produto(UUID id, String nome, String descricao, BigDecimal valor, String categoria, String imagemUrl) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
+        this.imagemUrl = imagemUrl;
     }
 
-    public Produto(String nome, String descricao, BigDecimal valor, String categoria, String foto) {
+    public Produto(String nome, String descricao, BigDecimal valor, String categoria, String imagemUrl) {
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
-        this.foto = foto;
+        this.imagemUrl = imagemUrl;
     }
 
     public Produto(String nome, String descricao, BigDecimal valor, String categoria) {
@@ -65,5 +66,5 @@ public class Produto {
         return categoria;
     }
 
-    public String getFoto() { return foto; }
+    public String getImagemUrl() { return imagemUrl; }
 }

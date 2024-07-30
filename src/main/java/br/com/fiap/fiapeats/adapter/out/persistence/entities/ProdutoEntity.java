@@ -22,28 +22,27 @@ public class ProdutoEntity {
 
     private String categoria;
 
-    @Lob
-    private String foto;
+    private String imagemUrl;
 
     public ProdutoEntity(){
     }
 
-    public ProdutoEntity(UUID id, String nome, String descricao, BigDecimal valor, String categoria, String foto) {
+    public ProdutoEntity(UUID id, String nome, String descricao, BigDecimal valor, String categoria, String imagemUrl) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
-        this.foto= foto;
+        this.imagemUrl = imagemUrl;
     }
 
 
-    public ProdutoEntity(String nome, String descricao, BigDecimal valor, String categoria, String foto) {
+    public ProdutoEntity(String nome, String descricao, BigDecimal valor, String categoria, String imagemUrl) {
         this.nome = nome;
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
-        this.foto= foto;
+        this.imagemUrl = imagemUrl;
     }
 
     public UUID getId() {
@@ -58,7 +57,7 @@ public class ProdutoEntity {
         return descricao;
     }
 
-    public String getFoto() { return foto; }
+    public String getImagemUrl() { return imagemUrl; }
 
     public String getCategoria() {
         return categoria;

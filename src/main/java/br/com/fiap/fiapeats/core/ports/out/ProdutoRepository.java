@@ -9,6 +9,7 @@ import java.util.UUID;
 public interface ProdutoRepository {
     ProdutoEntity criar(Produto produto);
     Optional<ProdutoEntity> consultar(UUID id);
-    void editar(Produto produto);
+    ProdutoEntity editar(Produto produto);
+    void excluir(UUID id);
 
 }

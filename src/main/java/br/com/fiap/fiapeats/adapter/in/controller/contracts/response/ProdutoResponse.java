@@ -15,16 +15,19 @@ public class ProdutoResponse {
 
     private BigDecimal valor;
 
+    private String imagemUrl;
+
     public ProdutoResponse(UUID id) {
         this.id = id;
     }
 
-    public ProdutoResponse(UUID id, String nome, String descricao, String categoria, BigDecimal valor) {
+    public ProdutoResponse(UUID id, String nome, String descricao, String categoria, BigDecimal valor, String imagemUrl) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
         this.valor = valor;
+        this.imagemUrl = imagemUrl;
     }
 
     public UUID getId() {
@@ -42,5 +45,7 @@ public class ProdutoResponse {
     public String getCategoria() { return categoria; }
 
     public BigDecimal getValor() { return valor; }
+
+    public String getImagemUrl() { return imagemUrl; }
 
 }

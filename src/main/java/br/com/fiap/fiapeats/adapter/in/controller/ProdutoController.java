@@ -30,38 +30,31 @@ public class ProdutoController {
     @Autowired
     private ProdutoUseCasePort useCase;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> criarProduto(@RequestParam(required = true) String nome,
-                                                   @RequestParam(required = true) String descricao,
-                                                   @RequestParam(required = true) BigDecimal valor,
-                                                   @RequestParam(required = true) String categoria,
-                                                   @RequestParam(required = false) MultipartFile foto){
+    @PostMapping
+    public ResponseEntity<Object> criarProduto(@RequestBody ProdutoRequest produtoRequest){
         logger.info("Requisição para criar produto recebida");
 
-        ProdutoResponse produto;
-
-        try {
-           produto = useCase.criar(new Produto(nome, descricao, valor, categoria, ImageUtils.convertImageToBase64(foto)));
-        } catch (IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        var produto = useCase.criar(new Produto(produtoRequest.getNome(), produtoRequest.getDescricao(), produtoRequest.getValor(), produtoRequest.getCategoria(), produtoRequest.getImagemUrl()));
 
         logger.info("Produto criado com sucesso");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(produto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProdutoResponse(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getCategoria(), produto.getValor(), produto.getImagemUrl()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> editarProduto(@PathVariable UUID id, @RequestBody ProdutoRequest produtoRequest){
         logger.info("Requisição para editar produto recebida");
 
-        useCase.editar(id, new Produto(produtoRequest.getNome(), produtoRequest.getDescricao(), produtoRequest.getValor(), produtoRequest.getCategoria()));
+        var produto = useCase.editar(id, new Produto(produtoRequest.getNome(), produtoRequest.getDescricao(), produtoRequest.getValor(), produtoRequest.getCategoria(), produtoRequest.getImagemUrl()));
 
-        return ResponseEntity.status(HttpStatus.OK).body("Produto editado com sucesso");
+        return ResponseEntity.status(HttpStatus.OK).body(new ProdutoResponse(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getCategoria(), produto.getValor(), produto.getImagemUrl()));
     }
 
-    public ResponseEntity<Object> removerProduto(){
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> removerProduto(@PathVariable UUID id){
+        logger.info("Requisição para remover produto recebida");
 
+        useCase.excluir(id);
 
         return ResponseEntity.status(HttpStatus.OK).body("Produto removido com sucesso");
     }

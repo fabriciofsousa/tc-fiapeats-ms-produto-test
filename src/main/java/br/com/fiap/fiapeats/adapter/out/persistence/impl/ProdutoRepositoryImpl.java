@@ -19,7 +19,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public ProdutoEntity criar(Produto produto) {
-        return produtoRepositoryJPA.save(new ProdutoEntity(produto.getNome(), produto.getDescricao(), produto.getValor(), produto.getCategoria(), produto.getFoto()));
+        return produtoRepositoryJPA.save(new ProdutoEntity(produto.getNome(), produto.getDescricao(), produto.getValor(), produto.getCategoria(), produto.getImagemUrl()));
     }
 
     @Override
@@ -28,7 +28,12 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public void editar(Produto produto) {
-        produtoRepositoryJPA.save(new ProdutoEntity(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getValor(), produto.getCategoria(), produto.getFoto()));
+    public ProdutoEntity editar(Produto produto) {
+        return produtoRepositoryJPA.save(new ProdutoEntity(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getValor(), produto.getCategoria(), produto.getImagemUrl()));
+    }
+
+    @Override
+    public void excluir(UUID id) {
+        produtoRepositoryJPA.deleteById(id);
     }
 }

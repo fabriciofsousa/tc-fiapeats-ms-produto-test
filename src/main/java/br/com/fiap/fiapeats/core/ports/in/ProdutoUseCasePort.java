@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProdutoUseCasePort {
-    ProdutoResponse criar(Produto produto);
-    void editar(UUID id, Produto produto);
+    Produto criar(Produto produto);
+    Produto editar(UUID id, Produto produto);
+    void excluir(UUID id);
 }
