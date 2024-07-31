@@ -4,6 +4,7 @@ import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.PedidoReques
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapper;
 import br.com.fiap.fiapeats.core.ports.in.PedidoUseCasePort;
+import br.com.fiap.fiapeats.core.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pedido")
 public class PedidoController {
 
-  private static final String CORRELATION_ID = "correlation_id";
   @Autowired private PedidoMapper pedidoMapper;
   @Autowired private PedidoUseCasePort pedidoUseCasePort;
 
@@ -36,10 +36,10 @@ public class PedidoController {
   @ApiResponses(
       value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
   public ResponseEntity<PedidoResponse> criarNovoPedido(@RequestBody PedidoRequest pedidoRequest) {
-    ThreadContext.put(CORRELATION_ID, UUID.randomUUID().toString());
+    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
         "correlationId={"
-            + ThreadContext.get(CORRELATION_ID)
+            + ThreadContext.get(Constants.CORRELATION_ID)
             + "} "
             + "Solicitacao recebida [criarNovoPedido] ");
     log.debug(pedidoRequest.toString());

@@ -1,36 +1,51 @@
-package br.com.fiap.fiapeats.core.domain;
+package br.com.fiap.fiapeats.adapter.out.persistence.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
-public class PedidoDTO {
+@Entity
+@Table(name = "Pedido")
+public class PedidoEntity implements Serializable {
 
-  private UUID id;
-  private List<String> idProdutos;
+  @Id private UUID id;
+
+  @Column(name = "CLIENTE_DOCUMENTO", nullable = true)
   private String cliCpf;
+
+  @Column(name = "VALOR_TOTAL", nullable = false)
   private BigDecimal valor;
+
+  @Column(name = "ID_STATUS", nullable = false)
   private Long idStatus;
+
+  @Column(name = "DATA_HORA_CRIACAO", nullable = false)
   private LocalDateTime dataHoraCriacao;
+
+  @Column(name = "TEMPO_ESPERA", nullable = false)
   private int tempoEspera;
 
-  public PedidoDTO(
+  public PedidoEntity(
+      Long idStatus,
       UUID id,
-      List<String> idProdutos,
       String cliCpf,
       BigDecimal valor,
-      Long idStatus,
       LocalDateTime dataHoraCriacao,
       int tempoEspera) {
+    this.idStatus = idStatus;
     this.id = id;
-    this.idProdutos = idProdutos;
     this.cliCpf = cliCpf;
     this.valor = valor;
-    this.idStatus = idStatus;
     this.dataHoraCriacao = dataHoraCriacao;
     this.tempoEspera = tempoEspera;
   }
+
+  public PedidoEntity() {}
 
   public UUID getId() {
     return id;
@@ -38,14 +53,6 @@ public class PedidoDTO {
 
   public void setId(UUID id) {
     this.id = id;
-  }
-
-  public List<String> getIdProdutos() {
-    return idProdutos;
-  }
-
-  public void setIdProdutos(List<String> idProdutos) {
-    this.idProdutos = idProdutos;
   }
 
   public String getCliCpf() {
