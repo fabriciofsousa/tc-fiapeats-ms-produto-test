@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClienteRepositoryImpl implements ClienteRepository {
 
-    @Autowired
-    private ClienteRepositoryJPA clienteRepositoryJPA;
+  @Autowired private ClienteRepositoryJPA clienteRepositoryJPA;
 
-    @Override
-    public void criar(Cliente cliente) {
-        clienteRepositoryJPA.save(new ClienteEntity(cliente.getDocumento(), cliente.getNome(), cliente.getEmail()));
-    }
+  @Override
+  public void criar(Cliente cliente) {
+    clienteRepositoryJPA.save(
+        new ClienteEntity(cliente.getDocumento(), cliente.getNome(), cliente.getEmail()));
+  }
 }

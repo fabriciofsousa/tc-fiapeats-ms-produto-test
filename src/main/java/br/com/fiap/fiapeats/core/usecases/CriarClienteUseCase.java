@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CriarClienteUseCase implements CriarClienteUseCasePort {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+  @Autowired private ClienteRepository clienteRepository;
 
-    @Override
-    public void criar(Cliente cliente) {
-        clienteRepository.criar(cliente);
-    }
+  @Override
+  public void criar(Cliente cliente) {
+    clienteRepository.criar(cliente);
+  }
 }

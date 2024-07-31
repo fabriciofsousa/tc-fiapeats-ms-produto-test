@@ -17,20 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cliente")
 public class ClienteController {
 
-    Logger logger = LoggerFactory.getLogger(ClienteController.class);
+  Logger logger = LoggerFactory.getLogger(ClienteController.class);
 
-    @Autowired
-    private CriarClienteUseCasePort useCase;
+  @Autowired private CriarClienteUseCasePort useCase;
 
-    @PostMapping
-    public ResponseEntity<Object> cadastrarCliente(@RequestBody CriarClienteRequest criarClienteRequest) {
-        logger.info("Requisição para criar cliente recebida");
+  @PostMapping
+  public ResponseEntity<Object> cadastrarCliente(
+      @RequestBody CriarClienteRequest criarClienteRequest) {
+    logger.info("Requisição para criar cliente recebida");
 
-        Cliente cliente = new Cliente(criarClienteRequest.getNome(), criarClienteRequest.getEmail(), criarClienteRequest.getDocumento());
+    Cliente cliente =
+        new Cliente(
+            criarClienteRequest.getNome(),
+            criarClienteRequest.getEmail(),
+            criarClienteRequest.getDocumento());
 
-        useCase.criar(cliente);
+    useCase.criar(cliente);
 
-        return ResponseEntity.status(201).body(new CriarClienteResponse(cliente.getNome(), cliente.getEmail(), cliente.getDocumento()));
-    }
-
+    return ResponseEntity.status(201)
+        .body(
+            new CriarClienteResponse(
+                cliente.getNome(), cliente.getEmail(), cliente.getDocumento()));
+  }
 }
