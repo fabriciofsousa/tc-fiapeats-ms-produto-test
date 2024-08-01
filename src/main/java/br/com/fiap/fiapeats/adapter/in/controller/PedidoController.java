@@ -45,6 +45,6 @@ public class PedidoController {
     log.debug(pedidoRequest.toString());
 
     return ResponseEntity.ok(
-        pedidoUseCasePort.criarPedido(pedidoMapper.toPedidoDTO(pedidoRequest)));
+        pedidoUseCasePort.criarPedido(pedidoMapper.toPedido(pedidoRequest)));
   }
 }

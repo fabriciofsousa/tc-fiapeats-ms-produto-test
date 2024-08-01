@@ -6,7 +6,7 @@ import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoID;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoRepositoryJPA;
-import br.com.fiap.fiapeats.core.domain.PedidoDTO;
+import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
 import br.com.fiap.fiapeats.core.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
   @Autowired private PedidoProdutoRepositoryJPA pedidoProdutoRepositoryJPA;
 
   @Override
-  public PedidoResponse salvarPedido(PedidoDTO pedidoDTO) {
+  public PedidoResponse salvarPedido(Pedido pedido) {
     log.info(
         "correlationId={"
             + ThreadContext.get(Constants.CORRELATION_ID)
@@ -31,10 +31,10 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
     PedidoResponse resp =
         pedidoMapper.toPedidoResponse(
-            pedidoMapper.toPedidoDTO(
-                pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedidoDTO))));
+            pedidoMapper.toPedido(
+                pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido))));
 
-    for (String idProduto : pedidoDTO.getIdProdutos()) {
+    for (String idProduto : pedido.getIdProdutos()) {
       pedidoProdutoRepositoryJPA.save(
           PedidoProdutoEntity.builder()
               .id(

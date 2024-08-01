@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-public class PedidoDTO {
+public class Pedido {
 
   private UUID id;
   private List<String> idProdutos;
@@ -15,7 +15,7 @@ public class PedidoDTO {
   private LocalDateTime dataHoraCriacao;
   private int tempoEspera;
 
-  public PedidoDTO(
+  public Pedido(
       UUID id,
       List<String> idProdutos,
       String cliCpf,

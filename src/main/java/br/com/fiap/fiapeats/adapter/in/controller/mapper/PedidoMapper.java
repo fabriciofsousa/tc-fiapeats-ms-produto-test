@@ -3,7 +3,7 @@ package br.com.fiap.fiapeats.adapter.in.controller.mapper;
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.PedidoRequest;
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
-import br.com.fiap.fiapeats.core.domain.PedidoDTO;
+import br.com.fiap.fiapeats.core.domain.Pedido;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,14 +13,14 @@ public interface PedidoMapper {
   @Mapping(target = "idStatus", ignore = true)
   @Mapping(target = "dataHoraCriacao", ignore = true)
   @Mapping(target = "tempoEspera", ignore = true)
-  PedidoDTO toPedidoDTO(PedidoRequest pedidoRequest);
+  Pedido toPedido(PedidoRequest pedidoRequest);
 
   @Mapping(target = "idPedido", source = "id")
   @Mapping(target = "status", source = "idStatus")
-  PedidoResponse toPedidoResponse(PedidoDTO pedidoDTO);
+  PedidoResponse toPedidoResponse(Pedido pedido);
 
-  PedidoEntity toPedidoEntity(PedidoDTO pedidoDTO);
+  PedidoEntity toPedidoEntity(Pedido pedido);
 
   @Mapping(target = "idProdutos", ignore = true)
-  PedidoDTO toPedidoDTO(PedidoEntity pedidoEntity);
+  Pedido toPedido(PedidoEntity pedidoEntity);
 }
