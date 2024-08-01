@@ -2,6 +2,9 @@ package br.com.fiap.fiapeats.adapter.out.persistence.impl;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapper;
+import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
+import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoID;
+import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.PedidoDTO;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 public class PedidoRepositoryImpl implements PedidoRepositoryPort {
   @Autowired private PedidoMapper pedidoMapper;
   @Autowired private PedidoRepositoryJPA pedidoRepositoryJPA;
+  @Autowired private PedidoProdutoRepositoryJPA pedidoProdutoRepositoryJPA;
 
   @Override
   public PedidoResponse salvarPedido(PedidoDTO pedidoDTO) {
@@ -24,7 +28,23 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
             + ThreadContext.get(Constants.CORRELATION_ID)
             + "} "
             + "[PedidoRepositoryImpl-salvarPedido] ");
-    return pedidoMapper.toPedidoResponse(
-        pedidoMapper.toPedidoDTO(pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedidoDTO))));
+
+    PedidoResponse resp =
+        pedidoMapper.toPedidoResponse(
+            pedidoMapper.toPedidoDTO(
+                pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedidoDTO))));
+
+    for (String idProduto : pedidoDTO.getIdProdutos()) {
+      pedidoProdutoRepositoryJPA.save(
+          PedidoProdutoEntity.builder()
+              .id(
+                  PedidoProdutoID.builder()
+                      .idPedido(resp.getIdPedido())
+                      .idProduto(idProduto)
+                      .build())
+              .build());
+    }
+
+    return resp;
   }
 }

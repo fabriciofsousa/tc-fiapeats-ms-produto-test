@@ -32,7 +32,6 @@ public class PedidoRequest {
 
   @Size(min = 11, max = 11, message = "Deve conter exatamente 11 dígitos")
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Pattern(regexp = "^[0-9]*$", message = "Aceita apenas números")
   @Schema(
       description = "numero do documento",

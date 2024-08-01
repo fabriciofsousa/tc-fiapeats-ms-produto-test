@@ -22,15 +22,17 @@ public class PedidoUseCaseImpl implements PedidoUseCasePort {
 
   @Override
   public PedidoResponse criarPedido(PedidoDTO pedidoDTO) {
+
     log.info(
         "correlationId={"
             + ThreadContext.get(Constants.CORRELATION_ID)
             + "} "
             + "[PedidoUseCaseImpl-criarPedido] ");
-    pedidoDTO.setId(UUID.randomUUID());
     pedidoDTO.setDataHoraCriacao(LocalDateTime.now());
+
     pedidoDTO.setIdStatus(1L);
     pedidoDTO.setTempoEspera(10);
+
     return pedidoRepositoryPort.salvarPedido(pedidoDTO);
   }
 
