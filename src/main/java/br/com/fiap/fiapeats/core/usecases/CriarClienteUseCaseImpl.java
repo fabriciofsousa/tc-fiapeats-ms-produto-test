@@ -13,7 +13,7 @@ public class CriarClienteUseCaseImpl implements CriarClienteUseCasePort {
     }
 
     @Override
-    public void criar(Cliente cliente) {
-        clienteRepository.criar(cliente);
+    public Cliente criar(Cliente cliente) {
+        return clienteRepository.criar(cliente);
     }
 }

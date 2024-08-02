@@ -33,4 +33,16 @@ public class ClienteEntity {
   public String getEmail() {
     return email;
   }
+
+  public void setDocumento(String documento) {
+    this.documento = documento;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }

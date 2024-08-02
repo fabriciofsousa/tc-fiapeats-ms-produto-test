@@ -37,18 +37,13 @@ public class ClienteController {
             description = "Recebendo os dados necessários, cria-se um novo cliente")
     @ApiResponses(
             value = {@ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso")})
-    public ResponseEntity<Object> cadastrarCliente(
+    public ResponseEntity<CriarClienteResponse> cadastrarCliente(
             @RequestBody CriarClienteRequest criarClienteRequest) {
         log.info("Requisição para criar cliente recebida");
 
         Cliente cliente = clienteMapper.toCliente(criarClienteRequest);
 
-        criarClienteUseCasePort.criar(cliente);
-
-        return ResponseEntity.status(201)
-                .body(
-                        new CriarClienteResponse(
-                                cliente.getNome(), cliente.getEmail(), cliente.getDocumento()));
+        return ResponseEntity.status(201).body(clienteMapper.toCriarClienteResponse(criarClienteUseCasePort.criar(cliente)));
     }
 
     @GetMapping("/{documento}")
@@ -61,6 +56,7 @@ public class ClienteController {
                     @ApiResponse(responseCode = "404", description = "Cliente cadastrado com sucesso")
             })
     public ResponseEntity<IdentificarClienteResponse> identificarCliente(@PathVariable String documento) {
+        log.info("Requisição para identificar um cliente recebida");
         return ResponseEntity.ok(clienteMapper.toIdentificarClienteResponse(identificarClienteUseCasePort.identificar(documento)));
     }
 

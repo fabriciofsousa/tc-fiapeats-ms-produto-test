@@ -17,8 +17,8 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     private ClienteEntityMapper clienteEntityMapper;
 
     @Override
-    public void criar(Cliente cliente) {
-        clienteRepositoryJPA.save(clienteEntityMapper.toClienteEntity(cliente));
+    public Cliente criar(Cliente cliente) {
+        return clienteEntityMapper.toCliente(clienteRepositoryJPA.save(clienteEntityMapper.toClienteEntity(cliente)));
     }
 
     @Override
