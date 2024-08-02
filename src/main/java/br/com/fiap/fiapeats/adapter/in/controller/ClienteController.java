@@ -1,7 +1,7 @@
 package br.com.fiap.fiapeats.adapter.in.controller;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.CriarClienteRequest;
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarClienteResponse;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.cliente.CriarClienteRequest;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.cliente.CriarClienteResponse;
 import br.com.fiap.fiapeats.core.domain.Cliente;
 import br.com.fiap.fiapeats.core.ports.in.CriarClienteUseCasePort;
 import org.slf4j.Logger;
