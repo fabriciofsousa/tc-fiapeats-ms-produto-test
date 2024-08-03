@@ -22,7 +22,7 @@ public class PedidoRequest {
           @Schema(
               description = "Lista de ID's de produtos a serem incluídos no pedido",
               example =
-                  "[\"eb3ace3d-21cd-42d7-bde0-ecd599986263\", \"nb57fteo-21cd-42d7-bde0-ecf476832018\"]",
+                  "[\"9e61599c-27b9-457a-8a5e-2db7931b3f04\", \"95599f08-6e45-4c38-b462-e197fdad6b08\"]",
               requiredMode = Schema.RequiredMode.REQUIRED),
       uniqueItems = true)
   @Pattern(
