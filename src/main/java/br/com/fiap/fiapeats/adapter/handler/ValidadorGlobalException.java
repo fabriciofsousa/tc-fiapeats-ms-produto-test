@@ -6,10 +6,13 @@ import br.com.fiap.fiapeats.core.exceptions.ValidaCamposException;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static br.com.fiap.fiapeats.core.utils.Constants.CORRELATION_ID;
 
 @RestControllerAdvice
 @Slf4j
@@ -28,6 +31,12 @@ public class ValidadorGlobalException {
           violacao.getPropertyPath().toString(), violacao.getMessage());
     }
     log.error("Erro na chamada: {}", errorResponse);
+    log.error(
+            "correlationId={"
+                    + ThreadContext.get(CORRELATION_ID)
+                    + "} "
+                    + "payload retornado: "
+                    + errorResponse);
     return errorResponse;
   }
 }
