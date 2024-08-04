@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BeanConfiguration {
     @Bean
-    public PedidoUsec pedidoUseCasePort() {
+    public PedidoUseCase pedidoUseCasePort() {
         return new PedidoUseCaseImpl();
     }
 

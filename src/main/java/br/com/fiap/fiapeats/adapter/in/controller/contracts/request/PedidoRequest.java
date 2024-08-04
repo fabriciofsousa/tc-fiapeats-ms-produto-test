@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PedidoRequest {
-  @NotNull(message = "Não pode ser nula")
-  @NotEmpty(message = "não pode estar vazia")
+  @Size(min = 1, message = "a lista deve conter pelo menos 1 produto")
   @ArraySchema(
       arraySchema =
           @Schema(
@@ -25,9 +24,6 @@ public class PedidoRequest {
                   "[\"9e61599c-27b9-457a-8a5e-2db7931b3f04\", \"95599f08-6e45-4c38-b462-e197fdad6b08\"]",
               requiredMode = Schema.RequiredMode.REQUIRED),
       uniqueItems = true)
-  @Pattern(
-      regexp = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-      message = "Deve conter apenas UUID")
   private List<String> idProdutos;
 
   @Size(min = 11, max = 11, message = "Deve conter exatamente 11 dígitos")
@@ -40,9 +36,7 @@ public class PedidoRequest {
   private String cliCpf;
 
   @Positive(message = "Deve ser maior que 0")
-  @NotEmpty(message = "Não pode ser vazio")
   @NotNull(message = "Não pode ser nulo")
-  @Pattern(regexp = "^[0-9][0-9.]*[0-9]*$", message = "Para centavos, utilizar [.]")
   @Schema(
       description = "Valor do pedido",
       example = "86.15",
