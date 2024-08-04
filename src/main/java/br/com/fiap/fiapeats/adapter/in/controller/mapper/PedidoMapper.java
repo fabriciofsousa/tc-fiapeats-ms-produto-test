@@ -13,7 +13,7 @@ public interface PedidoMapper {
   @Mapping(target = "idStatus", ignore = true)
   @Mapping(target = "dataHoraCriacao", ignore = true)
   @Mapping(target = "tempoEspera", ignore = true)
-  Pedido toPedido(PedidoRequest pedidoRequest);
+  Pedido toPedidoFromRequest(PedidoRequest pedidoRequest);
 
   @Mapping(target = "idPedido", source = "id")
   @Mapping(target = "status", source = "idStatus")
@@ -22,5 +22,5 @@ public interface PedidoMapper {
   PedidoEntity toPedidoEntity(Pedido pedido);
 
   @Mapping(target = "idProdutos", ignore = true)
-  Pedido toPedido(PedidoEntity pedidoEntity);
+  Pedido toPedidoFromEntity(PedidoEntity pedidoEntity);
 }

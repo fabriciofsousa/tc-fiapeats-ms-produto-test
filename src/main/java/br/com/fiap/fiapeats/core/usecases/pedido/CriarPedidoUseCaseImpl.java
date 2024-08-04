@@ -1,8 +1,8 @@
-package br.com.fiap.fiapeats.core.usecases;
+package br.com.fiap.fiapeats.core.usecases.pedido;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.core.domain.Pedido;
-import br.com.fiap.fiapeats.core.ports.in.PedidoUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
 import br.com.fiap.fiapeats.core.utils.Constants;
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 @Component
-public class PedidoUseCaseImpl implements PedidoUseCasePort {
+public class CriarPedidoUseCaseImpl implements CriarPedidoUseCasePort {
 
   @Autowired private PedidoRepositoryPort pedidoRepositoryPort;
 

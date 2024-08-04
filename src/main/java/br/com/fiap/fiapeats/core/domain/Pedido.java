@@ -32,6 +32,8 @@ public class Pedido {
     this.tempoEspera = tempoEspera;
   }
 
+  public Pedido() {}
+
   public UUID getId() {
     return id;
   }

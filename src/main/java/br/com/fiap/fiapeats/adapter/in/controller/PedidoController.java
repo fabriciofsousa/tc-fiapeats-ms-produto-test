@@ -3,7 +3,7 @@ package br.com.fiap.fiapeats.adapter.in.controller;
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.PedidoRequest;
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapper;
-import br.com.fiap.fiapeats.core.ports.in.PedidoUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class PedidoController {
 
   @Autowired private PedidoMapper pedidoMapper;
-  @Autowired private PedidoUseCasePort pedidoUseCasePort;
+  @Autowired private CriarPedidoUseCasePort criarPedidoUseCasePort;
 
   @PostMapping("/criar")
   @ResponseStatus(HttpStatus.OK)
@@ -45,6 +45,6 @@ public class PedidoController {
     log.debug(pedidoRequest.toString());
 
     return ResponseEntity.ok(
-        pedidoUseCasePort.criarPedido(pedidoMapper.toPedido(pedidoRequest)));
+        criarPedidoUseCasePort.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest)));
   }
 }
