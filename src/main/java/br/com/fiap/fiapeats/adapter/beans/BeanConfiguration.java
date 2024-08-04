@@ -10,10 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanConfiguration {
-    @Bean
-    public PedidoUsec pedidoUseCasePort() {
-        return new PedidoUseCaseImpl();
-    }
 
     @Bean
     public CriarClienteUseCasePort criarClienteUseCasePort(ClienteRepository clienteRepository) {
