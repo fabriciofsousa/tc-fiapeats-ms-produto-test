@@ -51,7 +51,8 @@ public class PedidoController {
     log.debug(pedidoRequest.toString());
     validarPedidoRequest(pedidoRequest);
     return ResponseEntity.ok(
-        criarPedidoUseCasePort.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest)));
+        pedidoMapper.toPedidoResponse(
+            criarPedidoUseCasePort.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest))));
   }
 
   public void validarPedidoRequest(PedidoRequest pedidoRequest) throws ValidaCamposException {

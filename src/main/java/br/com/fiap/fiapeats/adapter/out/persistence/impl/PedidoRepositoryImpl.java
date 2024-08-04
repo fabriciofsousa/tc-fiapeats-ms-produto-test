@@ -1,6 +1,5 @@
 package br.com.fiap.fiapeats.adapter.out.persistence.impl;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapper;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapperImpl;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
@@ -25,7 +24,7 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
   @Autowired private PedidoMapperImpl pedidoMapperImpl;
 
   @Override
-  public PedidoResponse salvarPedido(Pedido pedido) {
+  public Pedido salvarPedido(Pedido pedido) {
     log.info(
         "correlationId={"
             + ThreadContext.get(Constants.CORRELATION_ID)
@@ -51,6 +50,6 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
               .build();
       pedidoProdutoRepositoryJPA.save(entity);
     }
-    return pedidoMapper.toPedidoResponse(pedidoMapper.toPedidoFromEntity(result));
+    return pedidoMapper.toPedidoFromEntity(result);
   }
 }

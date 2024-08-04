@@ -1,6 +1,5 @@
 package br.com.fiap.fiapeats.core.usecases.pedido;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
@@ -20,7 +19,7 @@ public class CriarPedidoUseCaseImpl implements CriarPedidoUseCasePort {
   @Autowired private PedidoRepositoryPort pedidoRepositoryPort;
 
   @Override
-  public PedidoResponse criarPedido(Pedido pedido) {
+  public Pedido criarPedido(Pedido pedido) {
 
     log.info(
         "correlationId={"

@@ -50,9 +50,7 @@ class PedidoRepositoryImplTest {
     when(pedidoMapper.toPedidoEntity(any(Pedido.class))).thenReturn(pedidoEntity);
     when(pedidoRepositoryJPA.save(any(PedidoEntity.class))).thenReturn(pedidoEntity);
     when(pedidoMapper.toPedidoFromEntity(any(PedidoEntity.class))).thenReturn(pedido);
-    when(pedidoMapper.toPedidoResponse(any(Pedido.class))).thenReturn(new PedidoResponse());
-    PedidoResponse response = pedidoRepositoryImpl.salvarPedido(pedido);
-    assertNotNull(response);
+    assertNotNull(pedidoRepositoryImpl.salvarPedido(pedido));
     verify(pedidoRepositoryJPA, times(1)).save(any(PedidoEntity.class));
     verify(pedidoProdutoRepositoryJPA, times(1)).save(any(PedidoProdutoEntity.class));
   }
@@ -65,7 +63,6 @@ class PedidoRepositoryImplTest {
     pedidoRepositoryImpl.salvarPedido(pedido);
     verify(pedidoMapper, times(1)).toPedidoEntity(any(Pedido.class));
     verify(pedidoMapper, times(1)).toPedidoFromEntity(any(PedidoEntity.class));
-    verify(pedidoMapper, times(1)).toPedidoResponse(any(Pedido.class));
   }
 
   @Test
@@ -94,8 +91,7 @@ class PedidoRepositoryImplTest {
   @Test
   void recusaSalvaPedidoSemLista() {
     Pedido pedidoSemProdutos = GenericUtils.pedidoInvalidoSemProdutos();
-    PedidoResponse response = pedidoRepositoryImpl.salvarPedido(pedidoSemProdutos);
-    assertNull(response);
+    assertNull(pedidoRepositoryImpl.salvarPedido(pedidoSemProdutos));
     verify(pedidoRepositoryJPA, times(0)).save(any(PedidoEntity.class));
     verify(pedidoProdutoRepositoryJPA, times(0)).save(any(PedidoProdutoEntity.class));
   }
