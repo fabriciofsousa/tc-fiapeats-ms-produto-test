@@ -31,10 +31,16 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
             + ThreadContext.get(Constants.CORRELATION_ID)
             + "} "
             + "[PedidoRepositoryImpl-salvarPedido] ");
+    if (pedido.getIdProdutos().isEmpty()) {
+      return null;
+      // executar exception de lista vazia
+    }
 
     PedidoEntity result = pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido));
+
     for (String idProduto : pedido.getIdProdutos()) {
-      PedidoProdutoEntity entity =
+      PedidoProdutoEntity entity;
+      entity =
           PedidoProdutoEntity.builder()
               .id(
                   PedidoProdutoEntity.PedidoProdutoId.builder()
