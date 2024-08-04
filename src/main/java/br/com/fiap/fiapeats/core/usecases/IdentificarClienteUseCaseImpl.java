@@ -7,18 +7,18 @@ import br.com.fiap.fiapeats.core.ports.out.ClienteRepository;
 
 public class IdentificarClienteUseCaseImpl implements IdentificarClienteUseCasePort {
 
-    private final ClienteRepository clienteRepository;
+  private final ClienteRepository clienteRepository;
 
-    public IdentificarClienteUseCaseImpl(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+  public IdentificarClienteUseCaseImpl(ClienteRepository clienteRepository) {
+    this.clienteRepository = clienteRepository;
+  }
 
-    @Override
-    public Cliente identificar(String documento) {
-        Cliente cliente = clienteRepository.identificar(documento);
-        if (cliente == null) {
-            throw new NotFoundException("A identificação do cliente falhou pois ele não existe!");
-        }
-        return cliente;
+  @Override
+  public Cliente identificar(String documento) {
+    Cliente cliente = clienteRepository.identificar(documento);
+    if (cliente == null) {
+      throw new NotFoundException("A identificação do cliente falhou pois ele não existe!");
     }
+    return cliente;
+  }
 }

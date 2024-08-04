@@ -1,19 +1,27 @@
 package br.com.fiap.fiapeats.adapter.in.controller.contracts.response;
 
+import java.math.BigDecimal;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
-public class IdentificarClienteResponse {
+public class CriarProdutoResponse {
+
+  private UUID id;
 
   private String nome;
 
-  private String email;
+  private String descricao;
 
-  private String documento;
+  private BigDecimal valor;
+
+  private String categoria;
+
+  private String imagemUrl;
 }

@@ -27,6 +27,4 @@ public class ClienteRepositoryImpl implements ClienteRepository {
                 .map(clienteEntityMapper::toCliente)
                 .orElse(null);
     }
-
-
 }

@@ -39,7 +39,6 @@ public class ClienteController {
             value = {@ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso")})
     public ResponseEntity<CriarClienteResponse> cadastrarCliente(
             @RequestBody CriarClienteRequest criarClienteRequest) {
-        log.info("Requisição para criar cliente recebida");
 
         Cliente cliente = clienteMapper.toCliente(criarClienteRequest);
 
@@ -59,5 +58,4 @@ public class ClienteController {
         log.info("Requisição para identificar um cliente recebida");
         return ResponseEntity.ok(clienteMapper.toIdentificarClienteResponse(identificarClienteUseCasePort.identificar(documento)));
     }
-
 }
