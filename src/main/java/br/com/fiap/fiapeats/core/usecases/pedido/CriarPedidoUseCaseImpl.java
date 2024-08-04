@@ -6,7 +6,6 @@ import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
 import br.com.fiap.fiapeats.core.utils.Constants;
 import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
@@ -35,7 +34,4 @@ public class CriarPedidoUseCaseImpl implements CriarPedidoUseCasePort {
 
     return pedidoRepositoryPort.salvarPedido(pedido);
   }
-
-  @Override
-  public void consultarPedido(UUID id) {}
 }
