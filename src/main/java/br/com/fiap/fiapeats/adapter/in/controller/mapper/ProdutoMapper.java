@@ -1,26 +1,54 @@
 package br.com.fiap.fiapeats.adapter.in.controller.mapper;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.PedidoRequest;
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.produto.CriarProdutoRequest;
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.produto.CriarProdutoResponse;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.ProdutoEntity;
-import br.com.fiap.fiapeats.core.domain.Pedido;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.CriarProdutoRequest;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.EditarProdutoRequest;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarProdutoResponse;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.EditarProdutoResponse;
+import br.com.fiap.fiapeats.core.domain.Categoria;
 import br.com.fiap.fiapeats.core.domain.Produto;
+import java.util.UUID;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProdutoMapper {
 
-  @Mapping(target = "id", ignore = true)
-  Produto requestToDomain(CriarProdutoRequest criarProdutoRequest);
+  default Produto criarProdutoRequestToProduto(CriarProdutoRequest criarProdutoRequest) {
+    return new Produto(
+        criarProdutoRequest.getNome(),
+        criarProdutoRequest.getDescricao(),
+        criarProdutoRequest.getValor(),
+        Categoria.adicionarDescricao(criarProdutoRequest.getCategoria()),
+        criarProdutoRequest.getImagemUrl());
+  }
 
-  CriarProdutoResponse domainToResponse(Produto produto);
+  default Produto editarProdutoRequestToProduto(
+      UUID id, EditarProdutoRequest editarProdutoRequest) {
+    return new Produto(
+        id,
+        editarProdutoRequest.getNome(),
+        editarProdutoRequest.getDescricao(),
+        editarProdutoRequest.getValor(),
+        Categoria.adicionarDescricao(editarProdutoRequest.getCategoria()),
+        editarProdutoRequest.getImagemUrl());
+  }
 
-  ProdutoEntity domainToEntity(Produto produto);
+  default CriarProdutoResponse toCriarProdutoResponse(Produto produto) {
+    return new CriarProdutoResponse(
+        produto.getId(),
+        produto.getNome(),
+        produto.getDescricao(),
+        produto.getValor(),
+        produto.getCategoria().getDescricao(),
+        produto.getImagemUrl());
+  }
 
-  Produto entityToDomain(ProdutoEntity produtoEntity);
-
+  default EditarProdutoResponse toEditarProdutoResponse(Produto produto) {
+    return new EditarProdutoResponse(
+        produto.getId(),
+        produto.getNome(),
+        produto.getDescricao(),
+        produto.getValor(),
+        produto.getCategoria().getDescricao(),
+        produto.getImagemUrl());
+  }
 }

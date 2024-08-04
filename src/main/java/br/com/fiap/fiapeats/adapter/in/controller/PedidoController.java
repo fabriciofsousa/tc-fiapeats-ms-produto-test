@@ -44,7 +44,6 @@ public class PedidoController {
             + "Solicitacao recebida [criarNovoPedido] ");
     log.debug(pedidoRequest.toString());
 
-    return ResponseEntity.ok(
-        pedidoUseCasePort.criarPedido(pedidoMapper.toPedido(pedidoRequest)));
+    return ResponseEntity.ok(pedidoUseCasePort.criarPedido(pedidoMapper.toPedido(pedidoRequest)));
   }
 }

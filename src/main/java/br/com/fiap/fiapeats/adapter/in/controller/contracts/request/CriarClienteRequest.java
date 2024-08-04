@@ -1,6 +1,6 @@
-package br.com.fiap.fiapeats.adapter.in.controller.contracts.response.cliente;
+package br.com.fiap.fiapeats.adapter.in.controller.contracts.request;
 
-public class CriarClienteResponse {
+public class CriarClienteRequest {
 
   private final String nome;
 
@@ -8,7 +8,7 @@ public class CriarClienteResponse {
 
   private final String documento;
 
-  public CriarClienteResponse(String nome, String email, String documento) {
+  public CriarClienteRequest(String nome, String email, String documento) {
     this.nome = nome;
     this.email = email;
     this.documento = documento;

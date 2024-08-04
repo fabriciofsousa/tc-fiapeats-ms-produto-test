@@ -2,7 +2,8 @@ package br.com.fiap.fiapeats.core.usecases;
 
 import br.com.fiap.fiapeats.core.domain.Produto;
 import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalida;
-import br.com.fiap.fiapeats.core.ports.in.CriarProdutoUseCasePort;
+import br.com.fiap.fiapeats.core.exceptions.NotFoundException;
+import br.com.fiap.fiapeats.core.ports.in.EditarProdutoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ProdutoRepositoryPort;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class CriarProdutoUseCaseImpl implements CriarProdutoUseCasePort {
+public class EditarProdutoUseCaseImpl implements EditarProdutoUseCasePort {
 
   private final ProdutoRepositoryPort produtoRepositoryPort;
 
   private final CategoriaRepositoryPort categoriaRepositoryPort;
 
-  public CriarProdutoUseCaseImpl(
+  public EditarProdutoUseCaseImpl(
       ProdutoRepositoryPort produtoRepositoryPort,
       CategoriaRepositoryPort categoriaRepositoryPort) {
     this.produtoRepositoryPort = produtoRepositoryPort;
@@ -24,12 +25,20 @@ public class CriarProdutoUseCaseImpl implements CriarProdutoUseCasePort {
   }
 
   @Override
-  public Produto criar(Produto produto) {
+  public Produto editar(Produto produto) {
+
+    var produtoConsultado = produtoRepositoryPort.consultarPorId(produto.getId());
+
+    if (produtoConsultado == null) {
+      throw new NotFoundException("Produto não encontrado");
+    }
+
     var categoria = categoriaRepositoryPort.consultar(produto.getCategoria());
 
     if (categoria == null) {
       throw new CategoriaInvalida("Categoria informada inválida");
     }
-    return produtoRepositoryPort.salvar(produto.adicionarCategoria(produto, categoria));
+
+    return produtoRepositoryPort.editar(produto.adicionarCategoria(produtoConsultado, categoria));
   }
 }

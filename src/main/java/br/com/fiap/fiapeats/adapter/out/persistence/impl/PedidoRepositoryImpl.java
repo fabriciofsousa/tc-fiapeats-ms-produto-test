@@ -31,8 +31,7 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
     PedidoResponse resp =
         pedidoMapper.toPedidoResponse(
-            pedidoMapper.toPedido(
-                pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido))));
+            pedidoMapper.toPedido(pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido))));
 
     for (String idProduto : pedido.getIdProdutos()) {
       pedidoProdutoRepositoryJPA.save(

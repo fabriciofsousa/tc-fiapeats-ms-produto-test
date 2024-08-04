@@ -1,6 +1,6 @@
 package br.com.fiap.fiapeats.adapter.out.persistence.impl;
 
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.ClienteEntity;
+import br.com.fiap.fiapeats.adapter.out.persistence.mapper.ClienteEntityMapper;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.ClienteRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.Cliente;
 import br.com.fiap.fiapeats.core.ports.out.ClienteRepository;
@@ -12,9 +12,18 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
   @Autowired private ClienteRepositoryJPA clienteRepositoryJPA;
 
+  @Autowired private ClienteEntityMapper clienteEntityMapper;
+
   @Override
   public void criar(Cliente cliente) {
-    clienteRepositoryJPA.save(
-        new ClienteEntity(cliente.getDocumento(), cliente.getNome(), cliente.getEmail()));
+    clienteRepositoryJPA.save(clienteEntityMapper.toClienteEntity(cliente));
+  }
+
+  @Override
+  public Cliente identificar(String documento) {
+    return clienteRepositoryJPA
+        .findById(documento)
+        .map(clienteEntityMapper::toCliente)
+        .orElse(null);
   }
 }
