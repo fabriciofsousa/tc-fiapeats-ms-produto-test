@@ -1,4 +1,4 @@
-package br.com.fiap.fiapeats.adapter.in.Exception;
+package br.com.fiap.fiapeats.adapter.in.exceptions;
 
 public class CategoriaInvalida extends RuntimeException {
 

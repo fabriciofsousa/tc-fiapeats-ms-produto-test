@@ -33,7 +33,7 @@ public class ProdutoEntity {
   @JoinColumn(name = "categoria_id")
   private CategoriaEntity categoria;
 
-  @Column(name = "imagem_url", nullable = false)
+  @Column(name = "imagem_url")
   private String imagemUrl;
 
 }
