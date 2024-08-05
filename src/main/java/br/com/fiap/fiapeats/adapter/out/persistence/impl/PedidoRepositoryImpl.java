@@ -2,7 +2,6 @@ package br.com.fiap.fiapeats.adapter.out.persistence.impl;
 
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
 import br.com.fiap.fiapeats.adapter.out.persistence.mapper.PedidoEntityMapper;
-import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
@@ -19,8 +18,6 @@ public class PedidoRepositoryImpl implements PedidoRepositoryPort {
   @Autowired private PedidoEntityMapper pedidoMapper;
 
   @Autowired private PedidoRepositoryJPA pedidoRepositoryJPA;
-
-  @Autowired private PedidoProdutoRepositoryJPA pedidoProdutoRepositoryJPA;
 
   @Override
   public Pedido salvarPedido(Pedido pedido) {
