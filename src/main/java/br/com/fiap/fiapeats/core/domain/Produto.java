@@ -5,67 +5,71 @@ import java.util.UUID;
 
 public class Produto {
 
-  private UUID id;
-  private String nome;
-  private String descricao;
-  private BigDecimal valor;
-  private Categoria categoria;
-  private String imagemUrl;
+    private UUID id;
+    private String nome;
+    private String descricao;
+    private BigDecimal valor;
+    private Categoria categoria;
+    private String imagemUrl;
 
-  public Produto(
-      UUID id,
-      String nome,
-      String descricao,
-      BigDecimal valor,
-      Categoria categoria,
-      String imagemUrl) {
-    this.id = id;
-    this.nome = nome;
-    this.descricao = descricao;
-    this.valor = valor;
-    this.categoria = categoria;
-    this.imagemUrl = imagemUrl;
-  }
+    public Produto(UUID id) {
+        this.id = id;
+    }
 
-  public Produto(
-      String nome, String descricao, BigDecimal valor, Categoria categoria, String imagemUrl) {
-    this.nome = nome;
-    this.descricao = descricao;
-    this.valor = valor;
-    this.categoria = categoria;
-    this.imagemUrl = imagemUrl;
-  }
+    public Produto(
+            UUID id,
+            String nome,
+            String descricao,
+            BigDecimal valor,
+            Categoria categoria,
+            String imagemUrl) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.imagemUrl = imagemUrl;
+    }
 
-  public Produto adicionarCategoria(Produto produto, Categoria categoria) {
-    return new Produto(
-        produto.getNome(),
-        produto.getDescricao(),
-        produto.getValor(),
-        new Categoria(categoria.getId(), categoria.getDescricao()),
-        produto.getImagemUrl());
-  }
+    public Produto(
+            String nome, String descricao, BigDecimal valor, Categoria categoria, String imagemUrl) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.valor = valor;
+        this.categoria = categoria;
+        this.imagemUrl = imagemUrl;
+    }
 
-  public UUID getId() {
-    return id;
-  }
+    public Produto adicionarCategoria(Produto produto, Categoria categoria) {
+        return new Produto(
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getValor(),
+                new Categoria(categoria.getId(), categoria.getDescricao()),
+                produto.getImagemUrl());
+    }
 
-  public String getNome() {
-    return nome;
-  }
+    public UUID getId() {
+        return id;
+    }
 
-  public String getDescricao() {
-    return descricao;
-  }
+    public String getNome() {
+        return nome;
+    }
 
-  public BigDecimal getValor() {
-    return valor;
-  }
+    public String getDescricao() {
+        return descricao;
+    }
 
-  public Categoria getCategoria() {
-    return categoria;
-  }
+    public BigDecimal getValor() {
+        return valor;
+    }
 
-  public String getImagemUrl() {
-    return imagemUrl;
-  }
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
 }

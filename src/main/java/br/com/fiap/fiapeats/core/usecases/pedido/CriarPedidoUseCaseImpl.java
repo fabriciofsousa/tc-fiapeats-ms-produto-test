@@ -3,34 +3,24 @@ package br.com.fiap.fiapeats.core.usecases.pedido;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
-import br.com.fiap.fiapeats.core.utils.Constants;
-import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.ThreadContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@RequiredArgsConstructor
-@Slf4j
-@Component
+import java.time.LocalDateTime;
+
 public class CriarPedidoUseCaseImpl implements CriarPedidoUseCasePort {
 
-  @Autowired private PedidoRepositoryPort pedidoRepositoryPort;
+    private final PedidoRepositoryPort pedidoRepositoryPort;
 
-  @Override
-  public Pedido criarPedido(Pedido pedido) {
+    public CriarPedidoUseCaseImpl(PedidoRepositoryPort pedidoRepositoryPort) {
+        this.pedidoRepositoryPort = pedidoRepositoryPort;
+    }
 
-    log.info(
-        "correlationId={"
-            + ThreadContext.get(Constants.CORRELATION_ID)
-            + "} "
-            + "[PedidoUseCaseImpl-criarPedido] ");
-    pedido.setDataHoraCriacao(LocalDateTime.now());
+    @Override
+    public Pedido criarPedido(Pedido pedido) {
+        pedido.setDataHoraCriacao(LocalDateTime.now());
 
-    pedido.setIdStatus(1L);
-    pedido.setTempoEspera(10);
+        pedido.setIdStatus(1L);
+        pedido.setTempoEspera(10);
 
-    return pedidoRepositoryPort.salvarPedido(pedido);
-  }
+        return pedidoRepositoryPort.salvarPedido(pedido);
+    }
 }

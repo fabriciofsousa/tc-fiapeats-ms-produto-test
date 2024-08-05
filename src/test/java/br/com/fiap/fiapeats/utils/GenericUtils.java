@@ -1,9 +1,11 @@
 package br.com.fiap.fiapeats.utils;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
 import br.com.fiap.fiapeats.core.domain.Pedido;
+import br.com.fiap.fiapeats.core.domain.Produto;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,7 +20,7 @@ public class GenericUtils {
     pedido.setIdStatus(1L);
     pedido.setDataHoraCriacao(LocalDateTime.now());
     pedido.setTempoEspera(30);
-    pedido.setIdProdutos(List.of("550e8400-e29b-41d4-a716-446655440000"));
+    pedido.setProdutos(List.of(new Produto(UUID.randomUUID())));
     return pedido;
   }
 
@@ -41,15 +43,15 @@ public class GenericUtils {
         .id(
             PedidoProdutoEntity.PedidoProdutoId.builder()
                 .idPedido(pedidoEntity.getId())
-                .idProduto(UUID.fromString(pedido.getIdProdutos().get(0)))
+                .idProduto(pedido.getProdutos().get(0).getId())
                 .build())
         .pedido(pedidoEntity)
         .build();
   }
 
-  public static PedidoResponse retornaPedidoResponseValido() {
+  public static CriarPedidoResponse retornaPedidoResponseValido() {
     PedidoEntity pedidoEntity = retornaPedidoEntityValido();
-    return PedidoResponse.builder()
+    return CriarPedidoResponse.builder()
         .idPedido(pedidoEntity.getId().toString())
         .cliCpf(pedidoEntity.getCliCpf())
         .tempoEspera(pedidoEntity.getTempoEspera())
@@ -65,7 +67,7 @@ public class GenericUtils {
     pedidoSemProdutos.setIdStatus(1L);
     pedidoSemProdutos.setDataHoraCriacao(LocalDateTime.now());
     pedidoSemProdutos.setTempoEspera(30);
-    pedidoSemProdutos.setIdProdutos(List.of());
+    pedidoSemProdutos.setProdutos(List.of());
 
     return pedidoSemProdutos;
   }

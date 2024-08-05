@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class PedidoResponse {
+public class CriarPedidoResponse {
   private String idPedido;
   private String cliCpf;
   private Long status;

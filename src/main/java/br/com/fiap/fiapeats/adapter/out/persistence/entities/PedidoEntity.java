@@ -37,6 +37,6 @@ public class PedidoEntity implements Serializable {
   @Column(name = "TEMPO_ESPERA", nullable = false)
   private int tempoEspera;
 
-  @OneToMany(mappedBy = "pedido")
-  private Set<PedidoProdutoEntity> produtos;
+  @ManyToMany
+  private Set<ProdutoEntity> produtos;
 }

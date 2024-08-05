@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
-import br.com.fiap.fiapeats.adapter.in.controller.mapper.PedidoMapper;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
+import br.com.fiap.fiapeats.adapter.out.persistence.mapper.PedidoEntityMapper;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.Pedido;
@@ -26,7 +26,7 @@ class PedidoRepositoryImplTest {
 
   @InjectMocks private PedidoRepositoryImpl pedidoRepositoryImpl;
 
-  @Mock private PedidoMapper pedidoMapper;
+  @Mock private PedidoEntityMapper pedidoMapper;
 
   @Mock private PedidoRepositoryJPA pedidoRepositoryJPA;
 
@@ -35,14 +35,14 @@ class PedidoRepositoryImplTest {
   private Pedido pedido;
   private PedidoEntity pedidoEntity;
   private PedidoProdutoEntity pedidoProdutoEntity;
-  private PedidoResponse pedidoResponse;
+  private CriarPedidoResponse criarPedidoResponse;
 
   @BeforeEach
   void setUp() {
     pedido = GenericUtils.retornaPedidoValido();
     pedidoEntity = GenericUtils.retornaPedidoEntityValido();
     pedidoProdutoEntity = GenericUtils.retornaPedidoProdutoEntityValido();
-    pedidoResponse = GenericUtils.retornaPedidoResponseValido();
+    criarPedidoResponse = GenericUtils.retornaPedidoResponseValido();
   }
 
   @Test
@@ -52,7 +52,6 @@ class PedidoRepositoryImplTest {
     when(pedidoMapper.toPedidoFromEntity(any(PedidoEntity.class))).thenReturn(pedido);
     assertNotNull(pedidoRepositoryImpl.salvarPedido(pedido));
     verify(pedidoRepositoryJPA, times(1)).save(any(PedidoEntity.class));
-    verify(pedidoProdutoRepositoryJPA, times(1)).save(any(PedidoProdutoEntity.class));
   }
 
   @Test
@@ -66,14 +65,6 @@ class PedidoRepositoryImplTest {
   }
 
   @Test
-  void pedidoProdutoPorItemNaLista() {
-    when(pedidoMapper.toPedidoEntity(any(Pedido.class))).thenReturn(pedidoEntity);
-    when(pedidoRepositoryJPA.save(any(PedidoEntity.class))).thenReturn(pedidoEntity);
-    pedidoRepositoryImpl.salvarPedido(pedido);
-    verify(pedidoProdutoRepositoryJPA, times(1)).save(any(PedidoProdutoEntity.class));
-  }
-
-  @Test
   void DeveAdicionarCorrelationIdNoLog() {
     when(pedidoMapper.toPedidoEntity(any(Pedido.class))).thenReturn(pedidoEntity);
     when(pedidoRepositoryJPA.save(any(PedidoEntity.class))).thenReturn(pedidoEntity);
@@ -83,16 +74,9 @@ class PedidoRepositoryImplTest {
   }
 
   @Test
-  void lancarExceptionMapperRetornarNull() {
-    when(pedidoMapper.toPedidoEntity(any(Pedido.class))).thenReturn(null);
-    assertThrows(NullPointerException.class, () -> pedidoRepositoryImpl.salvarPedido(pedido));
-  }
-
-  @Test
   void recusaSalvaPedidoSemLista() {
     Pedido pedidoSemProdutos = GenericUtils.pedidoInvalidoSemProdutos();
     assertNull(pedidoRepositoryImpl.salvarPedido(pedidoSemProdutos));
     verify(pedidoRepositoryJPA, times(0)).save(any(PedidoEntity.class));
-    verify(pedidoProdutoRepositoryJPA, times(0)).save(any(PedidoProdutoEntity.class));
   }
 }

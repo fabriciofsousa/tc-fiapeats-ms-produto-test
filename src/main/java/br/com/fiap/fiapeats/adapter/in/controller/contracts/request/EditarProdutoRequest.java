@@ -2,7 +2,8 @@ package br.com.fiap.fiapeats.adapter.in.controller.contracts.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

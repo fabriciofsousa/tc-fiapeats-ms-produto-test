@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.util.List;
-import javax.validation.constraints.*;
+import java.util.UUID;
+
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,10 +26,9 @@ public class PedidoRequest {
                   "[\"9e61599c-27b9-457a-8a5e-2db7931b3f04\", \"95599f08-6e45-4c38-b462-e197fdad6b08\"]",
               requiredMode = Schema.RequiredMode.REQUIRED),
       uniqueItems = true)
-  private List<String> idProdutos;
+  private List<UUID> idProdutos;
 
   @Size(min = 11, max = 11, message = "Deve conter exatamente 11 dígitos")
-  @NotEmpty(message = "Não pode ser vazio")
   @Pattern(regexp = "^[0-9]*$", message = "Aceita apenas números")
   @Schema(
       description = "numero do documento",

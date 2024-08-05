@@ -2,7 +2,8 @@ package br.com.fiap.fiapeats.adapter.in.controller.contracts.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,6 @@ import lombok.NoArgsConstructor;
 public class CriarProdutoRequest {
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Size(min = 1, max = 60, message = "Deve conter no máximo 60 caracteres")
   @Schema(
       description = "nome do produto",
@@ -24,7 +24,6 @@ public class CriarProdutoRequest {
   private String nome;
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Schema(
       description = "descrição do produto",
       example = "Refrigerante lata 350ml",
@@ -33,8 +32,6 @@ public class CriarProdutoRequest {
 
   @Positive(message = "Deve ser maior que 0")
   @NotNull(message = "Não pode ser nulo")
-  @Size(min = 1, max = 10, message = "Deve conter no máximo 10 caracteres")
-  @Pattern(regexp = "^[0-9][0-9.]+$", message = "Aceita apenas números e ponto")
   @Positive(message = "O valor precisa ser maior que 0")
   @Schema(
       description = "valor do produto",
@@ -43,7 +40,6 @@ public class CriarProdutoRequest {
   private BigDecimal valor;
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Schema(
       description = "categoria do produto",
       example = "Bebida",
