@@ -35,5 +35,4 @@ public class ProdutoEntity {
 
   @Column(name = "imagem_url")
   private String imagemUrl;
-
 }

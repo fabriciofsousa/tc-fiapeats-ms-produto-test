@@ -12,24 +12,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class CriarProdutoUseCaseImpl implements CriarProdutoUseCasePort {
 
-    private final ProdutoRepositoryPort produtoRepositoryPort;
+  private final ProdutoRepositoryPort produtoRepositoryPort;
 
-    private final CategoriaRepositoryPort categoriaRepositoryPort;
+  private final CategoriaRepositoryPort categoriaRepositoryPort;
 
-    public CriarProdutoUseCaseImpl(
-            ProdutoRepositoryPort produtoRepositoryPort,
-            CategoriaRepositoryPort categoriaRepositoryPort) {
-        this.produtoRepositoryPort = produtoRepositoryPort;
-        this.categoriaRepositoryPort = categoriaRepositoryPort;
+  public CriarProdutoUseCaseImpl(
+      ProdutoRepositoryPort produtoRepositoryPort,
+      CategoriaRepositoryPort categoriaRepositoryPort) {
+    this.produtoRepositoryPort = produtoRepositoryPort;
+    this.categoriaRepositoryPort = categoriaRepositoryPort;
+  }
+
+  @Override
+  public Produto criar(Produto produto) {
+    var categoria = categoriaRepositoryPort.consultar(produto.getCategoria());
+
+    if (categoria == null) {
+      throw new CategoriaInvalida("Categoria informada inválida");
     }
-
-    @Override
-    public Produto criar(Produto produto) {
-        var categoria = categoriaRepositoryPort.consultar(produto.getCategoria());
-
-        if (categoria == null) {
-            throw new CategoriaInvalida("Categoria informada inválida");
-        }
-        return produtoRepositoryPort.salvar(produto.adicionarCategoria(produto, categoria));
-    }
+    return produtoRepositoryPort.salvar(produto.adicionarCategoria(produto, categoria));
+  }
 }

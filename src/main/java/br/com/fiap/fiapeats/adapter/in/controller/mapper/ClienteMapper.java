@@ -9,10 +9,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {
 
-    IdentificarClienteResponse toIdentificarClienteResponse(Cliente cliente);
+  IdentificarClienteResponse toIdentificarClienteResponse(Cliente cliente);
 
-    CriarClienteResponse toCriarClienteResponse(Cliente cliente);
+  CriarClienteResponse toCriarClienteResponse(Cliente cliente);
 
-    Cliente toCliente(CriarClienteRequest criarClienteRequest);
-
+  Cliente toCliente(CriarClienteRequest criarClienteRequest);
 }

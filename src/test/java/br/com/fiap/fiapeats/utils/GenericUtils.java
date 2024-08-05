@@ -5,7 +5,6 @@ import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.domain.Produto;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
