@@ -17,7 +17,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class CategoriaEntity {
 
-  @Id private Long id;
+  @Id
+  @Column(name = "categoria_id")
+  private Long id;
 
   @Column(name = "descricao")
   private String descricao;

@@ -39,6 +39,6 @@ public class EditarProdutoUseCaseImpl implements EditarProdutoUseCasePort {
       throw new CategoriaInvalida("Categoria informada inválida");
     }
 
-    return produtoRepositoryPort.editar(produto.adicionarCategoria(produtoConsultado, categoria));
+    return produtoRepositoryPort.editar(produto.adicionarCategoria(produto, categoria));
   }
 }

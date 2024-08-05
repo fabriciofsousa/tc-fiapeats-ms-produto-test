@@ -38,6 +38,7 @@ public class Produto {
 
   public Produto adicionarCategoria(Produto produto, Categoria categoria) {
     return new Produto(
+            produto.getId(),
         produto.getNome(),
         produto.getDescricao(),
         produto.getValor(),
