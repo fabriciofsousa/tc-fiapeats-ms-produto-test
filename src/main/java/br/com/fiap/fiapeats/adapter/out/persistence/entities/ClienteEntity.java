@@ -8,31 +8,41 @@ import jakarta.persistence.Table;
 @Table(name = "cliente")
 public class ClienteEntity {
 
-    @Id
-    private String documento;
+  @Id private String documento;
 
-    private String nome;
+  private String nome;
 
-    private String email;
+  private String email;
 
-    public ClienteEntity(String documento, String nome, String email) {
-        this.documento = documento;
-        this.nome = nome;
-        this.email = email;
-    }
+  public ClienteEntity(String documento, String nome, String email) {
+    this.documento = documento;
+    this.nome = nome;
+    this.email = email;
+  }
 
-    public ClienteEntity() {
-    }
+  public ClienteEntity() {}
 
-    public String getDocumento() {
-        return documento;
-    }
+  public String getDocumento() {
+    return documento;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public String getNome() {
+    return nome;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getEmail() {
+    return email;
+  }
+
+  public void setDocumento(String documento) {
+    this.documento = documento;
+  }
+
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }

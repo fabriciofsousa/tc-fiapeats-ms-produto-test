@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FiapeatsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FiapeatsApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(FiapeatsApplication.class, args);
+  }
 }
