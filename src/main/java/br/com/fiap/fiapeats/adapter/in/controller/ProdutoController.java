@@ -57,10 +57,10 @@ public class ProdutoController {
   }
 
   @PutMapping("/{id}")
-  @Operation(summary = "Altera dados cadastrais de um produto",
-          description = "Recebendo os dados necessários, altera os dados do produto")
+  @Operation(summary = "Altera os dados cadastrais de um produto",
+          description = "Recebendo os dados necessários, busca e altera os dados cadastrais do produto")
   @ApiResponses(
-          value = {@ApiResponse(responseCode = "201", description = "Produto editado com sucesso"),
+          value = {@ApiResponse(responseCode = "200", description = "Produto editado com sucesso"),
                    @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
                   @ApiResponse(responseCode = "422", description = "Categoria informada inválida")})
   public ResponseEntity<Object> editarProduto(
@@ -83,7 +83,7 @@ public class ProdutoController {
   @Operation(summary = "Exclui um produto",
           description = "Recebendo o id, busca e exclui o produto")
   @ApiResponses(
-          value = {@ApiResponse(responseCode = "201", description = "Produto excluído com sucesso"),
+          value = {@ApiResponse(responseCode = "200", description = "Produto excluído com sucesso"),
                   @ApiResponse(responseCode = "404", description = "Produto não encontrado")})
   public ResponseEntity<Object> removerProduto(@PathVariable UUID id) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());

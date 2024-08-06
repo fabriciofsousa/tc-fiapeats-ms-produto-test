@@ -29,7 +29,6 @@ public class ProdutoEntity {
   private BigDecimal valor;
 
   @ManyToOne
-  @JoinColumn(name = "categoria_id")
   private CategoriaEntity categoria;
 
   @Column(name = "imagem_url")

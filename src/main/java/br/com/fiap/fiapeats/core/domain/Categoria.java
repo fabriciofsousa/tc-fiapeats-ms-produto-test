@@ -11,7 +11,7 @@ public class Categoria {
   }
 
   public static Categoria adicionarDescricao(String descricao) {
-    return new Categoria(null, descricao);
+    return new Categoria(null, descricao.substring(0,1).toUpperCase().concat(descricao.substring(1).toLowerCase()));
   }
 
   public Long getId() {

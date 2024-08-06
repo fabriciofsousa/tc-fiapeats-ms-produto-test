@@ -23,7 +23,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
   @Override
   public Categoria consultar(Categoria categoria) {
     return categoriaRepositoryJPA
-        .findByDescricao(categoria.getDescricao().toUpperCase())
+        .findByDescricao(categoria.getDescricao())
         .map(categoriaEntityMapper::toCategoria)
         .orElse(null);
   }
