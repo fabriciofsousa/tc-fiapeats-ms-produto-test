@@ -22,6 +22,8 @@ public interface PedidoEntityMapper {
       qualifiedByName = "mapProdutoEntitiesToProdutos")
   Pedido toPedidoFromEntity(PedidoEntity pedidoEntity);
 
+  List<Pedido> toListaPedidos(List<PedidoEntity> pedidos);
+
   @Named("mapProdutoEntitiesToProdutos")
   static List<Produto> mapProdutoEntitiesToProdutos(Set<ProdutoEntity> produtoEntities) {
     return produtoEntities.stream()
