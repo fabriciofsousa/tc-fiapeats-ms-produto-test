@@ -6,9 +6,7 @@ import static org.mockito.Mockito.*;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
 import br.com.fiap.fiapeats.adapter.out.persistence.mapper.PedidoEntityMapper;
-import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.utils.Constants;
@@ -30,18 +28,15 @@ class PedidoRepositoryImplTest {
 
   @Mock private PedidoRepositoryJPA pedidoRepositoryJPA;
 
-  @Mock private PedidoProdutoRepositoryJPA pedidoProdutoRepositoryJPA;
 
   private Pedido pedido;
   private PedidoEntity pedidoEntity;
-  private PedidoProdutoEntity pedidoProdutoEntity;
   private CriarPedidoResponse criarPedidoResponse;
 
   @BeforeEach
   void setUp() {
     pedido = GenericUtils.retornaPedidoValido();
     pedidoEntity = GenericUtils.retornaPedidoEntityValido();
-    pedidoProdutoEntity = GenericUtils.retornaPedidoProdutoEntityValido();
     criarPedidoResponse = GenericUtils.retornaPedidoResponseValido();
   }
 

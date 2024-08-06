@@ -10,21 +10,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClienteRepositoryImpl implements ClienteRepository {
 
-    @Autowired
-    private ClienteRepositoryJPA clienteRepositoryJPA;
+  @Autowired private ClienteRepositoryJPA clienteRepositoryJPA;
 
-    @Autowired
-    private ClienteEntityMapper clienteEntityMapper;
+  @Autowired private ClienteEntityMapper clienteEntityMapper;
 
-    @Override
-    public Cliente criar(Cliente cliente) {
-        return clienteEntityMapper.toCliente(clienteRepositoryJPA.save(clienteEntityMapper.toClienteEntity(cliente)));
-    }
+  @Override
+  public Cliente criar(Cliente cliente) {
+    return clienteEntityMapper.toCliente(
+        clienteRepositoryJPA.save(clienteEntityMapper.toClienteEntity(cliente)));
+  }
 
-    @Override
-    public Cliente identificar(String documento) {
-        return clienteRepositoryJPA.findById(documento)
-                .map(clienteEntityMapper::toCliente)
-                .orElse(null);
-    }
+  @Override
+  public Cliente identificar(String documento) {
+    return clienteRepositoryJPA
+        .findById(documento)
+        .map(clienteEntityMapper::toCliente)
+        .orElse(null);
+  }
 }

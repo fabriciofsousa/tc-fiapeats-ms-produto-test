@@ -2,10 +2,8 @@ package br.com.fiap.fiapeats.utils;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
 import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoProdutoEntity;
 import br.com.fiap.fiapeats.core.domain.Pedido;
 import br.com.fiap.fiapeats.core.domain.Produto;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,19 +31,6 @@ public class GenericUtils {
         .idStatus(pedido.getIdStatus())
         .dataHoraCriacao(pedido.getDataHoraCriacao())
         .tempoEspera(pedido.getTempoEspera())
-        .build();
-  }
-
-  public static PedidoProdutoEntity retornaPedidoProdutoEntityValido() {
-    Pedido pedido = retornaPedidoValido();
-    PedidoEntity pedidoEntity = retornaPedidoEntityValido();
-    return PedidoProdutoEntity.builder()
-        .id(
-            PedidoProdutoEntity.PedidoProdutoId.builder()
-                .idPedido(pedidoEntity.getId())
-                .idProduto(pedido.getProdutos().get(0).getId())
-                .build())
-        .pedido(pedidoEntity)
         .build();
   }
 

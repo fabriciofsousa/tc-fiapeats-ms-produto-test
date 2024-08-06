@@ -9,10 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.UUID;
-
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
@@ -28,29 +26,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pedido")
 public class PedidoController {
 
-    @Autowired
-    private PedidoMapper pedidoMapper;
-    @Autowired
-    private CriarPedidoUseCasePort criarPedidoUseCasePort;
+  @Autowired private PedidoMapper pedidoMapper;
+  @Autowired private CriarPedidoUseCasePort criarPedidoUseCasePort;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-            summary = "Cria um novo pedido",
-            description = "Recebendo a lista de produtos e valor, cria um novo pedido")
-    @ApiResponses(
-            value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
-    public ResponseEntity<CriarPedidoResponse> criarNovoPedido(
-            @Valid @RequestBody PedidoRequest pedidoRequest) {
-        ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-        log.info(
-                "correlationId={"
-                        + ThreadContext.get(Constants.CORRELATION_ID)
-                        + "} "
-                        + "Solicitacao recebida [criarNovoPedido] ");
-        log.debug(pedidoRequest.toString());
-        return ResponseEntity.ok(
-                pedidoMapper.toPedidoResponse(
-                        criarPedidoUseCasePort.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest))));
-    }
+  @PostMapping
+  @ResponseStatus(HttpStatus.OK)
+  @Operation(
+      summary = "Cria um novo pedido",
+      description = "Recebendo a lista de produtos e valor, cria um novo pedido")
+  @ApiResponses(
+      value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
+  public ResponseEntity<CriarPedidoResponse> criarNovoPedido(
+      @Valid @RequestBody PedidoRequest pedidoRequest) {
+    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
+    log.info(
+        "correlationId={"
+            + ThreadContext.get(Constants.CORRELATION_ID)
+            + "} "
+            + "Solicitacao recebida [criarNovoPedido] ");
+    log.debug(pedidoRequest.toString());
+    return ResponseEntity.ok(
+        pedidoMapper.toPedidoResponse(
+            criarPedidoUseCasePort.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest))));
+  }
 }

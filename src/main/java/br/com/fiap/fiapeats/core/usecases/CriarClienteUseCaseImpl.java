@@ -6,14 +6,14 @@ import br.com.fiap.fiapeats.core.ports.out.ClienteRepository;
 
 public class CriarClienteUseCaseImpl implements CriarClienteUseCasePort {
 
-    private final ClienteRepository clienteRepository;
+  private final ClienteRepository clienteRepository;
 
-    public CriarClienteUseCaseImpl(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+  public CriarClienteUseCaseImpl(ClienteRepository clienteRepository) {
+    this.clienteRepository = clienteRepository;
+  }
 
-    @Override
-    public Cliente criar(Cliente cliente) {
-        return clienteRepository.criar(cliente);
-    }
+  @Override
+  public Cliente criar(Cliente cliente) {
+    return clienteRepository.criar(cliente);
+  }
 }
