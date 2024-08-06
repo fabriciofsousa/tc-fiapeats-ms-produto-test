@@ -34,10 +34,12 @@ public class ProdutoController {
   @Autowired private EditarProdutoUseCasePort editarProdutoUseCasePort;
   @Autowired private ExcluirProdutoUseCasePort excluirProdutoUseCasePort;
 
-  @PostMapping("/criar")
-  @Operation(summary = "Cria um novo produto")
+  @PostMapping()
+  @Operation(summary = "Cria um novo produto",
+          description = "Recebendo os dados necessários, cria-se um novo produto")
   @ApiResponses(
-      value = {@ApiResponse(responseCode = "201", description = "Pedido criado com sucesso")})
+      value = {@ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
+              @ApiResponse(responseCode = "422", description = "Categoria informada inválida")})
   public ResponseEntity<CriarProdutoResponse> criarProduto(
       @Valid @RequestBody CriarProdutoRequest produtoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
@@ -55,6 +57,12 @@ public class ProdutoController {
   }
 
   @PutMapping("/{id}")
+  @Operation(summary = "Altera dados cadastrais de um produto",
+          description = "Recebendo os dados necessários, altera os dados do produto")
+  @ApiResponses(
+          value = {@ApiResponse(responseCode = "201", description = "Produto editado com sucesso"),
+                   @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
+                  @ApiResponse(responseCode = "422", description = "Categoria informada inválida")})
   public ResponseEntity<Object> editarProduto(
       @PathVariable UUID id, @RequestBody EditarProdutoRequest editarProdutoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
@@ -72,6 +80,11 @@ public class ProdutoController {
   }
 
   @DeleteMapping("{id}")
+  @Operation(summary = "Exclui um produto",
+          description = "Recebendo o id, busca e exclui o produto")
+  @ApiResponses(
+          value = {@ApiResponse(responseCode = "201", description = "Produto excluído com sucesso"),
+                  @ApiResponse(responseCode = "404", description = "Produto não encontrado")})
   public ResponseEntity<Object> removerProduto(@PathVariable UUID id) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
