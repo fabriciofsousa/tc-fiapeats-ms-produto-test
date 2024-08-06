@@ -1,26 +1,31 @@
 package br.com.fiap.fiapeats.adapter.in.controller.mapper;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.PedidoRequest;
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.PedidoResponse;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
 import br.com.fiap.fiapeats.core.domain.Pedido;
+import br.com.fiap.fiapeats.core.domain.Produto;
+import java.util.List;
+import java.util.UUID;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface PedidoMapper {
+
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "idStatus", ignore = true)
   @Mapping(target = "dataHoraCriacao", ignore = true)
   @Mapping(target = "tempoEspera", ignore = true)
-  Pedido toPedido(PedidoRequest pedidoRequest);
+  @Mapping(target = "produtos", source = "idProdutos", qualifiedByName = "mapIdsToProdutos")
+  Pedido toPedidoFromRequest(PedidoRequest pedidoRequest);
 
   @Mapping(target = "idPedido", source = "id")
   @Mapping(target = "status", source = "idStatus")
-  PedidoResponse toPedidoResponse(Pedido pedido);
+  CriarPedidoResponse toPedidoResponse(Pedido pedido);
 
-  PedidoEntity toPedidoEntity(Pedido pedido);
-
-  @Mapping(target = "idProdutos", ignore = true)
-  Pedido toPedido(PedidoEntity pedidoEntity);
+  @Named("mapIdsToProdutos")
+  static List<Produto> mapIdsToProdutos(List<UUID> ids) {
+    return ids.stream().map(Produto::new).toList();
+  }
 }

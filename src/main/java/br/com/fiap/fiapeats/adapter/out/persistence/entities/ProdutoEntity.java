@@ -3,17 +3,16 @@ package br.com.fiap.fiapeats.adapter.out.persistence.entities;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Entity
 @Table(name = "produto")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
-@Data
 public class ProdutoEntity {
 
   @Id
@@ -33,6 +32,6 @@ public class ProdutoEntity {
   @JoinColumn(name = "categoria_id")
   private CategoriaEntity categoria;
 
-  @Column(name = "imagem_url", nullable = false)
+  @Column(name = "imagem_url")
   private String imagemUrl;
 }

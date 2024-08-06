@@ -1,7 +1,7 @@
-package br.com.fiap.fiapeats.core.usecases;
+package br.com.fiap.fiapeats.core.usecases.cliente;
 
 import br.com.fiap.fiapeats.core.domain.Cliente;
-import br.com.fiap.fiapeats.core.ports.in.CriarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.CriarClienteUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.ClienteRepository;
 
 public class CriarClienteUseCaseImpl implements CriarClienteUseCasePort {
@@ -13,7 +13,7 @@ public class CriarClienteUseCaseImpl implements CriarClienteUseCasePort {
   }
 
   @Override
-  public void criar(Cliente cliente) {
-    clienteRepository.criar(cliente);
+  public Cliente criar(Cliente cliente) {
+    return clienteRepository.criar(cliente);
   }
 }

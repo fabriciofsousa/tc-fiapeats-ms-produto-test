@@ -1,7 +1,7 @@
-package br.com.fiap.fiapeats.core.ports.in;
+package br.com.fiap.fiapeats.core.ports.in.cliente;
 
 import br.com.fiap.fiapeats.core.domain.Cliente;
 
 public interface CriarClienteUseCasePort {
-  void criar(Cliente cliente);
+  Cliente criar(Cliente cliente);
 }

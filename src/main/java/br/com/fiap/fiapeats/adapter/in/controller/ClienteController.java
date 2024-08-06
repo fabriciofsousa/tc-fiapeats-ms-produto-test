@@ -5,12 +5,13 @@ import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarClient
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.IdentificarClienteResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.ClienteMapper;
 import br.com.fiap.fiapeats.core.domain.Cliente;
-import br.com.fiap.fiapeats.core.ports.in.CriarClienteUseCasePort;
-import br.com.fiap.fiapeats.core.ports.in.IdentificarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.CriarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.IdentificarClienteUseCasePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +35,14 @@ public class ClienteController {
       description = "Recebendo os dados necessários, cria-se um novo cliente")
   @ApiResponses(
       value = {@ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso")})
-  public ResponseEntity<Object> cadastrarCliente(
-      @RequestBody CriarClienteRequest criarClienteRequest) {
+  public ResponseEntity<CriarClienteResponse> cadastrarCliente(
+      @RequestBody @Valid CriarClienteRequest criarClienteRequest) {
     log.info("Requisição para criar cliente recebida");
 
     Cliente cliente = clienteMapper.toCliente(criarClienteRequest);
 
-    criarClienteUseCasePort.criar(cliente);
-
     return ResponseEntity.status(201)
-        .body(
-            new CriarClienteResponse(
-                cliente.getNome(), cliente.getEmail(), cliente.getDocumento()));
+        .body(clienteMapper.toCriarClienteResponse(criarClienteUseCasePort.criar(cliente)));
   }
 
   @GetMapping("/{documento}")
@@ -55,10 +52,11 @@ public class ClienteController {
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "Cliente identificado com sucesso"),
-        @ApiResponse(responseCode = "404", description = "Cliente cadastrado com sucesso")
+        @ApiResponse(responseCode = "404", description = "Cliente não identificado")
       })
   public ResponseEntity<IdentificarClienteResponse> identificarCliente(
       @PathVariable String documento) {
+    log.info("Requisição para identificar um cliente recebida");
     return ResponseEntity.ok(
         clienteMapper.toIdentificarClienteResponse(
             identificarClienteUseCasePort.identificar(documento)));

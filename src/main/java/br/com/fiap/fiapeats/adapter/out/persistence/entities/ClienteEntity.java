@@ -3,9 +3,15 @@ package br.com.fiap.fiapeats.adapter.out.persistence.entities;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.*;
 
 @Entity
 @Table(name = "cliente")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 public class ClienteEntity {
 
   @Id private String documento;
@@ -13,24 +19,4 @@ public class ClienteEntity {
   private String nome;
 
   private String email;
-
-  public ClienteEntity(String documento, String nome, String email) {
-    this.documento = documento;
-    this.nome = nome;
-    this.email = email;
-  }
-
-  public ClienteEntity() {}
-
-  public String getDocumento() {
-    return documento;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public String getEmail() {
-    return email;
-  }
 }

@@ -4,16 +4,16 @@ import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.CriarProduto
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.request.EditarProdutoRequest;
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarProdutoResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.ProdutoMapper;
-import br.com.fiap.fiapeats.core.ports.in.CriarProdutoUseCasePort;
-import br.com.fiap.fiapeats.core.ports.in.EditarProdutoUseCasePort;
-import br.com.fiap.fiapeats.core.ports.in.ExcluirProdutoUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.produto.CriarProdutoUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.produto.EditarProdutoUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.produto.ExcluirProdutoUseCasePort;
 import br.com.fiap.fiapeats.core.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.UUID;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
@@ -41,7 +41,7 @@ public class ProdutoController {
       value = {@ApiResponse(responseCode = "201", description = "Produto criado com sucesso"),
               @ApiResponse(responseCode = "422", description = "Categoria informada inválida")})
   public ResponseEntity<CriarProdutoResponse> criarProduto(
-      @Valid @RequestBody CriarProdutoRequest produtoRequest) {
+      @RequestBody @Valid CriarProdutoRequest produtoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
         "correlationId={"
@@ -64,7 +64,7 @@ public class ProdutoController {
                    @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
                   @ApiResponse(responseCode = "422", description = "Categoria informada inválida")})
   public ResponseEntity<Object> editarProduto(
-      @PathVariable UUID id, @RequestBody EditarProdutoRequest editarProdutoRequest) {
+      @PathVariable UUID id, @RequestBody @Valid EditarProdutoRequest editarProdutoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
         "correlationId={"

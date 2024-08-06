@@ -12,6 +12,10 @@ public class Produto {
   private Categoria categoria;
   private String imagemUrl;
 
+  public Produto(UUID id) {
+    this.id = id;
+  }
+
   public Produto(
       UUID id,
       String nome,
@@ -37,8 +41,7 @@ public class Produto {
   }
 
   public Produto adicionarCategoria(Produto produto, Categoria categoria) {
-    return new Produto(
-            produto.getId(),
+    return new Produto(produto.getId(),
         produto.getNome(),
         produto.getDescricao(),
         produto.getValor(),

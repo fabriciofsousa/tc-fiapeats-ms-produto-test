@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Pedido {
 
   private UUID id;
-  private List<String> idProdutos;
+  private List<Produto> produtos;
   private String cliCpf;
   private BigDecimal valor;
   private Long idStatus;
@@ -17,20 +17,22 @@ public class Pedido {
 
   public Pedido(
       UUID id,
-      List<String> idProdutos,
+      List<Produto> produtos,
       String cliCpf,
       BigDecimal valor,
       Long idStatus,
       LocalDateTime dataHoraCriacao,
       int tempoEspera) {
     this.id = id;
-    this.idProdutos = idProdutos;
+    this.produtos = produtos;
     this.cliCpf = cliCpf;
     this.valor = valor;
     this.idStatus = idStatus;
     this.dataHoraCriacao = dataHoraCriacao;
     this.tempoEspera = tempoEspera;
   }
+
+  public Pedido() {}
 
   public UUID getId() {
     return id;
@@ -40,12 +42,12 @@ public class Pedido {
     this.id = id;
   }
 
-  public List<String> getIdProdutos() {
-    return idProdutos;
+  public List<Produto> getProdutos() {
+    return produtos;
   }
 
-  public void setIdProdutos(List<String> idProdutos) {
-    this.idProdutos = idProdutos;
+  public void setProdutos(List<Produto> produtos) {
+    this.produtos = produtos;
   }
 
   public String getCliCpf() {
