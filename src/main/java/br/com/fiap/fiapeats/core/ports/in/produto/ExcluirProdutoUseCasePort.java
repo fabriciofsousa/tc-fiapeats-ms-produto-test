@@ -1,4 +1,4 @@
-package br.com.fiap.fiapeats.core.ports.in;
+package br.com.fiap.fiapeats.core.ports.in.produto;
 
 import java.util.UUID;
 

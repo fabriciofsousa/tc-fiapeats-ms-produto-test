@@ -6,8 +6,6 @@ import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Slf4j
-@Component
 public class ConsultarCategoriaUseCaseImpl implements ConsultarCategoriaUseCasePort {
 
   private final CategoriaRepositoryPort categoriaRepositoryPort;

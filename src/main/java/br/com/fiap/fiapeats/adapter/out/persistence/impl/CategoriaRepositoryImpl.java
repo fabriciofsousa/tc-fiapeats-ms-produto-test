@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
 
   private final CategoriaEntityMapper categoriaEntityMapper;
@@ -24,7 +23,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepositoryPort {
   @Override
   public Categoria consultar(Categoria categoria) {
     return categoriaRepositoryJPA
-        .findByDescricao(categoria.getDescricao().toUpperCase())
+        .findByDescricao(categoria.getDescricao())
         .map(categoriaEntityMapper::toCategoria)
         .orElse(null);
   }

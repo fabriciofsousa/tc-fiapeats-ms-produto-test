@@ -45,6 +45,7 @@ public class CriarProdutoRequest {
       requiredMode = Schema.RequiredMode.REQUIRED)
   private String categoria;
 
+  @Size(max = 250, message = "Deve conter no máximo 250 caracteres")
   @Schema(
       description = "url da imagem do produto",
       example =
