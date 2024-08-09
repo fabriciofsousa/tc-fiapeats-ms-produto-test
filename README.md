@@ -8,6 +8,7 @@ Projeto inicial para entrega do Tech Challenge
 - /sqlScripts -> arquivos executados ao criar o ambiente pelo docker (create tables / insert data)
 - /variables -> variaveis de ambiente usadas na app localmente e via container
 - /src -> código fonte da app
+- /htmlTest -> Pagina HTML simples para visualizar o GET de produtos e pedidos
 
 ### Plugins
 - Jacoco -> cobertura de testes unitários e análise

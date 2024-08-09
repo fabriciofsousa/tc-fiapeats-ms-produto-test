@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +35,7 @@ public class ProdutoController {
   @Autowired private EditarProdutoUseCasePort editarProdutoUseCasePort;
   @Autowired private ExcluirProdutoUseCasePort excluirProdutoUseCasePort;
   @Autowired private ListarProdutosUseCasePort listarProdutos;
+  @Autowired private ListarProdutosPorCategoriaUseCasePort listarProdutosPorCategoriaUseCasePort;
 
   @PostMapping()
   @Operation(
@@ -160,6 +160,18 @@ public class ProdutoController {
             + "} "
             + "Solicitacao recebida [consultarProdutoPorCategoria] ");
 
-    return ResponseEntity.ok(new ArrayList<>());
+    return ResponseEntity.ok(
+        listarProdutosPorCategoriaUseCasePort.listarProdutosPorCategoria(categoria).stream()
+            .map(
+                p ->
+                    ProdutoResponse.builder()
+                        .id(p.getId())
+                        .valor(p.getValor())
+                        .nome(p.getNome())
+                        .imagemUrl(p.getImagemUrl())
+                        .descricao(p.getDescricao())
+                        .categoria(p.getCategoria().getDescricao())
+                        .build())
+            .toList());
   }
 }

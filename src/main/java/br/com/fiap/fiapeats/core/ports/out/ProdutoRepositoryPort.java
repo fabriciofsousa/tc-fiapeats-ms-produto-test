@@ -14,4 +14,6 @@ public interface ProdutoRepositoryPort {
   void excluir(UUID id);
 
   List<Produto> listarProdutos();
+
+  List<Produto> listarProdutosPorcategoria(Long idCategoria);
 }

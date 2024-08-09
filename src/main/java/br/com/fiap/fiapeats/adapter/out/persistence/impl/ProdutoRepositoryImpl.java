@@ -50,6 +50,23 @@ public class ProdutoRepositoryImpl implements ProdutoRepositoryPort {
   }
 
   @Override
+  public List<Produto> listarProdutosPorcategoria(Long idCategoria) {
+    List<ProdutoEntity> products = produtoRepositoryJPA.findProductByCategoryId(idCategoria);
+    if (products.isEmpty()) throw new NotFoundException("Não foram encontrados produtos!");
+    return products.stream()
+        .map(
+            p ->
+                new Produto(
+                    p.getId(),
+                    p.getNome(),
+                    p.getDescricao(),
+                    p.getValor(),
+                    categoriaMapper.toCategoriaFromCategoriaEntity(p.getCategoria()),
+                    p.getImagemUrl()))
+        .toList();
+  }
+
+  @Override
   public List<Produto> listarProdutos() {
     List<ProdutoEntity> products = produtoRepositoryJPA.findAll();
     if (products.isEmpty()) throw new NotFoundException("Não foram encontrados produtos!");

@@ -13,10 +13,7 @@ import br.com.fiap.fiapeats.core.usecases.*;
 import br.com.fiap.fiapeats.core.usecases.cliente.CriarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.core.usecases.cliente.IdentificarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.core.usecases.pedido.CriarPedidoUseCaseImpl;
-import br.com.fiap.fiapeats.core.usecases.produto.CriarProdutoUseCaseImpl;
-import br.com.fiap.fiapeats.core.usecases.produto.EditarProdutoUseCaseImpl;
-import br.com.fiap.fiapeats.core.usecases.produto.ExcluirProdutoUseCaseImpl;
-import br.com.fiap.fiapeats.core.usecases.produto.ListarProdutosUseCaseImpl;
+import br.com.fiap.fiapeats.core.usecases.produto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -69,5 +66,13 @@ public class BeanConfiguration {
   public ListarProdutosUseCasePort listarProdutosUseCasePort(
       ProdutoRepositoryPort produtoRepositoryPort) {
     return new ListarProdutosUseCaseImpl(produtoRepositoryPort);
+  }
+
+  @Bean
+  public ListarProdutosPorCategoriaUseCasePort listarProdutosPorCategoriaUseCasePort(
+      ProdutoRepositoryPort produtoRepositoryPort,
+      CategoriaRepositoryPort categoriaRepositoryPort) {
+    return new ListarProdutosPorCategoriaUseCaseImpl(
+        produtoRepositoryPort, categoriaRepositoryPort);
   }
 }
