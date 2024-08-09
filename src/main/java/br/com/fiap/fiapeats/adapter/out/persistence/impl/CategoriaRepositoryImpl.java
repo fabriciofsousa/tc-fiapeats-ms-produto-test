@@ -4,7 +4,6 @@ import br.com.fiap.fiapeats.adapter.out.persistence.mapper.CategoriaEntityMapper
 import br.com.fiap.fiapeats.adapter.out.persistence.repository.CategoriaRepositoryJPA;
 import br.com.fiap.fiapeats.core.domain.Categoria;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component

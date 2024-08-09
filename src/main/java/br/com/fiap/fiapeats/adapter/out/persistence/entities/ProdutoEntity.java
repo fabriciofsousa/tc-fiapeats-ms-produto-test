@@ -3,7 +3,6 @@ package br.com.fiap.fiapeats.adapter.out.persistence.entities;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
-
 import lombok.*;
 
 @Entity
@@ -28,8 +27,7 @@ public class ProdutoEntity {
   @Column(name = "valor", nullable = false)
   private BigDecimal valor;
 
-  @ManyToOne
-  private CategoriaEntity categoria;
+  @ManyToOne private CategoriaEntity categoria;
 
   @Column(name = "imagem_url")
   private String imagemUrl;

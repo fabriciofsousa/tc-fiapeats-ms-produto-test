@@ -15,8 +15,7 @@ import lombok.*;
 @Builder
 public class CategoriaEntity {
 
-  @Id
-  private Long id;
+  @Id private Long id;
 
   @Column(name = "descricao")
   private String descricao;

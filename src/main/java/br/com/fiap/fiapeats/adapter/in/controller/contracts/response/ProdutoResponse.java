@@ -2,7 +2,9 @@ package br.com.fiap.fiapeats.adapter.in.controller.contracts.response;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.Builder;
 
+@Builder
 public class ProdutoResponse {
 
   private UUID id;

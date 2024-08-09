@@ -28,7 +28,6 @@ class PedidoRepositoryImplTest {
 
   @Mock private PedidoRepositoryJPA pedidoRepositoryJPA;
 
-
   private Pedido pedido;
   private PedidoEntity pedidoEntity;
   private CriarPedidoResponse criarPedidoResponse;
