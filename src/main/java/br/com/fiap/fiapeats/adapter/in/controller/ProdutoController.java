@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "Produto")
 @RequestMapping("/produto")
+@CrossOrigin({"http://127.0.0.1:5500", "http://localhost:63342"})
 public class ProdutoController {
 
   @Autowired private ProdutoMapper produtoMapper;
@@ -136,7 +137,7 @@ public class ProdutoController {
                         .nome(p.getNome())
                         .imagemUrl(p.getImagemUrl())
                         .descricao(p.getDescricao())
-                        .categoria(p.getDescricao())
+                        .categoria(p.getCategoria().getDescricao())
                         .build())
             .toList());
   }

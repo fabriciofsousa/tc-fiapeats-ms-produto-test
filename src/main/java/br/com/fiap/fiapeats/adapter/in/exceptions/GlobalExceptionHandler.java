@@ -21,7 +21,12 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(CategoriaInvalida.class)
   public ResponseEntity<Object> handle(CategoriaInvalida exception) {
-    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exception.getMessage());
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+        .body(
+            ErroResponse.builder()
+                .tipo(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+                .mensagem(exception.getMessage())
+                .build());
   }
 
   @ExceptionHandler(NotFoundException.class)
