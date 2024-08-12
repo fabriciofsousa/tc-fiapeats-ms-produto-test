@@ -8,8 +8,4 @@ import org.mapstruct.Mapper;
 public interface CategoriaEntityMapper {
 
   Categoria toCategoria(CategoriaEntity categoriaEntity);
-
-  //    default Categoria toCategoria(CategoriaEntity categoriaEntity){
-  //        return new Categoria(categoriaEntity.getId(), categoriaEntity.getDescricao());
-  //    }
 }

@@ -5,8 +5,8 @@ import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarClient
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.IdentificarClienteResponse;
 import br.com.fiap.fiapeats.adapter.in.controller.mapper.ClienteMapper;
 import br.com.fiap.fiapeats.core.domain.Cliente;
-import br.com.fiap.fiapeats.core.ports.in.CriarClienteUseCasePort;
-import br.com.fiap.fiapeats.core.ports.in.IdentificarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.CriarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.IdentificarClienteUseCasePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

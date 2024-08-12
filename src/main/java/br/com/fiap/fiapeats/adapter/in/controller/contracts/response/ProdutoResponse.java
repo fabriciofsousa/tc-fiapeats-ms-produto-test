@@ -4,7 +4,9 @@ import br.com.fiap.fiapeats.core.domain.Produto;
 
 import java.math.BigDecimal;
 import java.util.UUID;
+import lombok.Builder;
 
+@Builder
 public class ProdutoResponse {
 
     private UUID id;

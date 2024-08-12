@@ -1,17 +1,21 @@
 package br.com.fiap.fiapeats.adapter.beans;
 
 import br.com.fiap.fiapeats.core.ports.in.*;
+import br.com.fiap.fiapeats.core.ports.in.cliente.CriarClienteUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.cliente.IdentificarClienteUseCasePort;
 import br.com.fiap.fiapeats.core.ports.in.pedido.CriarPedidoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.in.pedido.ListarPedidosUseCasePort;
+import br.com.fiap.fiapeats.core.ports.in.produto.*;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ClienteRepository;
 import br.com.fiap.fiapeats.core.ports.out.PedidoRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ProdutoRepositoryPort;
 import br.com.fiap.fiapeats.core.usecases.*;
-import br.com.fiap.fiapeats.core.usecases.CriarClienteUseCaseImpl;
-import br.com.fiap.fiapeats.core.usecases.IdentificarClienteUseCaseImpl;
+import br.com.fiap.fiapeats.core.usecases.cliente.CriarClienteUseCaseImpl;
+import br.com.fiap.fiapeats.core.usecases.cliente.IdentificarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.core.usecases.pedido.CriarPedidoUseCaseImpl;
 import br.com.fiap.fiapeats.core.usecases.pedido.ListarPedidosUseCaseImpl;
+import br.com.fiap.fiapeats.core.usecases.produto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,5 +67,19 @@ public class BeanConfiguration {
     @Bean
     public ListarPedidosUseCasePort listarPedidosUseCasePort(PedidoRepositoryPort pedidoRepositoryPort) {
         return new ListarPedidosUseCaseImpl(pedidoRepositoryPort);
+    }
+
+    @Bean
+    public ListarProdutosUseCasePort listarProdutosUseCasePort(
+            ProdutoRepositoryPort produtoRepositoryPort) {
+        return new ListarProdutosUseCaseImpl(produtoRepositoryPort);
+    }
+
+    @Bean
+    public ListarProdutosPorCategoriaUseCasePort listarProdutosPorCategoriaUseCasePort(
+            ProdutoRepositoryPort produtoRepositoryPort,
+            CategoriaRepositoryPort categoriaRepositoryPort) {
+        return new ListarProdutosPorCategoriaUseCaseImpl(
+                produtoRepositoryPort, categoriaRepositoryPort);
     }
 }

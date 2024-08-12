@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class EditarProdutoRequest {
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Size(min = 1, max = 60, message = "Deve conter no máximo 60 caracteres")
   @Schema(
       description = "nome do produto",
@@ -24,7 +23,6 @@ public class EditarProdutoRequest {
   private String nome;
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Schema(
       description = "descrição do produto",
       example = "Refrigerante lata 350ml",
@@ -33,8 +31,6 @@ public class EditarProdutoRequest {
 
   @Positive(message = "Deve ser maior que 0")
   @NotNull(message = "Não pode ser nulo")
-  @Size(min = 1, max = 10, message = "Deve conter no máximo 10 caracteres")
-  @Pattern(regexp = "^[0-9][0-9.]+$", message = "Aceita apenas números e ponto")
   @Positive(message = "O valor precisa ser maior que 0")
   @Schema(
       description = "valor do produto",
@@ -43,13 +39,13 @@ public class EditarProdutoRequest {
   private BigDecimal valor;
 
   @NotEmpty(message = "Não pode ser vazio")
-  @NotNull(message = "Não pode ser nulo")
   @Schema(
       description = "categoria do produto",
       example = "Bebida",
       requiredMode = Schema.RequiredMode.REQUIRED)
   private String categoria;
 
+  @Size(max = 250, message = "Deve conter no máximo 250 caracteres")
   @Schema(
       description = "url da imagem do produto",
       example =
