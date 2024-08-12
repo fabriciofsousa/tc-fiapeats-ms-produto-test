@@ -5,8 +5,6 @@ import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalida;
 import br.com.fiap.fiapeats.core.ports.in.produto.CriarProdutoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ProdutoRepositoryPort;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 public class CriarProdutoUseCaseImpl implements CriarProdutoUseCasePort {
 

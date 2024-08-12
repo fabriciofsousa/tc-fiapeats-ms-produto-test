@@ -1,5 +1,6 @@
 package br.com.fiap.fiapeats.adapter.in.exceptions;
 
+import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.ErroResponse;
 import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalida;
 import br.com.fiap.fiapeats.core.exceptions.NotFoundException;
 import java.util.ArrayList;
@@ -20,12 +21,22 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(CategoriaInvalida.class)
   public ResponseEntity<Object> handle(CategoriaInvalida exception) {
-    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(exception.getMessage());
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+        .body(
+            ErroResponse.builder()
+                .tipo(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+                .mensagem(exception.getMessage())
+                .build());
   }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<Object> handle(NotFoundException exception) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(
+            ErroResponse.builder()
+                .tipo(HttpStatus.NOT_FOUND.toString())
+                .mensagem(exception.getMessage())
+                .build());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)

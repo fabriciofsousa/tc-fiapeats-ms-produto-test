@@ -6,8 +6,6 @@ import br.com.fiap.fiapeats.core.exceptions.NotFoundException;
 import br.com.fiap.fiapeats.core.ports.in.produto.EditarProdutoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ProdutoRepositoryPort;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 public class EditarProdutoUseCaseImpl implements EditarProdutoUseCasePort {
 
