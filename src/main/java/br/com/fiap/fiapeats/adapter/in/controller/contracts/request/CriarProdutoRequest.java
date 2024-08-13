@@ -49,7 +49,7 @@ public class CriarProdutoRequest {
   @Schema(
       description = "url da imagem do produto",
       example =
-          "https://static.itdg.com.br/images/1200-630/150ba2d5d2874bed8561dd8edbdc1323/164773-original.jpg",
+          "https://dcdn.mitiendanube.com/stores/001/043/122/products/guarana-350-ml1-36b27837866444073815698470135434-640-0.png",
       requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   private String imagemUrl;
 }
