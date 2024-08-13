@@ -11,23 +11,39 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @Slf4j
 public class PedidoRepositoryImpl implements PedidoRepositoryPort {
 
-  @Autowired private PedidoEntityMapper pedidoMapper;
+    @Autowired
+    private PedidoEntityMapper pedidoMapper;
 
-  @Autowired private PedidoRepositoryJPA pedidoRepositoryJPA;
+    @Autowired
+    private PedidoRepositoryJPA pedidoRepositoryJPA;
 
-  @Override
-  public Pedido salvarPedido(Pedido pedido) {
-    log.info(
-        "correlationId={"
-            + ThreadContext.get(Constants.CORRELATION_ID)
-            + "} "
-            + "[PedidoRepositoryImpl-salvarPedido] ");
+    @Override
+    public Pedido salvarPedido(Pedido pedido) {
+        log.info(
+                "correlationId={"
+                        + ThreadContext.get(Constants.CORRELATION_ID)
+                        + "} "
+                        + "[PedidoRepositoryImpl-salvarPedido] ");
 
-    PedidoEntity result = pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido));
-    return pedidoMapper.toPedidoFromEntity(result);
-  }
+        PedidoEntity result = pedidoRepositoryJPA.save(pedidoMapper.toPedidoEntity(pedido));
+        return pedidoMapper.toPedidoFromEntity(result);
+    }
+
+    @Override
+    public List<Pedido> listarPedidos() {
+        log.info(
+                "correlationId={"
+                        + ThreadContext.get(Constants.CORRELATION_ID)
+                        + "} "
+                        + "[PedidoRepositoryImpl-listarPedidos] ");
+
+        List<PedidoEntity> result = pedidoRepositoryJPA.findAll();
+        return pedidoMapper.toListaPedidos(result);
+    }
 }
