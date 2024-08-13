@@ -1,8 +1,8 @@
 package br.com.fiap.fiapeats.adapter.in.exceptions;
 
 import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.ErroResponse;
-import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalida;
-import br.com.fiap.fiapeats.core.exceptions.ClienteExistente;
+import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalidaException;
+import br.com.fiap.fiapeats.core.exceptions.ClienteExistenteException;
 import br.com.fiap.fiapeats.core.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(CategoriaInvalida.class)
-  public ResponseEntity<Object> handle(CategoriaInvalida exception) {
+  @ExceptionHandler(CategoriaInvalidaException.class)
+  public ResponseEntity<Object> handle(CategoriaInvalidaException exception) {
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
         .body(
             ErroResponse.builder()
@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
                 .build());
   }
 
-    @ExceptionHandler(ClienteExistente.class)
-    public ResponseEntity<Object> handle(ClienteExistente exception) {
+    @ExceptionHandler(ClienteExistenteException.class)
+    public ResponseEntity<Object> handle(ClienteExistenteException exception) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
                 .body(
                         ErroResponse.builder()

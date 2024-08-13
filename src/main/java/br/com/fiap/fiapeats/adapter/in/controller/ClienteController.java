@@ -37,7 +37,7 @@ public class ClienteController {
             summary = "Cadastra um novo cliente",
             description = "Recebendo os dados necessários, cria-se um novo cliente")
     @ApiResponses(
-            value = {@ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso")})
+            value = {@ApiResponse(responseCode = "201", description = "Cliente cadastrado com sucesso")})
     public ResponseEntity<CriarClienteResponse> cadastrarCliente(
             @RequestBody @Valid CriarClienteRequest criarClienteRequest) {
         log.info("Requisição para criar cliente recebida");

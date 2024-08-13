@@ -1,7 +1,7 @@
 package br.com.fiap.fiapeats.core.usecases.produto;
 
 import br.com.fiap.fiapeats.core.domain.Produto;
-import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalida;
+import br.com.fiap.fiapeats.core.exceptions.CategoriaInvalidaException;
 import br.com.fiap.fiapeats.core.ports.in.produto.CriarProdutoUseCasePort;
 import br.com.fiap.fiapeats.core.ports.out.CategoriaRepositoryPort;
 import br.com.fiap.fiapeats.core.ports.out.ProdutoRepositoryPort;
@@ -24,7 +24,7 @@ public class CriarProdutoUseCaseImpl implements CriarProdutoUseCasePort {
     var categoria = categoriaRepositoryPort.consultar(produto.getCategoria());
 
     if (categoria == null) {
-      throw new CategoriaInvalida("Categoria informada inválida");
+      throw new CategoriaInvalidaException("Categoria informada inválida");
     }
     return produtoRepositoryPort.salvar(produto.adicionarCategoria(produto, categoria));
   }
