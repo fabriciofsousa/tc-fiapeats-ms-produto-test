@@ -1,9 +1,9 @@
 package br.com.fiap.fiapeats.utils;
 
-import br.com.fiap.fiapeats.adapter.in.controller.contracts.response.CriarPedidoResponse;
-import br.com.fiap.fiapeats.adapter.out.persistence.entities.PedidoEntity;
-import br.com.fiap.fiapeats.core.domain.Pedido;
-import br.com.fiap.fiapeats.core.domain.Produto;
+import br.com.fiap.fiapeats.adapter.controller.contracts.response.CriarPedidoResponse;
+import br.com.fiap.fiapeats.adapter.gateway.persistence.orm.PedidoEntity;
+import br.com.fiap.fiapeats.entities.Pedido;
+import br.com.fiap.fiapeats.entities.Produto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
