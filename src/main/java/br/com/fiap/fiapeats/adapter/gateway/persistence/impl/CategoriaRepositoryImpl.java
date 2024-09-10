@@ -3,7 +3,7 @@ package br.com.fiap.fiapeats.adapter.gateway.persistence.impl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.mapper.CategoriaEntityMapper;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.repository.CategoriaRepositoryJPA;
 import br.com.fiap.fiapeats.entities.Categoria;
-import br.com.fiap.fiapeats.interfaces.out.CategoriaRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.categoria.CategoriaRepositoryInterface;
 import org.springframework.stereotype.Component;
 
 @Component

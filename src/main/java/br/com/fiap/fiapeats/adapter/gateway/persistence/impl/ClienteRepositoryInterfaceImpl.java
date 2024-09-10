@@ -3,7 +3,7 @@ package br.com.fiap.fiapeats.adapter.gateway.persistence.impl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.mapper.ClienteEntityMapper;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.repository.ClienteRepositoryJPA;
 import br.com.fiap.fiapeats.entities.Cliente;
-import br.com.fiap.fiapeats.interfaces.out.ClienteRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.cliente.ClienteRepositoryInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package br.com.fiap.fiapeats.interfaces.out;
+package br.com.fiap.fiapeats.interfaces.out.produto;
 
 import br.com.fiap.fiapeats.entities.Produto;
 import java.util.List;

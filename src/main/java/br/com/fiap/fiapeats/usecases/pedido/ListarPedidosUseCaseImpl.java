@@ -2,7 +2,7 @@ package br.com.fiap.fiapeats.usecases.pedido;
 
 import br.com.fiap.fiapeats.entities.Pedido;
 import br.com.fiap.fiapeats.interfaces.in.pedido.ListarPedidosUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.PedidoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.pedido.PedidoRepositoryInterface;
 
 import java.util.List;
 

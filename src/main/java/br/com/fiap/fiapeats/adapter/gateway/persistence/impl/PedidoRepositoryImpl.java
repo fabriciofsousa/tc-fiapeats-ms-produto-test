@@ -4,7 +4,7 @@ import br.com.fiap.fiapeats.adapter.gateway.persistence.mapper.PedidoEntityMappe
 import br.com.fiap.fiapeats.adapter.gateway.persistence.orm.PedidoEntity;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.entities.Pedido;
-import br.com.fiap.fiapeats.interfaces.out.PedidoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.pedido.PedidoRepositoryInterface;
 import br.com.fiap.fiapeats.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;

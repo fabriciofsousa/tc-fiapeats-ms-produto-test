@@ -3,8 +3,8 @@ package br.com.fiap.fiapeats.usecases.produto;
 import br.com.fiap.fiapeats.entities.Produto;
 import br.com.fiap.fiapeats.usecases.exceptions.CategoriaInvalidaException;
 import br.com.fiap.fiapeats.interfaces.in.produto.CriarProdutoUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.CategoriaRepositoryInterface;
-import br.com.fiap.fiapeats.interfaces.out.ProdutoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.categoria.CategoriaRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.produto.ProdutoRepositoryInterface;
 
 public class CriarProdutoUseCaseImpl implements CriarProdutoUseCaseInterface {
 

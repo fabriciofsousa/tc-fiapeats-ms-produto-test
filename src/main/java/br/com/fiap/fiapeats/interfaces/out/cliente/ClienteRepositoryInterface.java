@@ -1,4 +1,4 @@
-package br.com.fiap.fiapeats.interfaces.out;
+package br.com.fiap.fiapeats.interfaces.out.cliente;
 
 import br.com.fiap.fiapeats.entities.Cliente;
 

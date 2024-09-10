@@ -1,4 +1,4 @@
-package br.com.fiap.fiapeats.interfaces.out;
+package br.com.fiap.fiapeats.interfaces.out.categoria;
 
 import br.com.fiap.fiapeats.entities.Categoria;
 

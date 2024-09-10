@@ -6,7 +6,7 @@ import br.com.fiap.fiapeats.adapter.gateway.persistence.orm.ProdutoEntity;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.repository.ProdutoRepositoryJPA;
 import br.com.fiap.fiapeats.entities.Produto;
 import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
-import br.com.fiap.fiapeats.interfaces.out.ProdutoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.produto.ProdutoRepositoryInterface;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Component;

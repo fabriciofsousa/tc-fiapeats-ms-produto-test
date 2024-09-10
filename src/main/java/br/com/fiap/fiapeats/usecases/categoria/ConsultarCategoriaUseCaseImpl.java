@@ -2,7 +2,7 @@ package br.com.fiap.fiapeats.usecases.categoria;
 
 import br.com.fiap.fiapeats.entities.Categoria;
 import br.com.fiap.fiapeats.interfaces.in.categoria.ConsultarCategoriaUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.CategoriaRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.categoria.CategoriaRepositoryInterface;
 
 public class ConsultarCategoriaUseCaseImpl implements ConsultarCategoriaUseCaseInterface {
 

@@ -4,8 +4,8 @@ import br.com.fiap.fiapeats.entities.Categoria;
 import br.com.fiap.fiapeats.entities.Produto;
 import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import br.com.fiap.fiapeats.interfaces.in.produto.ListarProdutosPorCategoriaUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.CategoriaRepositoryInterface;
-import br.com.fiap.fiapeats.interfaces.out.ProdutoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.categoria.CategoriaRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.produto.ProdutoRepositoryInterface;
 import java.util.List;
 
 public class ListarProdutosPorCategoriaUseCaseImpl

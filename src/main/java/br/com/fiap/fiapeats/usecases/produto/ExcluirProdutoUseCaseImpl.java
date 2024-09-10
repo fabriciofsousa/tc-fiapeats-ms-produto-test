@@ -2,7 +2,7 @@ package br.com.fiap.fiapeats.usecases.produto;
 
 import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import br.com.fiap.fiapeats.interfaces.in.produto.ExcluirProdutoUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.ProdutoRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.produto.ProdutoRepositoryInterface;
 import java.util.UUID;
 
 public class ExcluirProdutoUseCaseImpl implements ExcluirProdutoUseCaseInterface {

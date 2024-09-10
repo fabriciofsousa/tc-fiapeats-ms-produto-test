@@ -3,7 +3,7 @@ package br.com.fiap.fiapeats.usecases.cliente;
 import br.com.fiap.fiapeats.usecases.exceptions.ClienteExistenteException;
 import br.com.fiap.fiapeats.entities.Cliente;
 import br.com.fiap.fiapeats.interfaces.in.cliente.CriarClienteUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.out.ClienteRepositoryInterface;
+import br.com.fiap.fiapeats.interfaces.out.cliente.ClienteRepositoryInterface;
 
 public class CriarClienteUseCaseImpl implements CriarClienteUseCaseInterface {
 
