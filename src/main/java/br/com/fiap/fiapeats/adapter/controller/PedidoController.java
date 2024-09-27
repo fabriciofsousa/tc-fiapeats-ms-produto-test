@@ -1,81 +1,36 @@
 package br.com.fiap.fiapeats.adapter.controller;
 
-import br.com.fiap.fiapeats.adapter.controller.mapper.PedidoMapper;
-import br.com.fiap.fiapeats.adapter.controller.contracts.request.PedidoRequest;
-import br.com.fiap.fiapeats.adapter.controller.contracts.response.CriarPedidoResponse;
-import br.com.fiap.fiapeats.adapter.controller.contracts.response.ListarPedidosResponse;
-import br.com.fiap.fiapeats.interfaces.in.pedido.CriarPedidoUseCaseInterface;
-import br.com.fiap.fiapeats.interfaces.in.pedido.ListarPedidosUseCaseInterface;
-import br.com.fiap.fiapeats.utils.Constants;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import br.com.fiap.fiapeats.adapter.presenters.PedidoPresenter;
+import br.com.fiap.fiapeats.domain.dtos.CriarPedidoDTO;
+import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.domain.dtos.ListarPedidosResponse;
+import br.com.fiap.fiapeats.domain.entities.Pedido;
+import br.com.fiap.fiapeats.domain.interfaces.in.pedido.CriarPedidoUseCase;
+import br.com.fiap.fiapeats.domain.interfaces.in.pedido.ListarPedidosUseCase;
 
 import java.util.List;
-import java.util.UUID;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.ThreadContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
-@Slf4j
-@RequiredArgsConstructor
-@Tag(name = "Pedidos")
-@RequestMapping("/pedido")
 public class PedidoController {
 
-    @Autowired
-    private PedidoMapper pedidoMapper;
+    private final CriarPedidoUseCase criarPedidoUseCase;
 
-    @Autowired
-    private CriarPedidoUseCaseInterface criarPedidoUseCaseInterface;
+    private final ListarPedidosUseCase listarPedidosUseCase;
 
-    @Autowired
-    private ListarPedidosUseCaseInterface listarPedidosUseCaseInterface;
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-            summary = "Cria um novo pedido",
-            description = "Recebendo a lista de produtos e valor, cria um novo pedido")
-    @ApiResponses(
-            value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
-    public ResponseEntity<CriarPedidoResponse> criarNovoPedido(
-            @Valid @RequestBody PedidoRequest pedidoRequest) {
-        ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-        log.info(
-                "correlationId={"
-                        + ThreadContext.get(Constants.CORRELATION_ID)
-                        + "} "
-                        + "Solicitacao recebida [criarNovoPedido] ");
-        log.debug(pedidoRequest.toString());
-        return ResponseEntity.ok(
-                pedidoMapper.toPedidoResponse(
-                        criarPedidoUseCaseInterface.criarPedido(pedidoMapper.toPedidoFromRequest(pedidoRequest))));
+    public PedidoController(CriarPedidoUseCase criarPedidoUseCase, ListarPedidosUseCase listarPedidosUseCase) {
+        this.criarPedidoUseCase = criarPedidoUseCase;
+        this.listarPedidosUseCase = listarPedidosUseCase;
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(
-            summary = "Lista os pedidos",
-            description = "Rota para listar todos os pedidos cadastrados")
-    @ApiResponses(
-            value = {@ApiResponse(responseCode = "200", description = "Pedidos listados com sucesso!")})
-    public ResponseEntity<List<ListarPedidosResponse>> listarPedidos() {
-        ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-        log.info(
-                "correlationId={"
-                        + ThreadContext.get(Constants.CORRELATION_ID)
-                        + "} "
-                        + "Solicitacao recebida [criarNovoPedido] ");
-        return ResponseEntity.ok(
-                pedidoMapper.toListarPedidosResponse(listarPedidosUseCaseInterface.listar()));
+    public CriarPedidoResponse criarNovoPedido(CriarPedidoDTO criarPedidoDTO) {
+        Pedido pedido = criarPedidoUseCase.criarPedido(criarPedidoDTO);
+
+        return PedidoPresenter.toCriarPedidoResponse(pedido);
     }
+
+    public List<ListarPedidosResponse> listarPedidos() {
+        List<Pedido> pedidos = listarPedidosUseCase.listar();
+
+        return PedidoPresenter.toListarPedidosResponse(pedidos);
+    }
+
 }
