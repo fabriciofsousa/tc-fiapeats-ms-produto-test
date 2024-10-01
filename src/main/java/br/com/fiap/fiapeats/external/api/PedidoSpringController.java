@@ -1,11 +1,11 @@
 package br.com.fiap.fiapeats.external.api;
 
 import br.com.fiap.fiapeats.adapter.controller.PedidoController;
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoDTO;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoDTO;
 import br.com.fiap.fiapeats.external.api.mapper.PedidoMapper;
 import br.com.fiap.fiapeats.external.api.contracts.request.CriarPedidoRequest;
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
-import br.com.fiap.fiapeats.domain.dtos.ListarPedidosResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.ListarPedidosResponse;
 import br.com.fiap.fiapeats.domain.utils.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

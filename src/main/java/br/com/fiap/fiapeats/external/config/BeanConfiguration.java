@@ -2,26 +2,29 @@ package br.com.fiap.fiapeats.external.config;
 
 import br.com.fiap.fiapeats.adapter.controller.ClienteController;
 import br.com.fiap.fiapeats.adapter.controller.PedidoController;
+import br.com.fiap.fiapeats.adapter.controller.ProdutoController;
+import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.CategoriaRepositoryGatewayImpl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.ClienteRepositoryGatewayImpl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.PedidoRepositoryGatewayImpl;
+import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.ProdutoRespositoryGatewayImpl;
+import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.CategoriaRepository;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.ClienteRepository;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.PedidoRepository;
-import br.com.fiap.fiapeats.domain.interfaces.in.categoria.ConsultarCategoriaUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.cliente.CriarClienteUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.cliente.IdentificarClienteUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.pedido.CriarPedidoUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.pedido.ListarPedidosUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.produto.*;
-import br.com.fiap.fiapeats.domain.interfaces.out.categoria.CategoriaRepositoryInterface;
-import br.com.fiap.fiapeats.domain.interfaces.out.cliente.ClienteRepositoryGateway;
-import br.com.fiap.fiapeats.domain.interfaces.out.pedido.PedidoRepositoryGateway;
-import br.com.fiap.fiapeats.domain.interfaces.out.produto.ProdutoRepositoryInterface;
-import br.com.fiap.fiapeats.domain.usecases.categoria.ConsultarCategoriaUseCaseImpl;
-import br.com.fiap.fiapeats.domain.usecases.cliente.CriarClienteUseCaseImpl;
-import br.com.fiap.fiapeats.domain.usecases.cliente.IdentificarClienteUseCaseImpl;
-import br.com.fiap.fiapeats.domain.usecases.pedido.CriarPedidoUseCaseImpl;
-import br.com.fiap.fiapeats.domain.usecases.pedido.ListarPedidosUseCaseImpl;
-import br.com.fiap.fiapeats.domain.usecases.produto.*;
+import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.ProdutoRepository;
+import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.CriarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.IdentificarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.produto.*;
+import br.com.fiap.fiapeats.usecases.interfaces.out.categoria.CategoriaRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.interfaces.out.pedido.PedidoRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.cliente.CriarClienteUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.cliente.IdentificarClienteUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.pedido.CriarPedidoUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.pedido.ListarPedidosUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.produto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -46,28 +49,22 @@ public class BeanConfiguration {
 
     @Bean
     public CriarProdutoUseCase criarProdutoUseCasePort(
-            ProdutoRepositoryInterface produtoRepositoryInterface,
-            CategoriaRepositoryInterface categoriaRepositoryInterface) {
-        return new CriarProdutoUseCaseImpl(produtoRepositoryInterface, categoriaRepositoryInterface);
-    }
-
-    @Bean
-    public ConsultarCategoriaUseCase consultarCategoriaUseCasePort(
-            CategoriaRepositoryInterface categoriaRepositoryInterface) {
-        return new ConsultarCategoriaUseCaseImpl(categoriaRepositoryInterface);
+            ProdutoRepositoryGateway produtoRepositoryGateway,
+            CategoriaRepositoryGateway categoriaRepositoryGateway) {
+        return new CriarProdutoUseCaseImpl(produtoRepositoryGateway, categoriaRepositoryGateway);
     }
 
     @Bean
     public EditarProdutoUseCase editarProdutoUseCasePort(
-            ProdutoRepositoryInterface produtoRepositoryInterface,
-            CategoriaRepositoryInterface categoriaRepositoryInterface) {
-        return new EditarProdutoUseCaseImpl(produtoRepositoryInterface, categoriaRepositoryInterface);
+            ProdutoRepositoryGateway produtoRepositoryGateway,
+            CategoriaRepositoryGateway categoriaRepositoryGateway) {
+        return new EditarProdutoUseCaseImpl(produtoRepositoryGateway, categoriaRepositoryGateway);
     }
 
     @Bean
     public ExcluirProdutoUseCase excluirProdutoUseCasePort(
-            ProdutoRepositoryInterface produtoRepositoryInterface) {
-        return new ExcluirProdutoUseCaseImpl(produtoRepositoryInterface);
+            ProdutoRepositoryGateway produtoRepositoryGateway) {
+        return new ExcluirProdutoUseCaseImpl(produtoRepositoryGateway);
     }
 
     @Bean
@@ -77,16 +74,16 @@ public class BeanConfiguration {
 
     @Bean
     public ListarProdutosUseCase listarProdutosUseCasePort(
-            ProdutoRepositoryInterface produtoRepositoryInterface) {
-        return new ListarProdutosUseCaseImpl(produtoRepositoryInterface);
+            ProdutoRepositoryGateway produtoRepositoryGateway) {
+        return new ListarProdutosUseCaseImpl(produtoRepositoryGateway);
     }
 
     @Bean
     public ListarProdutosPorCategoriaUseCase listarProdutosPorCategoriaUseCasePort(
-            ProdutoRepositoryInterface produtoRepositoryInterface,
-            CategoriaRepositoryInterface categoriaRepositoryInterface) {
+            ProdutoRepositoryGateway produtoRepositoryGateway,
+            CategoriaRepositoryGateway categoriaRepositoryGateway) {
         return new ListarProdutosPorCategoriaUseCaseImpl(
-                produtoRepositoryInterface, categoriaRepositoryInterface);
+                produtoRepositoryGateway, categoriaRepositoryGateway);
     }
 
     @Bean
@@ -109,5 +106,24 @@ public class BeanConfiguration {
     @Bean
     public PedidoRepositoryGateway pedidoRepositoryGateway(PedidoRepository pedidoRepository) {
         return new PedidoRepositoryGatewayImpl(pedidoRepository);
+    }
+
+    @Bean
+    public ProdutoController produtoController(CriarProdutoUseCase criarProdutoUseCase,
+                                               EditarProdutoUseCase editarProdutoUseCase,
+                                               ExcluirProdutoUseCase excluirProdutoUseCase,
+                                               ListarProdutosUseCase listarProdutosUseCase,
+                                               ListarProdutosPorCategoriaUseCase listarProdutosPorCategoriaUseCase) {
+        return new ProdutoController(criarProdutoUseCase, editarProdutoUseCase, excluirProdutoUseCase, listarProdutosUseCase, listarProdutosPorCategoriaUseCase);
+    }
+
+    @Bean
+    public ProdutoRepositoryGateway produtoRepositoryGateway(ProdutoRepository produtoRepository) {
+        return new ProdutoRespositoryGatewayImpl(produtoRepository);
+    }
+
+    @Bean
+    public CategoriaRepositoryGateway categoriaRepositoryGateway(CategoriaRepository categoriaRepository) {
+        return new CategoriaRepositoryGatewayImpl(categoriaRepository);
     }
 }

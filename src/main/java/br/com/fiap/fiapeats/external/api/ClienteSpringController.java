@@ -1,10 +1,10 @@
 package br.com.fiap.fiapeats.external.api;
 
 import br.com.fiap.fiapeats.adapter.controller.ClienteController;
-import br.com.fiap.fiapeats.domain.dtos.CriarClienteDTO;
+import br.com.fiap.fiapeats.usecases.dtos.CriarClienteDTO;
 import br.com.fiap.fiapeats.external.api.contracts.request.CriarClienteRequest;
-import br.com.fiap.fiapeats.domain.dtos.CriarClienteResponse;
-import br.com.fiap.fiapeats.domain.dtos.IdentificarClienteResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarClienteResponse;
+import br.com.fiap.fiapeats.usecases.dtos.IdentificarClienteResponse;
 import br.com.fiap.fiapeats.external.api.mapper.ClienteMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

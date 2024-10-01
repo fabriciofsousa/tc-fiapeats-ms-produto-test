@@ -2,7 +2,7 @@ package br.com.fiap.fiapeats.adapter.gateway.persistence.impl;
 
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.ClienteRepository;
 import br.com.fiap.fiapeats.domain.entities.Cliente;
-import br.com.fiap.fiapeats.domain.interfaces.out.cliente.ClienteRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGateway;
 
 public class ClienteRepositoryGatewayImpl implements ClienteRepositoryGateway {
 

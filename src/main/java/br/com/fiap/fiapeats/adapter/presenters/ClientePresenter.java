@@ -1,8 +1,8 @@
 package br.com.fiap.fiapeats.adapter.presenters;
 
 import br.com.fiap.fiapeats.domain.entities.Cliente;
-import br.com.fiap.fiapeats.domain.dtos.CriarClienteResponse;
-import br.com.fiap.fiapeats.domain.dtos.IdentificarClienteResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarClienteResponse;
+import br.com.fiap.fiapeats.usecases.dtos.IdentificarClienteResponse;
 
 public class ClientePresenter {
 

@@ -1,11 +1,11 @@
 package br.com.fiap.fiapeats.adapter.controller;
 
 import br.com.fiap.fiapeats.adapter.presenters.ClientePresenter;
-import br.com.fiap.fiapeats.domain.dtos.CriarClienteDTO;
-import br.com.fiap.fiapeats.domain.dtos.CriarClienteResponse;
-import br.com.fiap.fiapeats.domain.dtos.IdentificarClienteResponse;
-import br.com.fiap.fiapeats.domain.interfaces.in.cliente.CriarClienteUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.cliente.IdentificarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.dtos.CriarClienteDTO;
+import br.com.fiap.fiapeats.usecases.dtos.CriarClienteResponse;
+import br.com.fiap.fiapeats.usecases.dtos.IdentificarClienteResponse;
+import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.CriarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.IdentificarClienteUseCase;
 import br.com.fiap.fiapeats.domain.entities.Cliente;
 
 public class ClienteController {

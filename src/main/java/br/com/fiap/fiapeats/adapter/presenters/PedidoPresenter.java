@@ -1,9 +1,9 @@
 package br.com.fiap.fiapeats.adapter.presenters;
 
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
-import br.com.fiap.fiapeats.domain.dtos.ListarPedidosResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.ListarPedidosResponse;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
-import br.com.fiap.fiapeats.external.api.contracts.response.ProdutoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.ProdutoResponse;
 
 import java.util.ArrayList;
 import java.util.List;

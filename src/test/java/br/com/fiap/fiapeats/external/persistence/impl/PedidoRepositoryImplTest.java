@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
 import br.com.fiap.fiapeats.external.persistence.mapper.PedidoEntityMapper;
 import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
 import br.com.fiap.fiapeats.external.persistence.repository.PedidoRepositoryJPA;

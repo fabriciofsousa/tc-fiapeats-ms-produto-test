@@ -1,9 +1,9 @@
 package br.com.fiap.fiapeats.external.api.exceptions;
 
 import br.com.fiap.fiapeats.external.api.contracts.response.ErroResponse;
-import br.com.fiap.fiapeats.domain.usecases.exceptions.CategoriaInvalidaException;
-import br.com.fiap.fiapeats.domain.usecases.exceptions.ClienteExistenteException;
-import br.com.fiap.fiapeats.domain.usecases.exceptions.NotFoundException;
+import br.com.fiap.fiapeats.usecases.exceptions.CategoriaInvalidaException;
+import br.com.fiap.fiapeats.usecases.exceptions.ClienteExistenteException;
+import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;

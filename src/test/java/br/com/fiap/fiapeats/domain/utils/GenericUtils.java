@@ -1,6 +1,6 @@
 package br.com.fiap.fiapeats.domain.utils;
 
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
 import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.domain.entities.Produto;

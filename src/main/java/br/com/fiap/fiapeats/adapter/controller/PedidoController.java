@@ -1,12 +1,12 @@
 package br.com.fiap.fiapeats.adapter.controller;
 
 import br.com.fiap.fiapeats.adapter.presenters.PedidoPresenter;
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoDTO;
-import br.com.fiap.fiapeats.domain.dtos.CriarPedidoResponse;
-import br.com.fiap.fiapeats.domain.dtos.ListarPedidosResponse;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoDTO;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
+import br.com.fiap.fiapeats.usecases.dtos.ListarPedidosResponse;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
-import br.com.fiap.fiapeats.domain.interfaces.in.pedido.CriarPedidoUseCase;
-import br.com.fiap.fiapeats.domain.interfaces.in.pedido.ListarPedidosUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosUseCase;
 
 import java.util.List;
 
