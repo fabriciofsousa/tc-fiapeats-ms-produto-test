@@ -1,20 +1,20 @@
 package br.com.fiap.fiapeats.external.api.contracts.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.UUID;
 
 public class CriarPagamentoRequest {
 
   @NotNull(message = "Não pode ser null")
-  @Schema(description = "Id do pedido", example = "e1ba3631-70c9-447d-ac48-256792bf8e7u")
+  @Schema(description = "Id do pedido", example = "d212192c-8155-440a-9eda-3d77732458bb")
   private final UUID idPedido;
 
   @NotEmpty(message = "Não pode ser vazio")
-  @Schema(description = "Url que receberá a notificação de status do pagamento", example = "https://notifica-me.com.br")
+  @Schema(
+      description = "Url para receber notificações de status de pagamento",
+      example = "https://notifica-me.com.br")
   private final String urlNotificacao;
 
   public CriarPagamentoRequest(UUID idProduto, String urlNotificacao) {

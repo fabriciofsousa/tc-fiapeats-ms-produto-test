@@ -5,6 +5,5 @@ import br.com.fiap.fiapeats.domain.entities.Pedido;
 
 public interface PagamentoIntegration {
 
-    Pagamento criarCodigoPagamento(Pedido pedido, Pagamento pagamento);
-
+  Pagamento criarCodigoPagamento(Pedido pedido, Pagamento pagamento);
 }

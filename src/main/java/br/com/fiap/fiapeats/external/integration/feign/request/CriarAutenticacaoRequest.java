@@ -4,35 +4,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CriarAutenticacaoRequest {
 
-    @JsonProperty("client_id")
-    private String clientId;
-    @JsonProperty("client_secret")
-    private String clientSecret;
-    @JsonProperty("grant_type")
-    private String grantType;
-    @JsonProperty("test_token")
-    private String testToken;
+  @JsonProperty("client_id")
+  private String clientId;
 
-    public CriarAutenticacaoRequest() {
-        this.clientId = "7643347265125418";
-        this.clientSecret = "FHhqSmS3qzVw5KxdINqqZJpk6UqGLxBq";
-        this.grantType = "client_credentials";
-        this.testToken = "false";
-    }
+  @JsonProperty("client_secret")
+  private String clientSecret;
 
-    public String getClientId() {
-        return clientId;
-    }
+  @JsonProperty("grant_type")
+  private String grantType;
 
-    public String getClientSecret() {
-        return clientSecret;
-    }
+  @JsonProperty("test_token")
+  private String testToken;
 
-    public String getGrantType() {
-        return grantType;
-    }
+  public CriarAutenticacaoRequest() {
+    this.clientId = "7643347265125418";
+    this.clientSecret = "FHhqSmS3qzVw5KxdINqqZJpk6UqGLxBq";
+    this.grantType = "client_credentials";
+    this.testToken = "false";
+  }
 
-    public String getTestToken() {
-        return testToken;
-    }
+  public String getClientId() {
+    return clientId;
+  }
+
+  public String getClientSecret() {
+    return clientSecret;
+  }
+
+  public String getGrantType() {
+    return grantType;
+  }
+
+  public String getTestToken() {
+    return testToken;
+  }
 }

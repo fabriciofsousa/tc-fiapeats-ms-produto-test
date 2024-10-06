@@ -7,17 +7,14 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;
 
 public class PagamentoGatewayImpl implements PagamentoGateway {
 
-    private final PagamentoIntegration pagamentoIntegration;
+  private final PagamentoIntegration pagamentoIntegration;
 
-    public PagamentoGatewayImpl(PagamentoIntegration pagamentoIntegration) {
-        this.pagamentoIntegration = pagamentoIntegration;
-    }
+  public PagamentoGatewayImpl(PagamentoIntegration pagamentoIntegration) {
+    this.pagamentoIntegration = pagamentoIntegration;
+  }
 
-    @Override
-    public Pagamento criar(Pedido pedido, Pagamento pagamento) {
-
-        var retorno = pagamentoIntegration.criarCodigoPagamento(pedido, pagamento);
-
-        return new Pagamento(retorno.getIdPedido(), retorno.getUrlNotificacao(), retorno.getCodigoQR());
-    }
+  @Override
+  public Pagamento criar(Pedido pedido, Pagamento pagamento) {
+    return pagamentoIntegration.criarCodigoPagamento(pedido, pagamento);
+  }
 }

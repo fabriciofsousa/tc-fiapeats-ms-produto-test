@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "api-gerarToken", url = "https://api.mercadopago.com/oauth/token")
 public interface AutenticacaoFeign {
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    CriarAutenticacaoResponse obterToken(@RequestBody CriarAutenticacaoRequest criarAutenticacaoRequest);
+  @RequestMapping(method = RequestMethod.POST, produces = "application/json")
+  CriarAutenticacaoResponse obterToken(
+      @RequestBody CriarAutenticacaoRequest criarAutenticacaoRequest);
 }

@@ -4,5 +4,5 @@ import br.com.fiap.fiapeats.domain.entities.Produto;
 import br.com.fiap.fiapeats.usecases.dtos.CriarProdutoDTO;
 
 public interface CriarProdutoUseCase {
-    Produto criar(CriarProdutoDTO criarProdutoDTO);
+  Produto criar(CriarProdutoDTO criarProdutoDTO);
 }

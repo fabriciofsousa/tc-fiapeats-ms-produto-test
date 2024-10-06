@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
-import br.com.fiap.fiapeats.external.persistence.mapper.PedidoEntityMapper;
-import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
-import br.com.fiap.fiapeats.external.persistence.repository.PedidoRepositoryJPA;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.domain.utils.Constants;
 import br.com.fiap.fiapeats.domain.utils.GenericUtils;
+import br.com.fiap.fiapeats.external.persistence.mapper.PedidoEntityMapper;
+import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
+import br.com.fiap.fiapeats.external.persistence.repository.PedidoRepositoryJPA;
+import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
 import org.apache.logging.log4j.ThreadContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

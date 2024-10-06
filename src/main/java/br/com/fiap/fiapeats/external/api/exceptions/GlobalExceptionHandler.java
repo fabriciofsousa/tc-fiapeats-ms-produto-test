@@ -30,15 +30,15 @@ public class GlobalExceptionHandler {
                 .build());
   }
 
-    @ExceptionHandler(ClienteExistenteException.class)
-    public ResponseEntity<Object> handle(ClienteExistenteException exception) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(
-                        ErroResponse.builder()
-                                .tipo(HttpStatus.UNPROCESSABLE_ENTITY.toString())
-                                .mensagem(exception.getMessage())
-                                .build());
-    }
+  @ExceptionHandler(ClienteExistenteException.class)
+  public ResponseEntity<Object> handle(ClienteExistenteException exception) {
+    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+        .body(
+            ErroResponse.builder()
+                .tipo(HttpStatus.UNPROCESSABLE_ENTITY.toString())
+                .mensagem(exception.getMessage())
+                .build());
+  }
 
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<Object> handle(NotFoundException exception) {

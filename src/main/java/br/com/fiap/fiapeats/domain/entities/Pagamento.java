@@ -8,12 +8,12 @@ public class Pagamento {
 
   private String urlNotificacao;
 
-  private String codigoQR;
+  private String codigoQr;
 
   public Pagamento(UUID idPedido, String urlNotificacao, String codigoQR) {
     this.idPedido = idPedido;
     this.urlNotificacao = urlNotificacao;
-    this.codigoQR = codigoQR;
+    this.codigoQr = codigoQR;
   }
 
   public UUID getIdPedido() {
@@ -24,7 +24,19 @@ public class Pagamento {
     return urlNotificacao;
   }
 
-  public String getCodigoQR() {
-    return codigoQR;
+  public String getCodigoQr() {
+    return codigoQr;
+  }
+
+  public void setIdPedido(UUID idPedido) {
+    this.idPedido = idPedido;
+  }
+
+  public void setUrlNotificacao(String urlNotificacao) {
+    this.urlNotificacao = urlNotificacao;
+  }
+
+  public void setCodigoQr(String codigoQr) {
+    this.codigoQr = codigoQr;
   }
 }

@@ -1,12 +1,11 @@
 package br.com.fiap.fiapeats.external.persistence.mapper;
 
-import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
-import br.com.fiap.fiapeats.external.persistence.orm.ProdutoEntity;
 import br.com.fiap.fiapeats.domain.entities.Categoria;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.domain.entities.Produto;
+import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
+import br.com.fiap.fiapeats.external.persistence.orm.ProdutoEntity;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
