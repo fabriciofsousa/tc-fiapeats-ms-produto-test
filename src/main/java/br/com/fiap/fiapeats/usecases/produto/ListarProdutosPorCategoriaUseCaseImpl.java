@@ -27,6 +27,6 @@ public class ListarProdutosPorCategoriaUseCaseImpl
     if (cat == null)
       throw new NotFoundException("Categoria " + categoria + " não encontrada!");
 
-    return produtoRepositoryGateway.listarProdutosPorcategoria(cat.getId());
+    return produtoRepositoryGateway.listarProdutosPorCategoria(cat.getId());
   }
 }

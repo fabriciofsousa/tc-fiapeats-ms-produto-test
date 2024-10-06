@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @Slf4j
@@ -45,5 +47,15 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
         List<PedidoEntity> result = pedidoRepositoryJPA.findAll();
         return pedidoMapper.toListaPedidos(result);
+    }
+
+    @Override
+    public Pedido consultarPedidoPorId(UUID id) {
+        log.info(
+                "correlationId={"
+                        + ThreadContext.get(Constants.CORRELATION_ID)
+                        + "} "
+                        + "[PedidoRepositoryImpl-consultarPedidoPorId] ");
+        return pedidoRepositoryJPA.findById(id).map(pedidoMapper::toPedidoFromEntity).orElse(null);
     }
 }

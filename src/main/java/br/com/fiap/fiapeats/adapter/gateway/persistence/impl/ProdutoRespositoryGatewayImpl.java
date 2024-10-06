@@ -7,6 +7,7 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGat
 import java.util.List;
 import java.util.UUID;
 
+
 public class ProdutoRespositoryGatewayImpl implements ProdutoRepositoryGateway {
 
     private final ProdutoRepository produtoRepository;
@@ -41,7 +42,7 @@ public class ProdutoRespositoryGatewayImpl implements ProdutoRepositoryGateway {
     }
 
     @Override
-    public List<Produto> listarProdutosPorcategoria(Long idCategoria) {
+    public List<Produto> listarProdutosPorCategoria(Long idCategoria) {
         return produtoRepository.listarProdutosPorcategoria(idCategoria);
     }
 }

@@ -1,8 +1,11 @@
 package br.com.fiap.fiapeats.external.config;
 
 import br.com.fiap.fiapeats.adapter.controller.ClienteController;
+import br.com.fiap.fiapeats.adapter.controller.PagamentoController;
 import br.com.fiap.fiapeats.adapter.controller.PedidoController;
 import br.com.fiap.fiapeats.adapter.controller.ProdutoController;
+import br.com.fiap.fiapeats.adapter.gateway.integration.impl.PagamentoGatewayImpl;
+import br.com.fiap.fiapeats.adapter.gateway.integration.interfaces.PagamentoIntegration;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.CategoriaRepositoryGatewayImpl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.ClienteRepositoryGatewayImpl;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.impl.PedidoRepositoryGatewayImpl;
@@ -11,17 +14,24 @@ import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.CategoriaRepo
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.ClienteRepository;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.PedidoRepository;
 import br.com.fiap.fiapeats.adapter.gateway.persistence.interfaces.ProdutoRepository;
+import br.com.fiap.fiapeats.domain.entities.Pagamento;
+import br.com.fiap.fiapeats.external.integration.feign.AutenticacaoFeign;
+import br.com.fiap.fiapeats.external.integration.feign.PedidoFeign;
+import br.com.fiap.fiapeats.external.integration.impl.PagamentoIntegrationImpl;
 import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.CriarClienteUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.IdentificarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.CriarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.produto.*;
 import br.com.fiap.fiapeats.usecases.interfaces.out.categoria.CategoriaRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pedido.PedidoRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.cliente.CriarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.cliente.IdentificarClienteUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.pagamento.CriarPagamentoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pedido.CriarPedidoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pedido.ListarPedidosUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.produto.*;
@@ -87,14 +97,35 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public CriarPagamentoUseCase criarPagamentoUseCasePort(PedidoRepositoryGateway pedidoRepositoryGateway,
+                                                           PagamentoGateway pagamentoGateway) {
+        return new CriarPagamentoUseCaseImpl(pedidoRepositoryGateway, pagamentoGateway);
+    }
+
+    @Bean
+    public ClienteRepositoryGateway clienteRepositoryGateway(ClienteRepository clienteRepository) {
+        return new ClienteRepositoryGatewayImpl(clienteRepository);
+    }
+
+    @Bean
+    public PagamentoGateway pagamentoGateway(PagamentoIntegration pagamentoIntegration){
+        return new PagamentoGatewayImpl(pagamentoIntegration);
+    }
+
+    @Bean
+    public PagamentoIntegration pagamentoIntegration(AutenticacaoFeign autenticacaoFeign, PedidoFeign pedidoFeign){
+        return new PagamentoIntegrationImpl(autenticacaoFeign, pedidoFeign);
+    }
+
+    @Bean
     public ClienteController clienteController(CriarClienteUseCase criarClienteUseCase,
                                                IdentificarClienteUseCase identificarClienteUseCase) {
         return new ClienteController(criarClienteUseCase, identificarClienteUseCase);
     }
 
     @Bean
-    public ClienteRepositoryGateway clienteRepositoryGateway(ClienteRepository clienteRepository) {
-        return new ClienteRepositoryGatewayImpl(clienteRepository);
+    public PagamentoController pagamentoController(CriarPagamentoUseCase criarPagamentoUseCase) {
+        return new PagamentoController(criarPagamentoUseCase);
     }
 
     @Bean

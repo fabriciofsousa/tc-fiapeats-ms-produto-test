@@ -16,5 +16,5 @@ public interface ProdutoRepositoryGateway {
 
     List<Produto> listarProdutos();
 
-    List<Produto> listarProdutosPorcategoria(Long idCategoria);
+    List<Produto> listarProdutosPorCategoria(Long idCategoria);
 }
