@@ -54,4 +54,16 @@ public class PedidoRepositoryImpl implements PedidoRepository {
             + "[PedidoRepositoryImpl-consultarPedidoPorId] ");
     return pedidoRepositoryJPA.findById(id).map(pedidoMapper::toPedidoFromEntity).orElse(null);
   }
+
+  @Override
+  public void atualizarStatusPagamentoPedido(Pedido pedido, Integer idStatusPagamento) {
+    log.info(
+        "correlationId={"
+            + ThreadContext.get(Constants.CORRELATION_ID)
+            + "} "
+            + "[PedidoRepositoryImpl-atualizarStatusPagamentoPedido] ");
+    var pedidoAtualizado = pedidoMapper.toPedidoEntity(pedido);
+    pedidoAtualizado.setIdStatusPagamento(idStatusPagamento);
+    pedidoRepositoryJPA.save(pedidoAtualizado);
+  }
 }

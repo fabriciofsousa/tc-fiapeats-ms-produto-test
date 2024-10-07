@@ -14,7 +14,7 @@ public class CriarPagamentoRequest {
   @NotEmpty(message = "Não pode ser vazio")
   @Schema(
       description = "Url para receber notificações de status de pagamento",
-      example = "https://notifica-me.com.br")
+      example = "https://61c3-191-227-251-179.ngrok-free.app/fiapeats/pagamento/notificacao")
   private final String urlNotificacao;
 
   public CriarPagamentoRequest(UUID idProduto, String urlNotificacao) {

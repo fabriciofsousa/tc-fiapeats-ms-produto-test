@@ -10,4 +10,6 @@ public interface PedidoRepository {
   List<Pedido> listarPedidos();
 
   Pedido consultarPedidoPorId(UUID id);
+
+  void atualizarStatusPagamentoPedido(Pedido pedido, Integer idStatusPagamento);
 }

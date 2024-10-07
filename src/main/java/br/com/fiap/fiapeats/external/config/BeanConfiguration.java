@@ -18,10 +18,12 @@ import br.com.fiap.fiapeats.external.integration.feign.AutenticacaoFeign;
 import br.com.fiap.fiapeats.external.integration.feign.PedidoFeign;
 import br.com.fiap.fiapeats.external.integration.impl.PagamentoIntegrationImpl;
 import br.com.fiap.fiapeats.external.integration.mapper.PagamentoIntegrationMapper;
+import br.com.fiap.fiapeats.external.integration.mapper.PagamentoPedidoIntegrationMapper;
 import br.com.fiap.fiapeats.usecases.cliente.CriarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.cliente.IdentificarClienteUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.CriarClienteUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.IdentificarClienteUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.AtualizarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.CriarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosUseCase;
@@ -31,6 +33,7 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGat
 import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pedido.PedidoRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGateway;
+import br.com.fiap.fiapeats.usecases.pagamento.AtualizarPagamentoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pagamento.CriarPagamentoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pedido.CriarPedidoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pedido.ListarPedidosUseCaseImpl;
@@ -106,6 +109,12 @@ public class BeanConfiguration {
   }
 
   @Bean
+  public AtualizarPagamentoUseCase atualizarPagamentoUseCasePort(
+      PedidoRepositoryGateway pedidoRepositoryGateway, PagamentoGateway pagamentoGateway) {
+    return new AtualizarPagamentoUseCaseImpl(pedidoRepositoryGateway, pagamentoGateway);
+  }
+
+  @Bean
   public ClienteRepositoryGateway clienteRepositoryGateway(ClienteRepository clienteRepository) {
     return new ClienteRepositoryGatewayImpl(clienteRepository);
   }
@@ -119,8 +128,10 @@ public class BeanConfiguration {
   public PagamentoIntegration pagamentoIntegration(
       AutenticacaoFeign autenticacaoFeign,
       PedidoFeign pedidoFeign,
-      PagamentoIntegrationMapper pagamentoIntegrationMapper) {
-    return new PagamentoIntegrationImpl(autenticacaoFeign, pedidoFeign, pagamentoIntegrationMapper);
+      PagamentoIntegrationMapper pagamentoIntegrationMapper,
+      PagamentoPedidoIntegrationMapper pedidoIntegrationMapper) {
+    return new PagamentoIntegrationImpl(
+        autenticacaoFeign, pedidoFeign, pagamentoIntegrationMapper, pedidoIntegrationMapper);
   }
 
   @Bean
@@ -131,8 +142,10 @@ public class BeanConfiguration {
   }
 
   @Bean
-  public PagamentoController pagamentoController(CriarPagamentoUseCase criarPagamentoUseCase) {
-    return new PagamentoController(criarPagamentoUseCase);
+  public PagamentoController pagamentoController(
+      CriarPagamentoUseCase criarPagamentoUseCase,
+      AtualizarPagamentoUseCase atualizarPagamentoUseCase) {
+    return new PagamentoController(criarPagamentoUseCase, atualizarPagamentoUseCase);
   }
 
   @Bean

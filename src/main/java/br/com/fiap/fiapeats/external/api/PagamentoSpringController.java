@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@Tag(name = "Pagamento Pedido")
-@RequestMapping("/pagamento-pedido")
+@Tag(name = "Pagamentos")
+@RequestMapping("/pagamento")
 public class PagamentoSpringController {
 
   @Autowired private PagamentoController pagamentoController;
@@ -40,5 +40,26 @@ public class PagamentoSpringController {
         pagamentoMapper.toCriarPagamentoDTO(criarPagamentoRequest);
 
     return ResponseEntity.status(201).body(pagamentoController.criarPagamento(criarPagamentoDTO));
+  }
+
+  @PostMapping("/notificacao")
+  @Operation(
+      summary = "Notificação de atualização de pagamento do pedido",
+      description = "Recebendo os dados necessários, atualiza o status de pagamento do pedido")
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Notificação de atualização de status de pagamento recebida com sucesso")
+      })
+  public ResponseEntity<Object> atualizarPagamento(
+      @RequestParam(value = "topic", required = false) String topico,
+      @RequestParam(value = "id", required = false) String idPedidoExterno) {
+    log.info(
+        "Requisição de atualização do pagamento do id pedido externo {} recebida", idPedidoExterno);
+
+    pagamentoController.atualizarPagamento(idPedidoExterno, topico);
+
+    return ResponseEntity.status(201).build();
   }
 }
