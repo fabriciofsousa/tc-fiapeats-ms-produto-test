@@ -9,7 +9,8 @@ public class CriarPedidoResponse {
   private int tempoEspera;
   private LocalDateTime dataHoraCriacao;
 
-  public CriarPedidoResponse(String idPedido, String cliCpf, Long status, int tempoEspera, LocalDateTime dataHoraCriacao) {
+  public CriarPedidoResponse(
+      String idPedido, String cliCpf, Long status, int tempoEspera, LocalDateTime dataHoraCriacao) {
     this.idPedido = idPedido;
     this.cliCpf = cliCpf;
     this.status = status;

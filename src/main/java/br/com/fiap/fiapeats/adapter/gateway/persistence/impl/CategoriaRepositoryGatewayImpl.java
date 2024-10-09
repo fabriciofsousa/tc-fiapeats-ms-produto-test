@@ -6,14 +6,14 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.categoria.CategoriaRepositor
 
 public class CategoriaRepositoryGatewayImpl implements CategoriaRepositoryGateway {
 
-    private final CategoriaRepository categoriaRepository;
+  private final CategoriaRepository categoriaRepository;
 
-    public CategoriaRepositoryGatewayImpl(CategoriaRepository categoriaRepository) {
-        this.categoriaRepository = categoriaRepository;
-    }
+  public CategoriaRepositoryGatewayImpl(CategoriaRepository categoriaRepository) {
+    this.categoriaRepository = categoriaRepository;
+  }
 
-    @Override
-    public Categoria consultar(Categoria categoria) {
-        return categoriaRepository.consultar(categoria);
-    }
+  @Override
+  public Categoria consultar(Categoria categoria) {
+    return categoriaRepository.consultar(categoria);
+  }
 }

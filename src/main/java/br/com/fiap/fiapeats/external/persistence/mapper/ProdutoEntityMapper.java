@@ -1,8 +1,8 @@
 package br.com.fiap.fiapeats.external.persistence.mapper;
 
-import br.com.fiap.fiapeats.external.persistence.orm.ProdutoEntity;
 import br.com.fiap.fiapeats.domain.entities.Categoria;
 import br.com.fiap.fiapeats.domain.entities.Produto;
+import br.com.fiap.fiapeats.external.persistence.orm.ProdutoEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

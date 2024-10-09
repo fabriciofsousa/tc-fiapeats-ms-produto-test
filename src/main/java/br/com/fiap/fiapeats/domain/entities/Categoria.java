@@ -7,7 +7,8 @@ public class Categoria {
 
   public Categoria(Long id, String descricao) {
     this.id = id;
-    this.descricao = descricao.substring(0, 1).toUpperCase().concat(descricao.substring(1).toLowerCase());
+    this.descricao =
+        descricao.substring(0, 1).toUpperCase().concat(descricao.substring(1).toLowerCase());
   }
 
   public static Categoria adicionarDescricao(String descricao) {

@@ -17,6 +17,14 @@ CREATE TABLE IF NOT EXISTS categoria
 TABLESPACE pg_default;
 ALTER TABLE IF EXISTS categoria OWNER to sa;
 
+CREATE TABLE IF NOT EXISTS status_pagamento
+(
+    id bigint NOT NULL,
+    descricao character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT status_pagamento_pkey PRIMARY KEY (id)
+)
+TABLESPACE pg_default;
+ALTER TABLE IF EXISTS status_pagamento OWNER to sa;
 
 CREATE TABLE IF NOT EXISTS pedido
 (
@@ -26,7 +34,12 @@ CREATE TABLE IF NOT EXISTS pedido
     id_status bigint NOT NULL,
     id_pedido uuid NOT NULL,
     cliente_documento character varying(255) COLLATE pg_catalog."default",
-    CONSTRAINT pedido_pkey PRIMARY KEY (id_pedido)
+    status_pagamento_id bigint,
+    CONSTRAINT pedido_pkey PRIMARY KEY (id_pedido),
+    CONSTRAINT status_pagamento_pkey FOREIGN KEY (status_pagamento_id)
+        REFERENCES status_pagamento (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
 TABLESPACE pg_default;
 ALTER TABLE IF EXISTS pedido OWNER to sa;

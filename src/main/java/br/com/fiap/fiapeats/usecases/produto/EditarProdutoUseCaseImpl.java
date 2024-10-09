@@ -11,39 +11,40 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGat
 
 public class EditarProdutoUseCaseImpl implements EditarProdutoUseCase {
 
-    private final ProdutoRepositoryGateway produtoRepositoryGateway;
+  private final ProdutoRepositoryGateway produtoRepositoryGateway;
 
-    private final CategoriaRepositoryGateway categoriaRepositoryGateway;
+  private final CategoriaRepositoryGateway categoriaRepositoryGateway;
 
-    public EditarProdutoUseCaseImpl(
-            ProdutoRepositoryGateway produtoRepositoryGateway,
-            CategoriaRepositoryGateway categoriaRepositoryGateway) {
-        this.produtoRepositoryGateway = produtoRepositoryGateway;
-        this.categoriaRepositoryGateway = categoriaRepositoryGateway;
+  public EditarProdutoUseCaseImpl(
+      ProdutoRepositoryGateway produtoRepositoryGateway,
+      CategoriaRepositoryGateway categoriaRepositoryGateway) {
+    this.produtoRepositoryGateway = produtoRepositoryGateway;
+    this.categoriaRepositoryGateway = categoriaRepositoryGateway;
+  }
+
+  @Override
+  public Produto editar(EditarProdutoDTO editarProdutoDTO) {
+    Produto produto =
+        new Produto(
+            editarProdutoDTO.getId(),
+            editarProdutoDTO.getNome(),
+            editarProdutoDTO.getDescricao(),
+            editarProdutoDTO.getValor(),
+            Categoria.adicionarDescricao(editarProdutoDTO.getCategoria()),
+            editarProdutoDTO.getImagemUrl());
+
+    var produtoConsultado = produtoRepositoryGateway.consultarPorId(produto.getId());
+
+    if (produtoConsultado == null) {
+      throw new NotFoundException("Produto não encontrado");
     }
 
-    @Override
-    public Produto editar(EditarProdutoDTO editarProdutoDTO) {
-        Produto produto = new Produto(
-                editarProdutoDTO.getId(),
-                editarProdutoDTO.getNome(),
-                editarProdutoDTO.getDescricao(),
-                editarProdutoDTO.getValor(),
-                Categoria.adicionarDescricao(editarProdutoDTO.getCategoria()),
-                editarProdutoDTO.getImagemUrl());
+    var categoria = categoriaRepositoryGateway.consultar(produto.getCategoria());
 
-        var produtoConsultado = produtoRepositoryGateway.consultarPorId(produto.getId());
-
-        if (produtoConsultado == null) {
-            throw new NotFoundException("Produto não encontrado");
-        }
-
-        var categoria = categoriaRepositoryGateway.consultar(produto.getCategoria());
-
-        if (categoria == null) {
-            throw new CategoriaInvalidaException("Categoria informada inválida");
-        }
-
-        return produtoRepositoryGateway.editar(produto.adicionarCategoria(produto, categoria));
+    if (categoria == null) {
+      throw new CategoriaInvalidaException("Categoria informada inválida");
     }
+
+    return produtoRepositoryGateway.editar(produto.adicionarCategoria(produto, categoria));
+  }
 }

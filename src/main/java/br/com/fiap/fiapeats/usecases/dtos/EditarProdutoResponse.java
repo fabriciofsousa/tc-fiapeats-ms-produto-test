@@ -17,7 +17,13 @@ public class EditarProdutoResponse {
 
   private String imagemUrl;
 
-  public EditarProdutoResponse(UUID id, String nome, String descricao, BigDecimal valor, String categoria, String imagemUrl) {
+  public EditarProdutoResponse(
+      UUID id,
+      String nome,
+      String descricao,
+      BigDecimal valor,
+      String categoria,
+      String imagemUrl) {
     this.id = id;
     this.nome = nome;
     this.descricao = descricao;

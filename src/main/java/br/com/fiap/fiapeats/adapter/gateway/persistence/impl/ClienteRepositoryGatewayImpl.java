@@ -6,19 +6,19 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGat
 
 public class ClienteRepositoryGatewayImpl implements ClienteRepositoryGateway {
 
-    private final ClienteRepository clienteRepository;
+  private final ClienteRepository clienteRepository;
 
-    public ClienteRepositoryGatewayImpl(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+  public ClienteRepositoryGatewayImpl(ClienteRepository clienteRepository) {
+    this.clienteRepository = clienteRepository;
+  }
 
-    @Override
-    public Cliente criar(Cliente cliente) {
-        return clienteRepository.criar(cliente);
-    }
+  @Override
+  public Cliente criar(Cliente cliente) {
+    return clienteRepository.criar(cliente);
+  }
 
-    @Override
-    public Cliente identificar(String documento) {
-        return clienteRepository.identificar(documento);
-    }
+  @Override
+  public Cliente identificar(String documento) {
+    return clienteRepository.identificar(documento);
+  }
 }

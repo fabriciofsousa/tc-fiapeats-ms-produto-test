@@ -8,8 +8,7 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.categoria.CategoriaRepositor
 import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGateway;
 import java.util.List;
 
-public class ListarProdutosPorCategoriaUseCaseImpl
-    implements ListarProdutosPorCategoriaUseCase {
+public class ListarProdutosPorCategoriaUseCaseImpl implements ListarProdutosPorCategoriaUseCase {
 
   private final ProdutoRepositoryGateway produtoRepositoryGateway;
   private final CategoriaRepositoryGateway categoriaRepositoryGateway;
@@ -24,9 +23,8 @@ public class ListarProdutosPorCategoriaUseCaseImpl
   @Override
   public List<Produto> listarProdutosPorCategoria(String categoria) {
     Categoria cat = categoriaRepositoryGateway.consultar(new Categoria(null, categoria));
-    if (cat == null)
-      throw new NotFoundException("Categoria " + categoria + " não encontrada!");
+    if (cat == null) throw new NotFoundException("Categoria " + categoria + " não encontrada!");
 
-    return produtoRepositoryGateway.listarProdutosPorcategoria(cat.getId());
+    return produtoRepositoryGateway.listarProdutosPorCategoria(cat.getId());
   }
 }

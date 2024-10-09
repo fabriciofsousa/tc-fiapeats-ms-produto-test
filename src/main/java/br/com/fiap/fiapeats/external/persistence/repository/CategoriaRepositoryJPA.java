@@ -1,7 +1,6 @@
 package br.com.fiap.fiapeats.external.persistence.repository;
 
 import br.com.fiap.fiapeats.external.persistence.orm.CategoriaEntity;
-
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
