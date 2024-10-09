@@ -62,6 +62,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
             + ThreadContext.get(Constants.CORRELATION_ID)
             + "} "
             + "[PedidoRepositoryImpl-atualizarStatusPagamentoPedido] ");
+    log.info("Atualizando status de pagamento do id pedido {}", pedido.getId());
     var pedidoAtualizado = pedidoMapper.toPedidoEntity(pedido);
     pedidoAtualizado.setIdStatusPagamento(idStatusPagamento);
     pedidoRepositoryJPA.save(pedidoAtualizado);

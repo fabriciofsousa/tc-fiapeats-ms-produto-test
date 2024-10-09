@@ -49,7 +49,7 @@ public class PagamentoSpringController {
   @ApiResponses(
       value = {
         @ApiResponse(
-            responseCode = "201",
+            responseCode = "200",
             description = "Notificação de atualização de status de pagamento recebida com sucesso")
       })
   public ResponseEntity<Object> atualizarPagamento(

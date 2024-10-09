@@ -4,22 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CriarAutenticacaoResponse {
 
-  @JsonProperty("access_token")
-  private String accessToken;
+    @JsonProperty("access_token")
+    private final String accessToken;
 
-  @JsonProperty("token_type")
-  private String tokenType;
+    @JsonProperty("token_type")
+    private final String tokenType;
 
-  public CriarAutenticacaoResponse(String accessToken, String tokenType) {
-    this.accessToken = accessToken;
-    this.tokenType = tokenType;
-  }
+    public CriarAutenticacaoResponse(String accessToken, String tokenType) {
+        this.accessToken = accessToken;
+        this.tokenType = tokenType;
+    }
 
-  public String getAccessToken() {
-    return accessToken;
-  }
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-  public String getTokenType() {
-    return tokenType;
-  }
+    public String getTokenType() {
+        return tokenType;
+    }
 }

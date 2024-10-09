@@ -4,27 +4,27 @@ import java.util.List;
 
 public class PagamentoPedidoExterno {
 
-  private String status;
+    private final String status;
 
-  private String idPedido;
+    private final String idPedido;
 
-  private List<PagamentoExterno> pagamento;
+    private final List<PagamentoExterno> pagamento;
 
-  public PagamentoPedidoExterno(String status, String idPedido, List<PagamentoExterno> pagamento) {
-    this.status = status;
-    this.idPedido = idPedido;
-    this.pagamento = pagamento;
-  }
+    public PagamentoPedidoExterno(String status, String idPedido, List<PagamentoExterno> pagamento) {
+        this.status = status;
+        this.idPedido = idPedido;
+        this.pagamento = pagamento;
+    }
 
-  public String getStatus() {
-    return status;
-  }
+    public String getStatus() {
+        return status;
+    }
 
-  public String getIdPedido() {
-    return idPedido;
-  }
+    public String getIdPedido() {
+        return idPedido;
+    }
 
-  public List<PagamentoExterno> getPagamento() {
-    return pagamento;
-  }
+    public List<PagamentoExterno> getPagamento() {
+        return pagamento;
+    }
 }

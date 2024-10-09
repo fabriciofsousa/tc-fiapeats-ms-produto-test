@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(value = "api-criarPedido", url = "https://api.mercadopago.com")
 public interface PedidoFeign {
 
-  @RequestMapping(
-      method = RequestMethod.POST,
-      value = "/instore/orders/qr/seller/collectors/2000983121/pos/FIAPEATSPOS001/qrs")
-  CriarPagamentoPedidoResponse criar(
-      @RequestHeader("Authorization") String token,
-      @RequestBody CriarPagamentoPedidoRequest criarPedidoRequest);
+    @PostMapping(
+            value = "/instore/orders/qr/seller/collectors/2000983121/pos/FIAPEATSPOS001/qrs")
+    CriarPagamentoPedidoResponse criar(
+            @RequestHeader("Authorization") String token,
+            @RequestBody CriarPagamentoPedidoRequest criarPedidoRequest);
 
-  @RequestMapping(method = RequestMethod.GET, value = "/merchant_orders/{id}")
-  ConsultarPagamentoPedidoResponse consultar(
-      @RequestHeader("Authorization") String token, @PathVariable String id);
+    @PostMapping(value = "/merchant_orders/{id}")
+    ConsultarPagamentoPedidoResponse consultar(
+            @RequestHeader("Authorization") String token, @PathVariable String id);
 }
