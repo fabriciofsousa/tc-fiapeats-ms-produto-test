@@ -3,11 +3,8 @@ package br.com.fiap.fiapeats.domain.entities;
 import java.util.UUID;
 
 public class Pagamento {
-
   private UUID idPedido;
-
   private String urlNotificacao;
-
   private String codigoQr;
 
   public Pagamento(UUID idPedido, String urlNotificacao, String codigoQR) {

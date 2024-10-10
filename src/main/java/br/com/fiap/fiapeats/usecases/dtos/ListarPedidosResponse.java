@@ -11,6 +11,7 @@ public class ListarPedidosResponse {
   private BigDecimal valor;
   private int tempoEspera;
   private LocalDateTime dataHoraCriacao;
+  private Long idStatusPagamento;
   private List<ProdutoResponse> produtos;
 
   public ListarPedidosResponse(
@@ -20,6 +21,7 @@ public class ListarPedidosResponse {
       BigDecimal valor,
       int tempoEspera,
       LocalDateTime dataHoraCriacao,
+      Long idPagamento,
       List<ProdutoResponse> produtos) {
     this.id = id;
     this.cliCpf = cliCpf;
@@ -27,6 +29,7 @@ public class ListarPedidosResponse {
     this.valor = valor;
     this.tempoEspera = tempoEspera;
     this.dataHoraCriacao = dataHoraCriacao;
+    this.idStatusPagamento = idPagamento;
     this.produtos = produtos;
   }
 
@@ -77,6 +80,10 @@ public class ListarPedidosResponse {
   public void setDataHoraCriacao(LocalDateTime dataHoraCriacao) {
     this.dataHoraCriacao = dataHoraCriacao;
   }
+
+  public Long getIdStatusPagamento() { return idStatusPagamento; }
+
+  public void setIdStatusPagamento(Long idStatusPagamento) { this.idStatusPagamento = idStatusPagamento; }
 
   public List<ProdutoResponse> getProdutos() {
     return produtos;

@@ -2,6 +2,7 @@ package br.com.fiap.fiapeats.usecases.pedido;
 
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.domain.entities.Produto;
+import br.com.fiap.fiapeats.domain.entities.StatusPagamento;
 import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoDTO;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pedido.PedidoRepositoryGateway;
@@ -29,6 +30,7 @@ public class CriarPedidoUseCaseImpl implements CriarPedidoUseCase {
 
     pedido.setIdStatus(1L);
     pedido.setTempoEspera(10);
+    pedido.setStatusPagamento(new StatusPagamento(1L, "Aguardando Pagamento"));
 
     return pedidoRepositoryGateway.salvarPedido(pedido);
   }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Pedido {
-
   private UUID id;
   private List<Produto> produtos;
   private String cliCpf;
@@ -14,6 +13,7 @@ public class Pedido {
   private Long idStatus;
   private LocalDateTime dataHoraCriacao;
   private int tempoEspera;
+  private StatusPagamento statusPagamento;
 
   public Pedido(
       UUID id,
@@ -22,7 +22,8 @@ public class Pedido {
       BigDecimal valor,
       Long idStatus,
       LocalDateTime dataHoraCriacao,
-      int tempoEspera) {
+      int tempoEspera,
+      StatusPagamento statusPagamento) {
     this.id = id;
     this.produtos = produtos;
     this.cliCpf = cliCpf;
@@ -30,6 +31,7 @@ public class Pedido {
     this.idStatus = idStatus;
     this.dataHoraCriacao = dataHoraCriacao;
     this.tempoEspera = tempoEspera;
+    this.statusPagamento = statusPagamento;
   }
 
   public Pedido() {}
@@ -88,5 +90,13 @@ public class Pedido {
 
   public void setTempoEspera(int tempoEspera) {
     this.tempoEspera = tempoEspera;
+  }
+
+  public StatusPagamento getStatusPagamento() {
+    return statusPagamento;
+  }
+
+  public void setStatusPagamento(StatusPagamento statusPagamento) {
+    this.statusPagamento = statusPagamento;
   }
 }

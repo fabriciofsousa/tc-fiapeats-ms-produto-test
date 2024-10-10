@@ -25,12 +25,17 @@ public class PedidoRepositoryGatewayImpl implements PedidoRepositoryGateway {
   }
 
   @Override
-  public Pedido consultarPedidoPorId(UUID id) {
-    return pedidoRepository.consultarPedidoPorId(id);
+  public void atualizarStatusPagamentoPedido(Pedido pedido) {
+    pedidoRepository.atualizarStatusPagamentoPedido(pedido);
   }
 
   @Override
-  public void atualizarStatusPagamentoPedido(Pedido pedido, Integer idStatusPagamento) {
-    pedidoRepository.atualizarStatusPagamentoPedido(pedido, idStatusPagamento);
+  public List<Pedido> listarPedidosPorIdStatusPagamento(Long idStatusPagamento) {
+    return pedidoRepository.listarPedidosPorIdStatusPagamento(idStatusPagamento);
+  }
+
+  @Override
+  public Pedido listarPedidoPorId(UUID id) {
+    return pedidoRepository.listarPedidoPorId(id);
   }
 }

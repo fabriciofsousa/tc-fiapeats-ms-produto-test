@@ -60,6 +60,6 @@ public class PagamentoSpringController {
 
     pagamentoController.atualizarPagamento(idPedidoExterno, topico);
 
-    return ResponseEntity.status(201).build();
+    return ResponseEntity.status(200).build();
   }
 }

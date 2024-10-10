@@ -1,9 +1,8 @@
 package br.com.fiap.fiapeats.domain.entities;
 
 public class Categoria {
-
-  private Long id;
-  private String descricao;
+  private final Long id;
+  private final String descricao;
 
   public Categoria(Long id, String descricao) {
     this.id = id;
