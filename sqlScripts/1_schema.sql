@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS pedido
     tempo_espera integer NOT NULL,
     valor_total numeric(38,2) NOT NULL,
     data_hora_criacao timestamp(6) without time zone NOT NULL,
-    status_id bigint NOT NULL,
+    status_pedido_id bigint NOT NULL,
     id_pedido uuid NOT NULL,
     cliente_documento character varying(255) COLLATE pg_catalog."default",
     status_pagamento_id bigint,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS pedido
         REFERENCES status_pagamento (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT status_pedido_pkey FOREIGN KEY (status_id)
+    CONSTRAINT status_pedido_pkey FOREIGN KEY (status_pedido_id)
         REFERENCES status_pedido (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION

@@ -19,7 +19,7 @@ public class ListarPedidoPorIdUseCaseImpl implements ListarPedidoPorIdUseCase {
     public Pedido listarPedidoPorId(UUID id) {
         var pedido = pedidoRepositoryGateway.listarPedidoPorId(id);
         if (pedido == null) {
-            throw new NotFoundException("Pedido com o id \"" + id + "\" não encontrado! ");
+            throw new NotFoundException("Pedido não encontrado!");
         }
         return pedido;
     }
