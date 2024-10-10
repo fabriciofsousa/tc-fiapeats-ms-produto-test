@@ -3,11 +3,8 @@ package br.com.fiap.fiapeats.domain.entities;
 import java.util.List;
 
 public class PagamentoPedidoExterno {
-
     private final String status;
-
     private final String idPedido;
-
     private final List<PagamentoExterno> pagamento;
 
     public PagamentoPedidoExterno(String status, String idPedido, List<PagamentoExterno> pagamento) {

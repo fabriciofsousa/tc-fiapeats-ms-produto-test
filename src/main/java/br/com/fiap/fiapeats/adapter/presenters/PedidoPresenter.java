@@ -6,6 +6,7 @@ import br.com.fiap.fiapeats.usecases.dtos.ListarPedidosResponse;
 import br.com.fiap.fiapeats.usecases.dtos.ProdutoResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PedidoPresenter {
 
@@ -30,9 +31,22 @@ public class PedidoPresenter {
               pedido.getValor(),
               pedido.getTempoEspera(),
               pedido.getDataHoraCriacao(),
+              pedido.getStatusPagamento().getId(),
               pedido.getProdutos().stream().map(ProdutoResponse::new).toList()));
     }
-
     return response;
+  }
+
+  public static ListarPedidosResponse toListarPedidosResponse(Pedido pedido) {
+    return new ListarPedidosResponse(
+            pedido.getId().toString(),
+            pedido.getCliCpf(),
+            pedido.getIdStatus(),
+            pedido.getValor(),
+            pedido.getTempoEspera(),
+            pedido.getDataHoraCriacao(),
+            pedido.getStatusPagamento().getId(),
+            pedido.getProdutos().stream().map(ProdutoResponse::new).collect(Collectors.toList())
+    );
   }
 }

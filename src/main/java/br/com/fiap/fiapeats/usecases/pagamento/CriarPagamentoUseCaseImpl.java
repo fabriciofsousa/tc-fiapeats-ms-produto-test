@@ -20,7 +20,7 @@ public class CriarPagamentoUseCaseImpl implements CriarPagamentoUseCase {
 
   @Override
   public Pagamento criar(CriarPagamentoDTO criarPagamentoDTO) {
-    var pedido = pedidoRepositoryGateway.consultarPedidoPorId(criarPagamentoDTO.getIdPedido());
+    var pedido = pedidoRepositoryGateway.listarPedidoPorId(criarPagamentoDTO.getIdPedido());
     if (pedido == null) {
       throw new NotFoundException("Id pedido não encontrado");
     }

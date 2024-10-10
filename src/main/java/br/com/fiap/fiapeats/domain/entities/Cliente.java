@@ -1,11 +1,8 @@
 package br.com.fiap.fiapeats.domain.entities;
 
 public class Cliente {
-
   private final String nome;
-
   private final String email;
-
   private final String documento;
 
   public Cliente(String nome, String email, String documento) {

@@ -1,6 +1,7 @@
 package br.com.fiap.fiapeats.usecases.pagamento;
 
 import br.com.fiap.fiapeats.domain.entities.PagamentoPedidoExterno;
+import br.com.fiap.fiapeats.domain.entities.StatusPagamento;
 import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.AtualizarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;
@@ -28,20 +29,20 @@ public class AtualizarPagamentoUseCaseImpl implements AtualizarPagamentoUseCase 
         if (topico != null && topico.equals(TOPICO_PEDIDO)) {
             var pagamentoPedido = pagamentoGateway.consultar(idPedidoExterno);
             var pedido =
-                    pedidoRepositoryGateway.consultarPedidoPorId(
+                    pedidoRepositoryGateway.listarPedidoPorId(
                             UUID.fromString(pagamentoPedido.getIdPedido()));
             if (pedido == null) {
                 throw new NotFoundException("Id pedido vinculado ao id pedido externo não encontrado");
             }
-            pedidoRepositoryGateway.atualizarStatusPagamentoPedido(
-                    pedido, obterStatusPagamento(pagamentoPedido));
+            pedido.getStatusPagamento().setId(obterStatusPagamento(pagamentoPedido));
+            pedidoRepositoryGateway.atualizarStatusPagamentoPedido(pedido);
         }
     }
 
-    private Integer obterStatusPagamento(PagamentoPedidoExterno pagamentoPedido) {
+    private Long obterStatusPagamento(PagamentoPedidoExterno pagamentoPedido) {
         if (pagamentoPedido.getStatus().equals(STATUS_PAGAMENTO_PEDIDO)) {
-            return pagamentoPedido.getPagamento().get(0).getStatus().equals(STATUS_PAGAMENTO) ? 1 : 2;
+            return pagamentoPedido.getPagamento().get(0).getStatus().equals(STATUS_PAGAMENTO) ? 2L : 3L;
         }
-        return null;
+        return 1L;
     }
 }

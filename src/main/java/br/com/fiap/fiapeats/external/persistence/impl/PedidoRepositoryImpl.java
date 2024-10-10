@@ -7,6 +7,7 @@ import br.com.fiap.fiapeats.external.persistence.mapper.PedidoEntityMapper;
 import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
 import br.com.fiap.fiapeats.external.persistence.repository.PedidoRepositoryJPA;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
@@ -46,17 +47,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
   }
 
   @Override
-  public Pedido consultarPedidoPorId(UUID id) {
-    log.info(
-        "correlationId={"
-            + ThreadContext.get(Constants.CORRELATION_ID)
-            + "} "
-            + "[PedidoRepositoryImpl-consultarPedidoPorId] ");
-    return pedidoRepositoryJPA.findById(id).map(pedidoMapper::toPedidoFromEntity).orElse(null);
-  }
-
-  @Override
-  public void atualizarStatusPagamentoPedido(Pedido pedido, Integer idStatusPagamento) {
+  public void atualizarStatusPagamentoPedido(Pedido pedido) {
     log.info(
         "correlationId={"
             + ThreadContext.get(Constants.CORRELATION_ID)
@@ -64,7 +55,26 @@ public class PedidoRepositoryImpl implements PedidoRepository {
             + "[PedidoRepositoryImpl-atualizarStatusPagamentoPedido] ");
     log.info("Atualizando status de pagamento do id pedido {}", pedido.getId());
     var pedidoAtualizado = pedidoMapper.toPedidoEntity(pedido);
-    pedidoAtualizado.setIdStatusPagamento(idStatusPagamento);
     pedidoRepositoryJPA.save(pedidoAtualizado);
+  }
+
+  @Override
+  public List<Pedido> listarPedidosPorIdStatusPagamento(Long idStatusPagamento) {
+    log.info(
+            "correlationId={"
+                    + ThreadContext.get(Constants.CORRELATION_ID)
+                    + "} "
+                    + "[PedidoRepositoryImpl-listarPedidosPorIdStatusPagamento] ");
+    return pedidoMapper.toListaPedidos(pedidoRepositoryJPA.findAllByStatusPagamentoId(idStatusPagamento));
+  }
+
+  @Override
+  public Pedido listarPedidoPorId(UUID id) {
+    log.info(
+            "correlationId={"
+                    + ThreadContext.get(Constants.CORRELATION_ID)
+                    + "} "
+                    + "[PedidoRepositoryImpl-listarPedidosPorId] ");
+    return pedidoRepositoryJPA.findById(id).map(pedidoMapper::toPedidoFromEntity).orElse(null);
   }
 }
