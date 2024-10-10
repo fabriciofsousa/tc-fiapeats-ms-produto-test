@@ -13,7 +13,7 @@ INSERT INTO CATEGORIA(id, descricao)
 VALUES (4, 'Sobremesa');
 
 INSERT INTO STATUS_PAGAMENTO(id, descricao)
-VALUES (1, 'Aguardando Pagamento');
+VALUES (1, 'Aguardando');
 INSERT INTO STATUS_PAGAMENTO(id, descricao)
 VALUES (2, 'Aprovado');
 INSERT INTO STATUS_PAGAMENTO(id, descricao)
