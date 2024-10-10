@@ -15,7 +15,7 @@ public interface PedidoFeign {
             @RequestHeader("Authorization") String token,
             @RequestBody CriarPagamentoPedidoRequest criarPedidoRequest);
 
-    @PostMapping(value = "/merchant_orders/{id}")
+    @GetMapping(value = "/merchant_orders/{id}")
     ConsultarPagamentoPedidoResponse consultar(
             @RequestHeader("Authorization") String token, @PathVariable String id);
 }
