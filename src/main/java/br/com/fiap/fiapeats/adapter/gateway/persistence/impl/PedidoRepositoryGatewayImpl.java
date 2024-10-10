@@ -24,10 +24,6 @@ public class PedidoRepositoryGatewayImpl implements PedidoRepositoryGateway {
     return pedidoRepository.listarPedidos();
   }
 
-  @Override
-  public void atualizarStatusPagamentoPedido(Pedido pedido) {
-    pedidoRepository.atualizarStatusPagamentoPedido(pedido);
-  }
 
   @Override
   public List<Pedido> listarPedidosPorIdStatusPagamento(Long idStatusPagamento) {

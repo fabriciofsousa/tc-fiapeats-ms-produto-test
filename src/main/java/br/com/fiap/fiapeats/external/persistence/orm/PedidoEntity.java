@@ -1,5 +1,6 @@
 package br.com.fiap.fiapeats.external.persistence.orm;
 
+import br.com.fiap.fiapeats.domain.entities.StatusPedido;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,8 +29,7 @@ public class PedidoEntity implements Serializable {
   @Column(name = "VALOR_TOTAL", nullable = false)
   private BigDecimal valor;
 
-  @Column(name = "ID_STATUS", nullable = false)
-  private Long idStatus;
+  @ManyToOne private StatusPedidoEntity statusPedido;
 
   @Column(name = "DATA_HORA_CRIACAO", nullable = false)
   private LocalDateTime dataHoraCriacao;

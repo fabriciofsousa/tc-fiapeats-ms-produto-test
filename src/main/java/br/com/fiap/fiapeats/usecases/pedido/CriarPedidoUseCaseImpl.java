@@ -28,9 +28,9 @@ public class CriarPedidoUseCaseImpl implements CriarPedidoUseCase {
 
     pedido.setDataHoraCriacao(LocalDateTime.now());
 
-    pedido.setIdStatus(1L);
+    pedido.getStatusPedido().setId(1L);
     pedido.setTempoEspera(10);
-    pedido.setStatusPagamento(new StatusPagamento(1L, "Aguardando Pagamento"));
+    pedido.getStatusPagamento().setId(1L);
 
     return pedidoRepositoryGateway.salvarPedido(pedido);
   }

@@ -9,8 +9,6 @@ public interface PedidoRepositoryGateway {
 
   List<Pedido> listarPedidos();
 
-  void atualizarStatusPagamentoPedido(Pedido pedido);
-
   List<Pedido> listarPedidosPorIdStatusPagamento(Long idStatusPagamento);
 
   Pedido listarPedidoPorId(UUID id);

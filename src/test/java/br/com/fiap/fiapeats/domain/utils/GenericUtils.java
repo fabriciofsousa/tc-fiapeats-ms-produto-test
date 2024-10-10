@@ -2,7 +2,9 @@ package br.com.fiap.fiapeats.domain.utils;
 
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.domain.entities.Produto;
+import br.com.fiap.fiapeats.domain.entities.StatusPedido;
 import br.com.fiap.fiapeats.external.persistence.orm.PedidoEntity;
+import br.com.fiap.fiapeats.external.persistence.orm.StatusPedidoEntity;
 import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,7 +17,7 @@ public class GenericUtils {
     Pedido pedido = new Pedido();
     pedido.setCliCpf("12345678900");
     pedido.setValor(new BigDecimal("100.00"));
-    pedido.setIdStatus(1L);
+    pedido.setStatusPedido(new StatusPedido(1L, "Pendente"));
     pedido.setDataHoraCriacao(LocalDateTime.now());
     pedido.setTempoEspera(30);
     pedido.setProdutos(List.of(new Produto(UUID.randomUUID())));
@@ -28,8 +30,8 @@ public class GenericUtils {
         .id(UUID.randomUUID())
         .cliCpf(pedido.getCliCpf())
         .valor(pedido.getValor())
-        .idStatus(pedido.getIdStatus())
         .dataHoraCriacao(pedido.getDataHoraCriacao())
+            .statusPedido(new StatusPedidoEntity(pedido.getStatusPedido().getId(), pedido.getStatusPedido().getDescricao()))
         .tempoEspera(pedido.getTempoEspera())
         .build();
   }
@@ -39,7 +41,7 @@ public class GenericUtils {
     return new CriarPedidoResponse(
         pedidoEntity.getId().toString(),
         pedidoEntity.getCliCpf(),
-        pedidoEntity.getIdStatus(),
+        pedidoEntity.getStatusPedido().getId(),
         pedidoEntity.getTempoEspera(),
         pedidoEntity.getDataHoraCriacao());
   }
@@ -48,7 +50,7 @@ public class GenericUtils {
     Pedido pedidoSemProdutos = new Pedido();
     pedidoSemProdutos.setCliCpf("12345678900");
     pedidoSemProdutos.setValor(new BigDecimal("100.00"));
-    pedidoSemProdutos.setIdStatus(1L);
+    pedidoSemProdutos.setStatusPedido(new StatusPedido(1L, "Pendente"));
     pedidoSemProdutos.setDataHoraCriacao(LocalDateTime.now());
     pedidoSemProdutos.setTempoEspera(30);
     pedidoSemProdutos.setProdutos(List.of());

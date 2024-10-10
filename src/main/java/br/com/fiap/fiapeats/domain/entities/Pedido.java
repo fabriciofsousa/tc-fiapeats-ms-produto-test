@@ -10,7 +10,7 @@ public class Pedido {
   private List<Produto> produtos;
   private String cliCpf;
   private BigDecimal valor;
-  private Long idStatus;
+  private StatusPedido statusPedido;
   private LocalDateTime dataHoraCriacao;
   private int tempoEspera;
   private StatusPagamento statusPagamento;
@@ -20,7 +20,7 @@ public class Pedido {
       List<Produto> produtos,
       String cliCpf,
       BigDecimal valor,
-      Long idStatus,
+      StatusPedido statusPedido,
       LocalDateTime dataHoraCriacao,
       int tempoEspera,
       StatusPagamento statusPagamento) {
@@ -28,7 +28,7 @@ public class Pedido {
     this.produtos = produtos;
     this.cliCpf = cliCpf;
     this.valor = valor;
-    this.idStatus = idStatus;
+    this.statusPedido = statusPedido;
     this.dataHoraCriacao = dataHoraCriacao;
     this.tempoEspera = tempoEspera;
     this.statusPagamento = statusPagamento;
@@ -68,12 +68,12 @@ public class Pedido {
     this.valor = valor;
   }
 
-  public Long getIdStatus() {
-    return idStatus;
+  public StatusPedido getStatusPedido() {
+    return statusPedido;
   }
 
-  public void setIdStatus(Long idStatus) {
-    this.idStatus = idStatus;
+  public void setStatusPedido(StatusPedido statusPedido) {
+    this.statusPedido = statusPedido;
   }
 
   public LocalDateTime getDataHoraCriacao() {

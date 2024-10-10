@@ -2,6 +2,7 @@ package br.com.fiap.fiapeats.external.api;
 
 import br.com.fiap.fiapeats.adapter.controller.PedidoController;
 import br.com.fiap.fiapeats.domain.utils.Constants;
+import br.com.fiap.fiapeats.external.api.contracts.request.AlterarStatusPedidoRequest;
 import br.com.fiap.fiapeats.external.api.contracts.request.CriarPedidoRequest;
 import br.com.fiap.fiapeats.external.api.mapper.PedidoMapper;
 import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoDTO;
@@ -29,25 +30,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pedido")
 public class PedidoSpringController {
 
-  @Autowired private PedidoMapper pedidoMapper;
+  @Autowired
+  private PedidoMapper pedidoMapper;
 
-  @Autowired private PedidoController pedidoController;
+  @Autowired
+  private PedidoController pedidoController;
 
   @PostMapping
   @ResponseStatus(HttpStatus.OK)
   @Operation(
-      summary = "Cria um novo pedido",
-      description = "Recebendo a lista de produtos e valor, cria um novo pedido")
+          summary = "Cria um novo pedido",
+          description = "Recebendo a lista de produtos e valor, cria um novo pedido")
   @ApiResponses(
-      value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
+          value = {@ApiResponse(responseCode = "200", description = "Pedido Criado com sucesso")})
   public ResponseEntity<CriarPedidoResponse> criarNovoPedido(
-      @Valid @RequestBody CriarPedidoRequest criarPedidoRequest) {
+          @Valid @RequestBody CriarPedidoRequest criarPedidoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-        "correlationId={"
-            + ThreadContext.get(Constants.CORRELATION_ID)
-            + "} "
-            + "Solicitacao recebida [criarNovoPedido] ");
+            "correlationId={"
+                    + ThreadContext.get(Constants.CORRELATION_ID)
+                    + "} "
+                    + "Solicitacao recebida [criarNovoPedido] ");
     log.debug(criarPedidoRequest.toString());
 
     CriarPedidoDTO criarPedidoDTO = pedidoMapper.toCriarPedidoDTO(criarPedidoRequest);
@@ -58,17 +61,17 @@ public class PedidoSpringController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @Operation(
-      summary = "Lista os pedidos",
-      description = "Rota para listar todos os pedidos cadastrados")
+          summary = "Lista os pedidos",
+          description = "Rota para listar todos os pedidos cadastrados")
   @ApiResponses(
-      value = {@ApiResponse(responseCode = "200", description = "Pedidos listados com sucesso!")})
+          value = {@ApiResponse(responseCode = "200", description = "Pedidos listados com sucesso!")})
   public ResponseEntity<List<ListarPedidosResponse>> listarPedidos() {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-        "correlationId={"
-            + ThreadContext.get(Constants.CORRELATION_ID)
-            + "} "
-            + "Solicitacao recebida [criarNovoPedido] ");
+            "correlationId={"
+                    + ThreadContext.get(Constants.CORRELATION_ID)
+                    + "} "
+                    + "Solicitacao recebida [criarNovoPedido] ");
     return ResponseEntity.ok(pedidoController.listarPedidos());
   }
 
@@ -104,5 +107,11 @@ public class PedidoSpringController {
                     + "} "
                     + "Solicitacao recebida [ListarPedidoPorId] ");
     return ResponseEntity.ok(pedidoController.listarPedidosPorId(id));
+  }
+
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<ListarPedidosResponse> alterarStatusPedido(@PathVariable UUID id,
+                                                                   @RequestBody AlterarStatusPedidoRequest alterarStatusPedidoRequestDTO) {
+    return ResponseEntity.ok(pedidoController.alterarStatusPedido(id, alterarStatusPedidoRequestDTO));
   }
 }
