@@ -25,10 +25,7 @@ import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.CriarClienteUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.cliente.IdentificarClienteUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.AtualizarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.CriarPagamentoUseCase;
-import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.CriarPedidoUseCase;
-import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidoPorIdUseCase;
-import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosPorPagamentoUseCase;
-import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.ListarPedidosUseCase;
+import br.com.fiap.fiapeats.usecases.interfaces.in.pedido.*;
 import br.com.fiap.fiapeats.usecases.interfaces.in.produto.*;
 import br.com.fiap.fiapeats.usecases.interfaces.out.categoria.CategoriaRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.interfaces.out.cliente.ClienteRepositoryGateway;
@@ -37,10 +34,7 @@ import br.com.fiap.fiapeats.usecases.interfaces.out.pedido.PedidoRepositoryGatew
 import br.com.fiap.fiapeats.usecases.interfaces.out.produto.ProdutoRepositoryGateway;
 import br.com.fiap.fiapeats.usecases.pagamento.AtualizarPagamentoUseCaseImpl;
 import br.com.fiap.fiapeats.usecases.pagamento.CriarPagamentoUseCaseImpl;
-import br.com.fiap.fiapeats.usecases.pedido.CriarPedidoUseCaseImpl;
-import br.com.fiap.fiapeats.usecases.pedido.ListarPedidoPorIdUseCaseImpl;
-import br.com.fiap.fiapeats.usecases.pedido.ListarPedidosPorPagamentoUseCaseImpl;
-import br.com.fiap.fiapeats.usecases.pedido.ListarPedidosUseCaseImpl;
+import br.com.fiap.fiapeats.usecases.pedido.*;
 import br.com.fiap.fiapeats.usecases.produto.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -119,12 +113,18 @@ public class BeanConfiguration {
   }
 
   @Bean
-  public ListarPedidosPorPagamentoUseCase listarPedidosPorPagamentoUseCase(PedidoRepositoryGateway pedidoRepositoryGateway) {
+  public AlterarStatusPedidoUseCase alterarStatusPedidoUseCasePort(
+          PedidoRepositoryGateway produtoRepositoryGateway) {
+    return new AlterarStatusPedidoUseCaseImpl(produtoRepositoryGateway);
+  }
+
+  @Bean
+  public ListarPedidosPorPagamentoUseCase listarPedidosPorPagamentoUseCasePort(PedidoRepositoryGateway pedidoRepositoryGateway) {
     return new ListarPedidosPorPagamentoUseCaseImpl(pedidoRepositoryGateway);
   }
 
   @Bean
-  public ListarPedidoPorIdUseCase listarPedidoPorIdUseCase(PedidoRepositoryGateway pedidoRepositoryGateway) {
+  public ListarPedidoPorIdUseCase listarPedidoPorIdUseCasePort(PedidoRepositoryGateway pedidoRepositoryGateway) {
     return new ListarPedidoPorIdUseCaseImpl(pedidoRepositoryGateway);
   }
 
@@ -165,8 +165,10 @@ public class BeanConfiguration {
   @Bean
   public PedidoController pedidoController(
           CriarPedidoUseCase criarPedidoUseCase, ListarPedidosUseCase listarPedidoUseCase,
-          ListarPedidosPorPagamentoUseCase listarPedidosPorPagamentoUseCase, ListarPedidoPorIdUseCase listarPedidosPorIdUseCase) {
-    return new PedidoController(criarPedidoUseCase, listarPedidoUseCase, listarPedidosPorPagamentoUseCase, listarPedidosPorIdUseCase);
+          ListarPedidosPorPagamentoUseCase listarPedidosPorPagamentoUseCase, ListarPedidoPorIdUseCase listarPedidosPorIdUseCase,
+          AlterarStatusPedidoUseCase alterarStatusPedidoUseCase) {
+    return new PedidoController(criarPedidoUseCase, listarPedidoUseCase, listarPedidosPorPagamentoUseCase,
+            listarPedidosPorIdUseCase, alterarStatusPedidoUseCase);
   }
 
   @Bean

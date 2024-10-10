@@ -14,7 +14,7 @@ public class PedidoPresenter {
     return new CriarPedidoResponse(
         pedido.getId().toString(),
         pedido.getCliCpf(),
-        pedido.getIdStatus(),
+        pedido.getStatusPedido().getId(),
         pedido.getTempoEspera(),
         pedido.getDataHoraCriacao());
   }
@@ -27,7 +27,7 @@ public class PedidoPresenter {
           new ListarPedidosResponse(
               pedido.getId().toString(),
               pedido.getCliCpf(),
-              pedido.getIdStatus(),
+              pedido.getStatusPedido().getId(),
               pedido.getValor(),
               pedido.getTempoEspera(),
               pedido.getDataHoraCriacao(),
@@ -41,7 +41,7 @@ public class PedidoPresenter {
     return new ListarPedidosResponse(
             pedido.getId().toString(),
             pedido.getCliCpf(),
-            pedido.getIdStatus(),
+            pedido.getStatusPedido().getId(),
             pedido.getValor(),
             pedido.getTempoEspera(),
             pedido.getDataHoraCriacao(),
