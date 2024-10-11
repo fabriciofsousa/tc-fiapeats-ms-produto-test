@@ -7,29 +7,29 @@ import java.util.List;
 public class ListarPedidosResponse {
   private String id;
   private String cliCpf;
-  private Long idStatus;
+  private String status;
   private BigDecimal valor;
   private int tempoEspera;
   private LocalDateTime dataHoraCriacao;
-  private Long idStatusPagamento;
+  private String statusPagamento;
   private List<ProdutoResponse> produtos;
 
   public ListarPedidosResponse(
       String id,
       String cliCpf,
-      Long idStatus,
+      String status,
       BigDecimal valor,
       int tempoEspera,
       LocalDateTime dataHoraCriacao,
-      Long idPagamento,
+      String statusPagamento,
       List<ProdutoResponse> produtos) {
     this.id = id;
     this.cliCpf = cliCpf;
-    this.idStatus = idStatus;
+    this.status = status;
     this.valor = valor;
     this.tempoEspera = tempoEspera;
     this.dataHoraCriacao = dataHoraCriacao;
-    this.idStatusPagamento = idPagamento;
+    this.statusPagamento = statusPagamento;
     this.produtos = produtos;
   }
 
@@ -49,12 +49,12 @@ public class ListarPedidosResponse {
     this.cliCpf = cliCpf;
   }
 
-  public Long getIdStatus() {
-    return idStatus;
+  public String getStatus() {
+    return status;
   }
 
-  public void setIdStatus(Long idStatus) {
-    this.idStatus = idStatus;
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public BigDecimal getValor() {
@@ -81,9 +81,9 @@ public class ListarPedidosResponse {
     this.dataHoraCriacao = dataHoraCriacao;
   }
 
-  public Long getIdStatusPagamento() { return idStatusPagamento; }
+  public String getStatusPagamento() { return statusPagamento; }
 
-  public void setIdStatusPagamento(Long idStatusPagamento) { this.idStatusPagamento = idStatusPagamento; }
+  public void setStatusPagamento(String statusPagamento) { this.statusPagamento = statusPagamento; }
 
   public List<ProdutoResponse> getProdutos() {
     return produtos;

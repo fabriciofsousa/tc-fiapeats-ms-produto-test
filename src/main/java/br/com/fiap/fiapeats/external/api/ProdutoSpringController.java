@@ -91,7 +91,7 @@ public class ProdutoSpringController {
       description = "Recebendo o id, busca e exclui o produto")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "Produto excluído com sucesso"),
+        @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso"),
         @ApiResponse(responseCode = "404", description = "Produto não encontrado")
       })
   public ResponseEntity<Object> removerProduto(@PathVariable UUID id) {
@@ -104,7 +104,7 @@ public class ProdutoSpringController {
 
     produtoController.removerProduto(id);
 
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @GetMapping
