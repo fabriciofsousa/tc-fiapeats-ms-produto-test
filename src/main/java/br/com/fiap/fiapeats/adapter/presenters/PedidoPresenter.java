@@ -1,6 +1,8 @@
 package br.com.fiap.fiapeats.adapter.presenters;
 
 import br.com.fiap.fiapeats.domain.entities.Pedido;
+import br.com.fiap.fiapeats.domain.enums.StatusPagamento;
+import br.com.fiap.fiapeats.domain.enums.StatusPedido;
 import br.com.fiap.fiapeats.usecases.dtos.CriarPedidoResponse;
 import br.com.fiap.fiapeats.usecases.dtos.ListarPedidosResponse;
 import br.com.fiap.fiapeats.usecases.dtos.ProdutoResponse;
@@ -27,11 +29,11 @@ public class PedidoPresenter {
           new ListarPedidosResponse(
               pedido.getId().toString(),
               pedido.getCliCpf(),
-              pedido.getStatusPedido().getId(),
+                  StatusPedido.obterDescricaoPorCodigo(pedido.getStatusPedido().getId()),
               pedido.getValor(),
               pedido.getTempoEspera(),
               pedido.getDataHoraCriacao(),
-              pedido.getStatusPagamento().getId(),
+              StatusPagamento.obterDescricaoPorCodigo(pedido.getStatusPagamento().getId()),
               pedido.getProdutos().stream().map(ProdutoResponse::new).toList()));
     }
     return response;
@@ -41,11 +43,11 @@ public class PedidoPresenter {
     return new ListarPedidosResponse(
             pedido.getId().toString(),
             pedido.getCliCpf(),
-            pedido.getStatusPedido().getId(),
+            StatusPedido.obterDescricaoPorCodigo(pedido.getStatusPedido().getId()),
             pedido.getValor(),
             pedido.getTempoEspera(),
             pedido.getDataHoraCriacao(),
-            pedido.getStatusPagamento().getId(),
+            StatusPagamento.obterDescricaoPorCodigo(pedido.getStatusPagamento().getId()),
             pedido.getProdutos().stream().map(ProdutoResponse::new).collect(Collectors.toList())
     );
   }

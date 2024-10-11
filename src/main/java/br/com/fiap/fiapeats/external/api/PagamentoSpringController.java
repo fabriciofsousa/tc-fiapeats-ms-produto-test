@@ -44,13 +44,13 @@ public class PagamentoSpringController {
 
   @PostMapping("/notificacao")
   @Operation(
-      summary = "Notificação de atualização de pagamento do pedido",
+      summary = "Recebe notificação de atualização de pagamento do pedido",
       description = "Recebendo os dados necessários, atualiza o status de pagamento do pedido")
   @ApiResponses(
       value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Notificação de atualização de status de pagamento recebida com sucesso")
+            description = "Notificação de atualização de status de pagamento do pedido recebida com sucesso")
       })
   public ResponseEntity<Object> atualizarPagamento(
       @RequestParam(value = "topic", required = false) String topico,
