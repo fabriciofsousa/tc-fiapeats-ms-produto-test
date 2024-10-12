@@ -95,3 +95,61 @@ No arquivo docker a referência já está criada e nada precisa ser feito, poré
 Após isso, na aba de configurações de execução da app só habiliar o uso do plugin e referenciar o arquivo 'local.env' dentro da pasta variables
 ![Configuração do arquivo](docs/configure.png)
 
+
+
+
+
+
+rodar os arquivos na sequencia:
+- deployment.yaml
+- service.yaml
+- service_eks.yaml
+- hpa.yaml
+- ingress.yaml
+
+caso queira usar o kubernets dashboard:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+```
+
+crie o arquivo admin-user com o seguinte conteúdo:
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+```
+
+aplica no kubernets:
+
+```bash
+kubectl apply -f dashboard-admin.yaml
+```
+gerar o token para acessar:
+
+```bash
+kubectl -n kubernetes-dashboard create token admin-user
+```
+
+executa com o comando:
+
+```bash
+kubectl proxy
+```
+
+acessar pela url:
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/

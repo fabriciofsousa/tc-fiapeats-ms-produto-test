@@ -43,7 +43,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: app:latest
+    image: tc-fiapeats-api:latest
     profiles: [app, envfull]
     restart: on-failure
     ports:
