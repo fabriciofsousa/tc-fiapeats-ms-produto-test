@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS cliente
 TABLESPACE pg_default;
 ALTER TABLE IF EXISTS cliente OWNER to sa;
 
+
 CREATE TABLE IF NOT EXISTS categoria
 (
     id bigint NOT NULL,
@@ -18,18 +19,48 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS categoria OWNER to sa;
 
 
+CREATE TABLE IF NOT EXISTS status_pagamento
+(
+    id bigint NOT NULL,
+    descricao character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT status_pagamento_pkey PRIMARY KEY (id)
+)
+TABLESPACE pg_default;
+ALTER TABLE IF EXISTS status_pagamento OWNER to sa;
+
+
+CREATE TABLE IF NOT EXISTS status_pedido
+(
+    id bigint NOT NULL,
+    descricao character varying(255) COLLATE pg_catalog."default",
+    CONSTRAINT status_pedido_pkey PRIMARY KEY (id)
+)
+TABLESPACE pg_default;
+ALTER TABLE IF EXISTS status_pedido OWNER to sa;
+
+
 CREATE TABLE IF NOT EXISTS pedido
 (
     tempo_espera integer NOT NULL,
     valor_total numeric(38,2) NOT NULL,
     data_hora_criacao timestamp(6) without time zone NOT NULL,
-    id_status bigint NOT NULL,
+    status_pedido_id bigint NOT NULL,
     id_pedido uuid NOT NULL,
     cliente_documento character varying(255) COLLATE pg_catalog."default",
-    CONSTRAINT pedido_pkey PRIMARY KEY (id_pedido)
+    status_pagamento_id bigint,
+    CONSTRAINT pedido_pkey PRIMARY KEY (id_pedido),
+    CONSTRAINT status_pagamento_pkey FOREIGN KEY (status_pagamento_id)
+        REFERENCES status_pagamento (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT status_pedido_pkey FOREIGN KEY (status_pedido_id)
+        REFERENCES status_pedido (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
 TABLESPACE pg_default;
 ALTER TABLE IF EXISTS pedido OWNER to sa;
+
 
 CREATE TABLE IF NOT EXISTS produto
 (
