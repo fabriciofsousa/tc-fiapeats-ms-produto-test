@@ -5,7 +5,7 @@ metadata:
   labels:
     app: fiapeats-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: fiapeats-api
@@ -16,16 +16,25 @@ spec:
     spec:
       containers:
         - name: fiapeats-api-container
-          image: dilanclima/tc-fiapeats-api:1.0.0
+          image: dilanclima/tc-fiapeats-api:1.1.0
           ports:
             - containerPort: 8080
           env:
             - name: DATASOURCE_URL
-              value: "jdbc:postgresql://host.docker.internal:5432/fiapeatsdb"
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap
+                  key: spring.datasource.url
             - name: DATASOURCE_USERNAME
-              value: "sa"
+              valueFrom:
+                secretKeyRef:
+                  name: fiapeats-secret
+                  key: spring.datasource.username
             - name: DATASOURCE_PASSWORD
-              value: "pass"
+              valueFrom:
+                secretKeyRef:
+                  name: fiapeats-secret
+                  key: spring.datasource.password
           resources:
             limits:
               memory: "512Mi"

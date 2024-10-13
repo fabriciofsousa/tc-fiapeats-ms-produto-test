@@ -173,7 +173,7 @@ subjects:
 
 aplique no kubernets ao executar o comando:
 ```bash
-kubectl apply -f dashboard-admin.yaml
+kubectl apply -f admin-user.yaml
 ```
 Uma vez aplicado, gere o token de acesso para poder logar no painel:
 ```bash
