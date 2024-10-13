@@ -12,11 +12,14 @@ import br.com.fiap.fiapeats.external.integration.feign.request.CriarPagamentoPed
 import br.com.fiap.fiapeats.external.integration.feign.request.ProdutosPedidoRequest;
 import br.com.fiap.fiapeats.external.integration.mapper.PagamentoIntegrationMapper;
 import br.com.fiap.fiapeats.external.integration.mapper.PagamentoPedidoIntegrationMapper;
+import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.ThreadContext;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class PagamentoIntegrationImpl implements PagamentoIntegration {
@@ -75,8 +78,16 @@ public class PagamentoIntegrationImpl implements PagamentoIntegration {
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "[PagamentoIntegrationImpl-consultarStatusPagamentoPedido] ");
-    return pagamentoPedidoIntegrationMapper.toPedido(
-        pedidoFeign.consultar(obterToken(), idPedidoExterno));
+
+    try {
+      return pagamentoPedidoIntegrationMapper.toPedido(
+              pedidoFeign.consultar(obterToken(), idPedidoExterno));
+    } catch (FeignException exception){
+      if (exception.status() == 404) {
+        throw new NotFoundException("Id pedido não encontrado");
+      }
+    }
+    return null;
   }
 
   private BigDecimal valorTotalProdutos(List<ProdutosPedidoRequest> listaProdutos) {

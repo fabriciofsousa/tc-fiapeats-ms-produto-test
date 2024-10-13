@@ -4,6 +4,8 @@ import br.com.fiap.fiapeats.domain.entities.PagamentoPedidoExterno;
 import br.com.fiap.fiapeats.external.integration.feign.response.ConsultarPagamentoPedidoResponse;
 import org.mapstruct.Mapper;
 
+import java.util.Optional;
+
 @Mapper(componentModel = "spring")
 public interface PagamentoPedidoIntegrationMapper {
 
