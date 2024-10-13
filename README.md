@@ -6,17 +6,19 @@ Projeto inicial para entrega do Tech Challenge
 ### Diretórios usados
 - /docs -> arquivos pertinentes a documentações
 - /sqlScripts -> arquivos executados ao criar o ambiente pelo docker (create tables / insert data)
-- /variables -> variaveis de ambiente usadas na app localmente e via container
+- /variables -> variaveis de ambiente usadas na app localmente, via kubernetes e via container
 - /src -> código fonte da app
 - /htmlTest -> Pagina HTML simples para visualizar o GET de produtos e pedidos
+- /kubernetes -> configs de deployment,service,hpa e ingress da aplicação
 
 ### Plugins
 - Jacoco -> cobertura de testes unitários e análise
 - Spotless -> identação de código padronizada
 
 
-
+---
 ## Ambiente Docker
+![Ambiente Docker](docs/docker_logo.png)
 
 Foi criado o arquivo na raiz docker-compose.yaml que contempla os 3 itens necessários para compor o ambiente completo de nosso sistema, sendo eles:
 - Postgress: imagem do banco de dados usado no projeto
@@ -61,8 +63,10 @@ Por fim, delete também os volumes criados, permitindo que scripts de inicializa
 ```bash
 docker volume rm fiapeats-environment_pgadmin_data fiapeats-environment_postgres_data
 ```
+---
 
 ## Ambiente desenvolvimento
+![Ambiente desenvolvimento](docs/localhost.png)
 
 ### Executar em tempo de desenvolvimento
 
@@ -95,3 +99,93 @@ No arquivo docker a referência já está criada e nada precisa ser feito, poré
 Após isso, na aba de configurações de execução da app só habiliar o uso do plugin e referenciar o arquivo 'local.env' dentro da pasta variables
 ![Configuração do arquivo](docs/configure.png)
 
+---
+## Ambiente Kubernetes
+![kubernetes](docs/kubernetes.png)
+
+A aplicação agora contém o diretório /kubernetes que pode ser aplicado para que rode em um contexto de pods e cluster.
+Para que seja possível é necessário primeiro habilitar o kubernetes que já está contido no docker desktop ou instalar o minikube.
+
+Uma vez instalado ou habilitado pelo docker desktop, siga os seguintes passos:
+
+Para aplicar todas as configurações no kubernetes, execute o comando:
+```bash
+kubectl apply -f ./kubernetes --recursive
+```
+
+para confirmar que cada item foi aplicado, pode usar os comandos:
+```bash
+kubectl get pods # listar pods
+```
+```bash
+kubectl get services # listar services criados
+```
+```bash
+kubectl get hpa # listar configs de hpa
+```
+```bash
+kubectl get ingress # listar config ingress
+```
+Ao finalizar, a aplicação passará pelo processo de subida no pod e poderá ser acessada através da url:
+http://localhost:31000/fiapeats
+Como exemplo, o swagger poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
+
+Os logs da aplicação rodando no pod podem ser acessados ao executar o comando:
+```bash
+kubectl logs <nome-do-pod>
+```
+
+Para recuperar o nome do pod, execute o comando:
+```bash
+kubectl get pods # encontre o pod na lista
+```
+
+### Usando o dashboard do kubernetes
+![dash-kubernetes](docs/kube-dashboard.png)
+
+
+Primeiro, aplique a configuração para que o dashboard fique disponivel no cluster local:
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+```
+
+Em seguida, crie um arquivo chamado "admin-user" em qualquer diretório do seu computador (não sendo o diretório deste projeto) com o seguinte conteúdo:
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+```
+
+aplique no kubernets ao executar o comando:
+```bash
+kubectl apply -f dashboard-admin.yaml
+```
+Uma vez aplicado, gere o token de acesso para poder logar no painel:
+```bash
+kubectl -n kubernetes-dashboard create token admin-user
+```
+Com o token em mãos, execute o comando abaixo (gere este comando em outro terminal, pois ficará bloqueado enquanto rodar o dashboard):
+
+```bash
+kubectl proxy
+```
+
+Por fim, para acessar o dashboard, utilize a url:
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+ao logar, selecione o token e cole o valor gerado anteriormente.
