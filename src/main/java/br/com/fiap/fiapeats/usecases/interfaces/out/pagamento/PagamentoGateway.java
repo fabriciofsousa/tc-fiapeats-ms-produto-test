@@ -4,8 +4,6 @@ import br.com.fiap.fiapeats.domain.entities.Pagamento;
 import br.com.fiap.fiapeats.domain.entities.PagamentoPedidoExterno;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 
-import java.util.Optional;
-
 public interface PagamentoGateway {
   Pagamento criar(Pedido pedido, Pagamento pagamento);
   PagamentoPedidoExterno consultar(String idPedidoExterno);

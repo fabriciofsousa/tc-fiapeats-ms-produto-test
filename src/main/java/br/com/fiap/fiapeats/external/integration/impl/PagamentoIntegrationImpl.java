@@ -19,7 +19,6 @@ import org.apache.logging.log4j.ThreadContext;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class PagamentoIntegrationImpl implements PagamentoIntegration {

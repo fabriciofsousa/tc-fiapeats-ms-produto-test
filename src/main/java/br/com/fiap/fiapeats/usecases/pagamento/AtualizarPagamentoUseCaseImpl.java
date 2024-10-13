@@ -1,7 +1,6 @@
 package br.com.fiap.fiapeats.usecases.pagamento;
 
 import br.com.fiap.fiapeats.domain.entities.PagamentoPedidoExterno;
-import br.com.fiap.fiapeats.domain.entities.StatusPagamento;
 import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import br.com.fiap.fiapeats.usecases.interfaces.in.pagamento.AtualizarPagamentoUseCase;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;

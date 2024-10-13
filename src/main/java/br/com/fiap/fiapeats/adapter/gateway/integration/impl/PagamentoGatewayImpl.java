@@ -6,7 +6,6 @@ import br.com.fiap.fiapeats.domain.entities.PagamentoPedidoExterno;
 import br.com.fiap.fiapeats.domain.entities.Pedido;
 import br.com.fiap.fiapeats.usecases.interfaces.out.pagamento.PagamentoGateway;
 
-import java.util.Optional;
 
 public class PagamentoGatewayImpl implements PagamentoGateway {
 
