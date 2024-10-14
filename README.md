@@ -108,6 +108,12 @@ Para que seja possível é necessário primeiro habilitar o kubernetes que já e
 
 Uma vez instalado ou habilitado pelo docker desktop, siga os seguintes passos:
 
+Para subir o banco de dados, ainda é necessário o docker-compose:
+
+```bash
+docker compose --profile database up -d
+```
+
 Para aplicar todas as configurações no kubernetes, execute o comando:
 ```bash
 kubectl apply -f ./kubernetes --recursive
@@ -173,7 +179,7 @@ subjects:
 
 aplique no kubernets ao executar o comando:
 ```bash
-kubectl apply -f dashboard-admin.yaml
+kubectl apply -f admin-user.yaml
 ```
 Uma vez aplicado, gere o token de acesso para poder logar no painel:
 ```bash

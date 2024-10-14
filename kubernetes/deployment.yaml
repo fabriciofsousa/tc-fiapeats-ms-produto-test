@@ -33,16 +33,16 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "250m"
-          readinessProbe:
-            httpGet:
-              path: /fiapeats/actuator/health
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /fiapeats/actuator/health
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
+          #readinessProbe:
+          #  httpGet:
+          #    path: /fiapeats/actuator/health
+          #    port: 8080
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 5
+          #livenessProbe:
+          #  httpGet:
+          #    path: /fiapeats/actuator/health
+          #    port: 8080
+          #  initialDelaySeconds: 30
+          #  periodSeconds: 10
       restartPolicy: Always
