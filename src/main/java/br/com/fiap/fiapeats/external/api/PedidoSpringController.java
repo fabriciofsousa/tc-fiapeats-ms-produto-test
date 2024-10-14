@@ -110,6 +110,12 @@ public class PedidoSpringController {
   }
 
   @PatchMapping("/{id}/status")
+  @ResponseStatus(HttpStatus.OK)
+  @Operation(
+          summary = "Atualiza status do pedido por id",
+          description = "Rota para atualizar status do pedido por id")
+  @ApiResponses(
+          value = {@ApiResponse(responseCode = "200", description = "Status do pedido atualizado com sucesso!")})
   public ResponseEntity<ListarPedidosResponse> alterarStatusPedido(@PathVariable UUID id,
                                                                    @RequestBody AlterarStatusPedidoRequest alterarStatusPedidoRequestDTO) {
     return ResponseEntity.ok(pedidoController.alterarStatusPedido(id, alterarStatusPedidoRequestDTO));
