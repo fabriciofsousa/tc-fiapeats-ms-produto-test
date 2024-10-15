@@ -144,43 +144,12 @@ kubectl get pods # encontre o pod na lista
 ![dash-kubernetes](docs/kube-dashboard.png)
 
 
-Primeiro, aplique a configuração para que o dashboard fique disponivel no cluster local:
-```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-```
-
-Em seguida, crie um arquivo chamado "admin-user" em qualquer diretório do seu computador (não sendo o diretório deste projeto) com o seguinte conteúdo:
-```yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: admin-user
-  namespace: kubernetes-dashboard
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: admin-user
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- kind: ServiceAccount
-  name: admin-user
-  namespace: kubernetes-dashboard
-```
-
-aplique no kubernets ao executar o comando:
-```bash
-kubectl apply -f admin-user.yaml
-```
-Uma vez aplicado, gere o token de acesso para poder logar no painel:
+O dashboard já é aplicado ao cluster ao rodar o comando recursivo, portanto poderá ser acessado após gerar o token de acesso:
 ```bash
 kubectl -n kubernetes-dashboard create token admin-user
 ```
-Com o token em mãos, execute o comando abaixo (gere este comando em outro terminal, pois ficará bloqueado enquanto rodar o dashboard):
 
+Com o token em mãos, execute o comando abaixo (gere este comando em outro terminal, pois ficará bloqueado enquanto rodar o dashboard):
 ```bash
 kubectl proxy
 ```

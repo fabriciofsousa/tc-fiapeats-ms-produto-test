@@ -5,7 +5,7 @@ metadata:
   labels:
     app: fiapeats-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: fiapeats-api
@@ -36,12 +36,8 @@ spec:
                   name: fiapeats-secret
                   key: spring.datasource.password
           resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              cpu: "40m"
           readinessProbe:
             httpGet:
               path: /fiapeats/actuator/health
