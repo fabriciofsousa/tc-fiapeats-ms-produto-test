@@ -229,4 +229,20 @@ Para gerenciamento de clientes pode utilizar as seguintes rotas:
 
 `Rota POST /pagamento/notificação foi criada exclusivamente para o recebimento das notificações de pagamento do Mercado Pago. Por isso, na rota de criação do QR Code para pagamento precisa informar essa url de notifição, mas para essa integração funcionar é necessário utilizar o ngrok ou outro serviço para expor a rota.`
 
+---
 
+## Desenhos da arquitetura
+
+### Requisitos de negócio
+
+![img.png](img.png)
+
+### Requisitos de infraestrutura
+
+![img_1.png](img_1.png)
+
+---
+
+### Vídeo de demonstração da arquitetura/aplicação
+
+https://www.youtube.com/watch?v=4SZC-1ZgfEY
