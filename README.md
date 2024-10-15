@@ -134,7 +134,6 @@ kubectl get ingress # listar config ingress
 ```
 Ao finalizar, a aplicação passará pelo processo de subida no pod e poderá ser acessada através da url:
 http://localhost:31000/fiapeats
-Como exemplo, o swagger poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
 
 Os logs da aplicação rodando no pod podem ser acessados ao executar o comando:
 ```bash
@@ -198,6 +197,8 @@ ao logar, selecione o token e cole o valor gerado anteriormente.
 
 ---
 ## Documentação APIs (ordem de execução)
+
+O swagger da aplicação poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
 
 Para criar e pagar um pedido é necessário realizar a execução das APIs na seguinte ordem:
 
