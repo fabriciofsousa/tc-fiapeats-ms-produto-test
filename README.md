@@ -108,6 +108,12 @@ Para que seja possível é necessário primeiro habilitar o kubernetes que já e
 
 Uma vez instalado ou habilitado pelo docker desktop, siga os seguintes passos:
 
+Para subir o banco de dados, ainda é necessário o docker-compose:
+
+```bash
+docker compose --profile database up -d
+```
+
 Para aplicar todas as configurações no kubernetes, execute o comando:
 ```bash
 kubectl apply -f ./kubernetes --recursive
@@ -128,7 +134,6 @@ kubectl get ingress # listar config ingress
 ```
 Ao finalizar, a aplicação passará pelo processo de subida no pod e poderá ser acessada através da url:
 http://localhost:31000/fiapeats
-Como exemplo, o swagger poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
 
 Os logs da aplicação rodando no pod podem ser acessados ao executar o comando:
 ```bash
@@ -142,6 +147,7 @@ kubectl get pods # encontre o pod na lista
 
 ### Usando o dashboard do kubernetes
 ![dash-kubernetes](docs/kube-dashboard.png)
+
 
 
 O dashboard já é aplicado ao cluster ao rodar o comando recursivo, portanto poderá ser acessado após gerar o token de acesso:
@@ -158,3 +164,39 @@ Por fim, para acessar o dashboard, utilize a url:
 http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
 ao logar, selecione o token e cole o valor gerado anteriormente.
+
+---
+## Documentação APIs (ordem de execução)
+
+O swagger da aplicação poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
+
+Para criar e pagar um pedido é necessário realizar a execução das APIs na seguinte ordem:
+
+1. Criar um cliente utilizando a rota 'POST /cliente', informando os dados do cliente.
+2. Criar um produto utilizando a rota 'POST /produto', informando os detalhes do produto que deseja cadastrar.
+3. Criar um pedido utilizando a rota 'POST /pedido', informando o id do produto cadastrado no passo 2, o cpf do cliente cadastrado no passo 1 e o valor total do pedido. 
+4. Criar um QR Code de pagamento utilizando a rota 'POST /pagamento', informando o id do pedido criado no passo 3 e a url de notificação que receberá o status de pagamento se aprovado ou recusado.
+5. Atualizar o status do pedido utilizando a rota 'PATCH /pedido/{id}/status' informando o id do pedido criado no itam 3 e o novo status (ex: 2 = Recebido).
+6. Consultar as informações do pedido criado utilizando a rota 'GET /pedido/{id}'.
+
+`Cpf do cliente na criação do pedido é opcional, caso queira pode criar um pedido sem cliente e pular o passo 1`
+
+Para outras consultas associadas a pedidos pode utilizar as seguintes rotas:
+- Para consultar todos os pedidos: 'GET /pedidos'
+- Para consultar todos os pedidos de um status de pagamento especificio: 'GET /pedido/{idStatusPagamento}/pagamento'
+
+
+Para gerenciamento de produtos pode utilizar as seguintes rotas:
+- Para consultar todos os produtos cadastrados: GET /produto
+- Para consultar todos os produtos de uma categoria especifica: GET /produto/categoria/{categoria} 
+- Para excluir um produto: DELETE /produto/{id}
+- Para alterar os dados de um produto: PUT /produto/{id}
+
+
+Para gerenciamento de clientes pode utilizar as seguintes rotas:
+- Para criar um cliente: POST /cliente
+- Para consultar um cliente: GET /cliente/{documento}
+
+`Rota POST /pagamento/notificação foi criada exclusivamente para o recebimento das notificações de pagamento do Mercado Pago. Por isso, na rota de criação do QR Code para pagamento precisa informar essa url de notifição, mas para essa integração funcionar é necessário utilizar o ngrok ou outro serviço para expor a rota.`
+
+
