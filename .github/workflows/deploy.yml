@@ -33,15 +33,17 @@ jobs:
       # 4. Atualizar configuração do Kubernetes
       - name: Atualizar configuração do Kubernetes
         run: |
-          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+          echo "Atualizar configuração do Kubernetes: aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1"
+        #aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
 
       # 5. Deploy no ambiente de desenvolvimento
       - name: Deploy no ambiente de desenvolvimento
         if: github.ref == 'refs/heads/develop'
         run: |
-          kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/service.yaml
-          kubectl apply -f kubernetes/ingress.yaml
+          echo "Deploy no ambiente de desenvolvimento kubectl apply -f kubernetes/deployment.yaml"
+        #kubectl apply -f kubernetes/deployment.yaml
+        #kubectl apply -f kubernetes/service.yaml
+        #kubectl apply -f kubernetes/ingress.yaml
 
       # 6. Deploy no ambiente de produção
       - name: Deploy no ambiente de produção
