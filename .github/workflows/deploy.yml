@@ -1,0 +1,52 @@
+name: Deploy Automatizado para Kubernetes
+
+# Define em quais eventos o workflow será acionado
+on:
+  push:
+    branches:
+      - main  # Deploy em produção
+      - develop  # Deploy no ambiente de desenvolvimento
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixar o código do repositório
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      # 2. Configurar kubectl
+      - name: Configurar kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.28.2'
+
+      # 3. Configurar credenciais AWS
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # 4. Atualizar configuração do Kubernetes
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+
+      # 5. Deploy no ambiente de desenvolvimento
+      - name: Deploy no ambiente de desenvolvimento
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/ingress.yaml
+
+      # 6. Deploy no ambiente de produção
+      - name: Deploy no ambiente de produção
+        if: github.ref == 'refs/heads/main'
+        run: |
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/ingress.yaml
