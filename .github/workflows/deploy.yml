@@ -3,11 +3,14 @@ name: Deploy Automatizado para Kubernetes
 on:
   push:
     branches:
-      - main  # Deploy em produção
       - develop  # Deploy no ambiente de desenvolvimento
+  pull_request:
+    branches:
+      - main  # Deploy no ambiente de produção
 
 jobs:
-  Compiling:
+  # Job para compilar o projeto
+  compile:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar código do repositório
@@ -24,12 +27,13 @@ jobs:
           java-version: 17
           distribution: jdkfile
           jdkFile: ${{ runner.temp }}/jdk-17.0.12_linux-x64_bin.tar.gz
+
       - name: Compile
         run: mvn clean package
 
-  # Job para verificar se o cluster EKS existe e criar se necessário
+  # Job para verificar a existência do cluster EKS
   verify-cluster:
-    needs: Compiling
+    needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Configurar credenciais AWS
@@ -45,16 +49,14 @@ jobs:
           if ! aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1; then
             echo "Cluster não encontrado. Criando cluster EKS..."
             aws eks create-cluster \
-            --name tc-fiapeats-waveThree-cluster \
-            --role-arn arn:aws:iam::941377157368:role/EKS-ClusterRole \
-            --resources-vpc-config subnetIds=subnet-05e9e205abfce1b5b,subnet-096f65a0df3f2b817,subnet-0c4391481b9077ccc,subnet-0a2893c7e40cf6195,subnet-084be18d84cca2681 \
-            --region us-east-1
-
+              --name tc-fiapeats-waveThree-cluster \
+              --role-arn arn:aws:iam::941377157368:role/EKS-ClusterRole \
+              --resources-vpc-config subnetIds=subnet-05e9e205abfce1b5b,subnet-096f65a0df3f2b817,subnet-0c4391481b9077ccc,subnet-0a2893c7e40cf6195,subnet-084be18d84cca2681 \
+              --region us-east-1
           else
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
 
-      # Passo de espera até o cluster estar ativo
       - name: Aguardar o cluster EKS ficar ativo
         run: |
           echo "Aguardando o cluster ficar ativo..."
@@ -65,8 +67,7 @@ jobs:
               break
             else
               echo "Cluster ainda está em status $STATUS. Aguardando..."
-              echo "Aguardando 30 segundos..."
-              sleep 30  # Espera 30 segundos antes de verificar novamente
+              sleep 30
             fi
           done
 
@@ -94,51 +95,37 @@ jobs:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
 
-      - name: Configurar credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Install kubectl
+      - name: Instalar kubectl
         uses: azure/setup-kubectl@v2.0
         with:
           version: 'v1.24.0'
-        id: install
 
       - name: Atualizar configuração do Kubernetes
         run: |
           aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
-
-      - name: Obter a URL do Cluster Kubernetes
-        run: |
-          K8S_API_URL=$(aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1 --query "cluster.endpoint" --output text)
-          echo "Kubernetes API URL: $K8S_API_URL"
-
-      - name: Configurar o kubectl com a URL dinâmica
-        run: |
-          kubectl config set-cluster k8s --server=$K8S_API_URL --insecure-skip-tls-verify=true
 
       - name: Deploy no ambiente de desenvolvimento
         run: |
           kubectl apply -f kubernetes/deployment.yaml
           kubectl apply -f kubernetes/service.yaml
           kubectl apply -f kubernetes/ingress.yaml
-          kubectl rollout status deployment/fiapeats-api-deployment
 
   # Job para deploy no ambiente de produção
   deploy-production:
     needs: update-kubeconfig
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
+
+      - name: Instalar kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0'
 
       - name: Deploy no ambiente de produção
         run: |
           kubectl apply --validate=false -f kubernetes/deployment.yaml
           kubectl apply --validate=false -f kubernetes/service.yaml
-          kubectl apply --validate=false -f kubernetes/ingress.yaml 
-          kubectl rollout status deployment/fiapeats-api-deployment
+          kubectl apply --validate=false -f kubernetes/ingress.yaml
