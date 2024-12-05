@@ -10,6 +10,11 @@ jobs:
   Compilando:
     runs-on: ubuntu-latest
     steps:
+      - name: Verificar diretório atual
+        run: |
+          pwd
+          ls -la
+
       - name: Compile
         run: mvn clean package
 
