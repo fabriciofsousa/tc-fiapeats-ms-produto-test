@@ -15,6 +15,10 @@ jobs:
           pwd
           ls -la
 
+      - name: Navegar até o diretório com o pom.xml
+        run: cd /home/runner/work/tc-fiapeats-waveThree/tc-fiapeats-waveThree
+
+
       - name: Compile
         run: mvn clean package
 
