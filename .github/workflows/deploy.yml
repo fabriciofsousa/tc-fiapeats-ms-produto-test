@@ -17,20 +17,31 @@ jobs:
         uses: actions/checkout@v3
         continue-on-error: false # Interrompe o fluxo se esse passo falhar
 
-      # 2. Configurar kubectl
-      - name: Configurar kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: 'v1.28.2'
-        continue-on-error: false # Interrompe o fluxo se esse passo falhar
 
-      # 3. Configurar credenciais AWS
+      # 2. Configurar credenciais AWS
       - name: Configurar credenciais AWS
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+        continue-on-error: false # Interrompe o fluxo se esse passo falhar
+
+
+      # 3. Verificar e criar cluster se necessário
+      - name: Verificar ou criar cluster EKS
+        run: |
+          echo "Verificando se o cluster EKS existe..."
+          if ! aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1; then
+            echo "Cluster não encontrado. Criando cluster EKS..."
+            aws eks create-cluster \
+              --name tc-fiapeats-waveThree-cluster \
+              --region us-east-1 \
+              --role-arn arn:aws:iam::941377157368:role/EKS-ClusterRole \
+              --resources-vpc-config subnetIds=${{ secrets.SUBNET_IDS }},securityGroupIds=${{ secrets.SECURITY_GROUP_IDS }}
+          else
+            echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
+          fi
         continue-on-error: false # Interrompe o fluxo se esse passo falhar
 
       # 4. Atualizar configuração do Kubernetes
