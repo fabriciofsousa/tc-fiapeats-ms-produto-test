@@ -13,17 +13,11 @@ jobs:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
 
-      - name: Verificar diretório atual
-        run: |
-          pwd
-          ls -la
-
-      - name: Navegar até o diretório com o pom.xml
-        run: cd /home/runner/work/tc-fiapeats-waveThree/tc-fiapeats-waveThree
-
-      - name: Verificar diretório atual
-        run: |
-          ls
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adoptopenjdk'
 
       - name: Compile
         run: mvn clean package
