@@ -7,7 +7,7 @@ on:
       - develop  # Deploy no ambiente de desenvolvimento
 
 jobs:
-  Compilando:
+  Compiling:
     runs-on: ubuntu-latest
     steps:
       - name: Baixar código do repositório
@@ -29,6 +29,7 @@ jobs:
 
   # Job para verificar se o cluster EKS existe e criar se necessário
   verify-cluster:
+    needs: Compiling
     runs-on: ubuntu-latest
     steps:
       - name: Configurar credenciais AWS
@@ -82,8 +83,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Atualizar configuração do Kubernetes
-        run: |
-          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+        run: aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
 
   # Job para deploy no ambiente de desenvolvimento
   deploy-develop:
@@ -93,6 +93,13 @@ jobs:
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0'
+        id: install
+
 
       - name: Deploy no ambiente de desenvolvimento
         run: |
