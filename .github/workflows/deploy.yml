@@ -18,6 +18,9 @@ jobs:
       - name: Navegar até o diretório com o pom.xml
         run: cd /home/runner/work/tc-fiapeats-waveThree/tc-fiapeats-waveThree
 
+      - name: Verificar diretório atual
+        run: |
+          ls
 
       - name: Compile
         run: mvn clean package
