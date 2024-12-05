@@ -79,9 +79,10 @@ jobs:
 
       - name: Deploy no ambiente de desenvolvimento
         run: |
-          kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/service.yaml
-          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply --validate=false -f kubernetes/deployment.yaml
+          kubectl apply --validate=false -f kubernetes/service.yaml
+          kubectl apply --validate=false -f kubernetes/ingress.yaml
+          kubectl rollout status deployment/fiapeats-api-deployment
 
   # Job para deploy no ambiente de produção
   deploy-production:
@@ -94,6 +95,7 @@ jobs:
 
       - name: Deploy no ambiente de produção
         run: |
-          kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/service.yaml
-          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply --validate=false -f kubernetes/deployment.yaml
+          kubectl apply --validate=false -f kubernetes/service.yaml
+          kubectl apply --validate=false -f kubernetes/ingress.yaml 
+          kubectl rollout status deployment/fiapeats-api-deployment
