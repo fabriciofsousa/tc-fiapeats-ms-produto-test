@@ -71,6 +71,29 @@ jobs:
             fi
           done
 
+        # Criar Node Group no EKS
+      - name: Create EKS Node Group
+        run: |
+          aws eks create-nodegroup \
+            --cluster-name tc-fiapeats-waveThree-cluster \
+            --nodegroup-name fiapeats-node-group \
+            --subnets subnet-05e9e205abfce1b5b subnet-096f65a0df3f2b817 subnet-0c4391481b9077ccc \
+            --node-role arn:aws:iam::941377157368:role/eksNodeRole \
+            --scaling-config minSize=2,maxSize=3,desiredSize=2 \
+            --region us-east-1
+
+      # Aguardar e verificar os nós
+      - name: Wait for Node Group to be active
+        run: |
+          echo "Aguardando a criação do Node Group..."
+          sleep 60  # Aguardar 1 minuto
+          aws eks describe-nodegroup --cluster-name tc-fiapeats-waveThree-cluster --nodegroup-name fiapeats-node-group --region us-east-1
+
+      - name: Get Nodes Status
+        run: |
+          kubectl get nodes
+
+
   # Job para atualizar a configuração do Kubernetes
   update-kubeconfig:
     needs: verify-cluster
