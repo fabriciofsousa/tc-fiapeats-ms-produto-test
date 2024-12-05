@@ -10,6 +10,9 @@ jobs:
   Compilando:
     runs-on: ubuntu-latest
     steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
       - name: Verificar diretório atual
         run: |
           pwd
@@ -29,9 +32,6 @@ jobs:
   verify-cluster:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar código do repositório
-        uses: actions/checkout@v3
-
       - name: Configurar credenciais AWS
         uses: aws-actions/configure-aws-credentials@v3
         with:
