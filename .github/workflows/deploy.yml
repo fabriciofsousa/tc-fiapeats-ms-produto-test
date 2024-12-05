@@ -7,6 +7,12 @@ on:
       - develop  # Deploy no ambiente de desenvolvimento
 
 jobs:
+  Compilando:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compile
+        run: mvn clean package
+
   # Job para verificar se o cluster EKS existe e criar se necessário
   verify-cluster:
     runs-on: ubuntu-latest
