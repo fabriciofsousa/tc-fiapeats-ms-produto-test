@@ -36,6 +36,22 @@ jobs:
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
 
+      # Passo de espera até o cluster estar ativo
+      - name: Aguardar o cluster EKS ficar ativo
+        run: |
+          echo "Aguardando o cluster ficar ativo..."
+          while true; do
+            STATUS=$(aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1 --query "cluster.status" --output text)
+            if [ "$STATUS" == "ACTIVE" ]; then
+              echo "Cluster está ativo. Continuando..."
+              break
+            else
+              echo "Cluster ainda está em status $STATUS. Aguardando..."
+              echo "Aguardando 30 segundos..."
+              sleep 30  # Espera 30 segundos antes de verificar novamente
+            fi
+          done
+
   # Job para atualizar a configuração do Kubernetes
   update-kubeconfig:
     needs: verify-cluster
