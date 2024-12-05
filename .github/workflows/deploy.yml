@@ -13,19 +13,17 @@ jobs:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
 
-      - name: 'Download latest JDK 17'
+      - name: Download latest JDK 17
         run: |
-          wget \
-            --no-verbose \
-            --directory-prefix $RUNNER_TEMP \
-            https://download.oracle.com/java/17/archive/jdk-17.0.12_linux-x64_bin.tar.gz
-      - name: 'Set up JDK'
+          wget --no-verbose --directory-prefix $RUNNER_TEMP \
+          https://download.oracle.com/java/17/archive/jdk-17.0.12_linux-x64_bin.tar.gz
+
+      - name: Set up JDK from tar.gz
         uses: actions/setup-java@v2
         with:
           java-version: 17
           distribution: jdkfile
-          jdkFile: ${{ runner.temp }}/jdk-17_linux-x64_bin.tar.gz
-
+          jdkFile: ${{ runner.temp }}/jdk-17.0.12_linux-x64_bin.tar.gz
       - name: Compile
         run: mvn clean package
 
