@@ -29,8 +29,9 @@ jobs:
             aws eks create-cluster \
             --name tc-fiapeats-waveThree-cluster \
             --role-arn arn:aws:iam::941377157368:role/EKS-ClusterRole \
-            --resources-vpc-config subnetIds=subnet-05e9e205abfce1b5b,subnet-096f65a0df3f2b817,subnet-0c4391481b9077ccc,subnet-0a2893c7e40cf6195,subnet-084be18d84cca2681,subnet-0a55d9027668dead7 \
+            --resources-vpc-config subnetIds=subnet-05e9e205abfce1b5b,subnet-096f65a0df3f2b817,subnet-0c4391481b9077ccc,subnet-0a2893c7e40cf6195,subnet-084be18d84cca2681 \
             --region us-east-1
+
           else
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
