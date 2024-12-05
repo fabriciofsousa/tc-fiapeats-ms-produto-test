@@ -100,12 +100,24 @@ jobs:
           version: 'v1.24.0'
         id: install
 
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+
+      - name: Obter a URL do Cluster Kubernetes
+        run: |
+          K8S_API_URL=$(aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1 --query "cluster.endpoint" --output text)
+          echo "Kubernetes API URL: $K8S_API_URL"
+
+      - name: Configurar o kubectl com a URL dinâmica
+        run: |
+          kubectl config set-cluster k8s --server=$K8S_API_URL --insecure-skip-tls-verify=true
 
       - name: Deploy no ambiente de desenvolvimento
         run: |
-          kubectl apply --validate=false -f kubernetes/deployment.yaml
-          kubectl apply --validate=false -f kubernetes/service.yaml
-          kubectl apply --validate=false -f kubernetes/ingress.yaml
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/ingress.yaml
           kubectl rollout status deployment/fiapeats-api-deployment
 
   # Job para deploy no ambiente de produção
