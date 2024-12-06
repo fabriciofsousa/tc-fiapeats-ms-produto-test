@@ -55,7 +55,7 @@ jobs:
 
   # Job para deploy no ambiente de desenvolvimento
   deploy-develop:
-    needs: update-kubeconfig
+    needs: verify-cluster
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
@@ -93,7 +93,7 @@ jobs:
 
   # Job para deploy no ambiente de produção
   deploy-production:
-    needs: update-kubeconfig
+    needs: verify-cluster
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
     steps:
