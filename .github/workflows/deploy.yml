@@ -61,11 +61,11 @@ jobs:
 
       - name: Construir imagem Docker
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }} .
 
       - name: Push da imagem para o Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }}
 
   # Job para verificar a existência do cluster EKS
   verify-cluster:
