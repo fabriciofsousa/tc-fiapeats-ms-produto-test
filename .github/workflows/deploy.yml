@@ -94,7 +94,7 @@ jobs:
 
       - name: Health Check após Deploy
         run: |
-          kubectl rollout status deployment/fiapeats-deployment -n default --timeout=5m
+          kubectl rollout status deployment/fiapeats-api-deployment -n default --timeout=5m
           kubectl get pods -n default    
 
   # Job para deploy no ambiente de produção
@@ -136,5 +136,5 @@ jobs:
           kubectl apply -f kubernetes/userAdmin.yaml
       - name: Health Check após Deploy
         run: |
-          kubectl rollout status deployment/fiapeats-deployment -n default --timeout=5m
+          kubectl rollout status deployment/fiapeats-api-deployment -n default --timeout=5m
           kubectl get pods -n default
