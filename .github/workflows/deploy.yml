@@ -47,67 +47,11 @@ jobs:
         run: |
           echo "Verificando se o cluster EKS existe..."
           if ! aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1; then
-            echo "Cluster não encontrado. Criando cluster EKS..."
-            aws eks create-cluster \
-              --name tc-fiapeats-waveThree-cluster \
-              --role-arn arn:aws:iam::941377157368:role/EKS-ClusterRole \
-              --resources-vpc-config subnetIds=subnet-05e9e205abfce1b5b,subnet-096f65a0df3f2b817,subnet-0c4391481b9077ccc,subnet-0a2893c7e40cf6195,subnet-084be18d84cca2681 \
-              --region us-east-1
+            echo "Cluster não encontrado."
           else
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
 
-      - name: Aguardar o cluster EKS ficar ativo
-        run: |
-          echo "Aguardando o cluster ficar ativo..."
-          while true; do
-            STATUS=$(aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1 --query "cluster.status" --output text)
-            if [ "$STATUS" == "ACTIVE" ]; then
-              echo "Cluster está ativo. Continuando..."
-              break
-            else
-              echo "Cluster ainda está em status $STATUS. Aguardando..."
-              sleep 30
-            fi
-          done
-
-        # Criar Node Group no EKS
-      - name: Create EKS Node Group
-        run: |
-          aws eks create-nodegroup \
-            --cluster-name tc-fiapeats-waveThree-cluster \
-            --nodegroup-name fiapeats-node-group \
-            --subnets subnet-05e9e205abfce1b5b subnet-096f65a0df3f2b817 subnet-0c4391481b9077ccc \
-            --node-role arn:aws:iam::941377157368:role/eksNodeRole \
-            --scaling-config minSize=2,maxSize=3,desiredSize=2 \
-            --region us-east-1
-
-      # Aguardar e verificar os nós
-      - name: Wait for Node Group to be active
-        run: |
-          echo "Aguardando a criação do Node Group..."
-          sleep 60  # Aguardar 1 minuto
-          aws eks describe-nodegroup --cluster-name tc-fiapeats-waveThree-cluster --nodegroup-name fiapeats-node-group --region us-east-1
-
-      - name: Get Nodes Status
-        run: |
-          kubectl get nodes
-
-
-  # Job para atualizar a configuração do Kubernetes
-  update-kubeconfig:
-    needs: verify-cluster
-    runs-on: ubuntu-latest
-    steps:
-      - name: Configurar credenciais AWS
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Atualizar configuração do Kubernetes
-        run: aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
 
   # Job para deploy no ambiente de desenvolvimento
   deploy-develop:
@@ -161,8 +105,26 @@ jobs:
         with:
           version: 'v1.24.0'
 
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+
       - name: Deploy no ambiente de produção
         run: |
           kubectl apply -f kubernetes/deployment.yaml
-          kubectl apply -f kubernetes/service.yaml
           kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/configMap.yaml
+          kubectl apply -f kubernetes/dashboard.yaml
+          kubectl apply -f kubernetes/hpa.yaml
+          kubectl apply -f kubernetes/metrics.yaml
+          kubectl apply -f kubernetes/secrets.yaml
+          kubectl apply -f kubernetes/service_eks.yaml
+          kubectl apply -f kubernetes/userAdmin.yaml
