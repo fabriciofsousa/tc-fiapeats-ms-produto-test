@@ -92,6 +92,11 @@ jobs:
           kubectl apply -f kubernetes/service_eks.yaml
           kubectl apply -f kubernetes/userAdmin.yaml
 
+      - name: Health Check após Deploy
+        run: |
+          kubectl rollout status deployment/fiapeats-deployment -n default --timeout=5m
+          kubectl get pods -n default    
+
   # Job para deploy no ambiente de produção
   deploy-production:
     needs: verify-cluster
@@ -129,3 +134,7 @@ jobs:
           kubectl apply -f kubernetes/secrets.yaml
           kubectl apply -f kubernetes/service_eks.yaml
           kubectl apply -f kubernetes/userAdmin.yaml
+      - name: Health Check após Deploy
+        run: |
+          kubectl rollout status deployment/fiapeats-deployment -n default --timeout=5m
+          kubectl get pods -n default
