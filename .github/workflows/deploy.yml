@@ -46,7 +46,7 @@ jobs:
       - name: Verificar ou criar cluster EKS
         run: |
           echo "Verificando se o cluster EKS existe..."
-          if ! aws eks describe-cluster --name tc-fiapeats-waveThree-cluster --region us-east-1; then
+          if ! aws eks describe-cluster --name eks-cluster --region us-east-1; then
             echo "Cluster não encontrado."
           else
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
@@ -76,7 +76,7 @@ jobs:
 
       - name: Atualizar configuração do Kubernetes
         run: |
-          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
 
       - name: Deploy no ambiente de desenvolvimento
         run: |
@@ -114,7 +114,7 @@ jobs:
 
       - name: Atualizar configuração do Kubernetes
         run: |
-          aws eks update-kubeconfig --name tc-fiapeats-waveThree-cluster --region us-east-1
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
 
       - name: Deploy no ambiente de produção
         run: |
