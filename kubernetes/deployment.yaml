@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fiapeats-api-container
-          image: ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }}
+          image: dilanclima/tc-fiapeats-api:latest
           ports:
             - containerPort: 8080
           env:

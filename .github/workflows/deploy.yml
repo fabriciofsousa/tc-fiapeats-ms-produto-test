@@ -67,6 +67,11 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }}
 
+      - name: Atualizar imagem do Deployment
+        run: |
+          kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }} --record
+
+
   # Job para verificar a existência do cluster EKS
   verify-cluster:
     needs: compile
