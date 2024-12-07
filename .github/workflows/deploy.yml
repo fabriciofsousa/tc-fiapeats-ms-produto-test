@@ -88,10 +88,18 @@ jobs:
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
 
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+      
+
       - name: Validar repositório no ECR
         run: |
           ECR_REPOSITORY="fiapeats-api"
-          AWS_REGION="us-east-1"
           
           echo "Validando se o repositório '${ECR_REPOSITORY}' existe no Amazon ECR..."
           
