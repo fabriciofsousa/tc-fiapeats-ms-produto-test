@@ -143,7 +143,7 @@ jobs:
 
   # Job para deploy no ambiente de desenvolvimento
   deploy-develop:
-    needs: [verify-cluster,publish-image]
+    needs: [verify-aws,publish-image]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     steps:
@@ -187,7 +187,7 @@ jobs:
 
   # Job para deploy no ambiente de produção
   deploy-production:
-    needs: [verify-cluster,publish-image, deploy-develop]
+    needs: [verify-aws,publish-image, deploy-develop]
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
     steps:
