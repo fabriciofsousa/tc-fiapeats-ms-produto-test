@@ -91,7 +91,7 @@ jobs:
       - name: Logar no Amazon ECR
         run: |
           AWS_REGION="us-east-1"
-          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          AWS_ACCOUNT_ID=980921733871
           
           echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -128,7 +128,7 @@ jobs:
       - name: Obter AWS Account ID
         id: get-account-id
         run: |
-          ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+          ACCOUNT_ID=980921733871
           echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  # Define como variável de ambiente
 
       - name: Obter login no Amazon ECR
