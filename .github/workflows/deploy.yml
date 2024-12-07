@@ -112,7 +112,7 @@ jobs:
           fi
   # Job para fazer o build e publish da imagem Docker no Docker Hub
   publish-image:
-    needs: [compile, get-version, verify-aws]
+    needs: [ compile, get-version, verify-aws ]
     runs-on: ubuntu-latest
     steps:
       - name: Baixar código do repositório
@@ -129,26 +129,26 @@ jobs:
         id: get-account-id
         run: |
           ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+          echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  # Define como variável de ambiente
 
       - name: Obter login no Amazon ECR
         run: |
-          AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
           echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
 
       - name: Construir imagem Docker
         run: |
-          IMAGE_REPO="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           docker build -t $IMAGE_REPO:${{ env.VERSION }} .
 
       - name: Push da imagem para o Amazon ECR
         run: |
-          IMAGE_REPO="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           docker push $IMAGE_REPO:${{ env.VERSION }}
 
       - name: Atualizar imagem do Deployment no Kubernetes
         run: |
-          IMAGE_REPO="${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:${{ env.VERSION }} --record
 
   # Job para deploy no ambiente de desenvolvimento
