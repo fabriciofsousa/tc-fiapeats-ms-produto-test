@@ -57,33 +57,15 @@ jobs:
           pwd
           ls -la
 
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
+
       - name: Pegar a versão da aplicação do pom.xml
         run: |
           VERSION=${{ steps.project.outputs.version }}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=${{ env.VERSION }}"
-          
-          VERSION=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "VERSION=${{ env.VERSION }}"
-
-      - name: Extract Maven project version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-        id: project
-
-      - name: Show extracted Maven project version
-        run: echo ${{ steps.project.outputs.version }}
-
-
-      - name: Get the output version
-        run: echo "The found version ${{ steps.version-extractor.outputs.version }}"
-
-
-      - name: Get version
-        run: |
-          VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
-          echo "::set-output name=version::$VERSION"
-        id: get_version
 
   # Job para verificar a existência do cluster e ECR
   verify-aws:
