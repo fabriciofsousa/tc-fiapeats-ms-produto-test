@@ -64,7 +64,8 @@ jobs:
         - name: Pegar a versão da aplicação do pom.xml
           run: |
             VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-            echo "VERSION=$VERSION" >> $GITHUB_ENV       
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "VERSION=${{ env.VERSION }}"
 
 
   # Job para verificar a existência do cluster e ECR
