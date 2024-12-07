@@ -152,6 +152,7 @@ jobs:
       - name: Push da imagem para o Amazon ECR
         run: |
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          echo "Imagem: $IMAGE_REPO:${VERSION}"
           docker push $IMAGE_REPO:${VERSION}
 
       - name: Atualizar imagem do Deployment no Kubernetes
