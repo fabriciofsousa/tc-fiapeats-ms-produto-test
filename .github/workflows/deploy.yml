@@ -52,21 +52,11 @@ jobs:
       - name: Compile
         run: mvn clean package
 
-
-    # Job para pegar a versão do pom.xml
-  get-version:
-      runs-on: ubuntu-latest
-      needs: compile
-      steps:
-        - name: Baixar código do repositório
-          uses: actions/checkout@v3
-
-        - name: Pegar a versão da aplicação do pom.xml
-          run: |
-            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-            echo "VERSION=${{ env.VERSION }}"
-
+      - name: Pegar a versão da aplicação do pom.xml
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${{ env.VERSION }}"
 
   # Job para verificar a existência do cluster e ECR
   verify-aws:
