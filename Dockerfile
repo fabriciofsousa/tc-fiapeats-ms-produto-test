@@ -10,11 +10,9 @@ RUN VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) &
 # Estágio final
 FROM openjdk:17-jdk
 WORKDIR /app
-# Copiar a versão do arquivo version.txt
-COPY --from=builder /app/version.txt /app/version.txt
-# Usar o valor de VERSION extraído do arquivo version.txt
-RUN VERSION=$(cat /app/version.txt)
-# Copiar o JAR gerado para o container final, utilizando a variável de versão
+# Definir a variável de versão como argumento
+ARG VERSION
+# Copiar o JAR gerado para o container final
 COPY --from=builder /app/target/fiapeats-${VERSION}.jar app.jar
 
 CMD ["java", "-jar", "app.jar"]
