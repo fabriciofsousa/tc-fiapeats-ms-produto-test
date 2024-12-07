@@ -60,7 +60,7 @@ jobs:
 
   # Job para verificar a existência do cluster e ECR
   verify-aws:
-    needs: [compile, get-version]
+    needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Configurar credenciais AWS
@@ -103,7 +103,7 @@ jobs:
           fi
   # Job para fazer o build e publish da imagem Docker no Docker Hub
   publish-image:
-    needs: [ compile, get-version, verify-aws ]
+    needs: [ compile, verify-aws ]
     runs-on: ubuntu-latest
     steps:
       - name: Baixar código do repositório
