@@ -28,8 +28,30 @@ jobs:
           distribution: jdkfile
           jdkFile: ${{ runner.temp }}/jdk-17.0.12_linux-x64_bin.tar.gz
 
+      - name: Verificar mudanças no código
+        run: |
+          if git diff --quiet HEAD^ HEAD -- .; then
+            echo "CHANGED=false" >> $GITHUB_ENV
+            echo "Nenhuma alteração detectada na aplicação."
+          else
+            echo "CHANGED=true" >> $GITHUB_ENV
+            echo "Alterações detectadas na aplicação."
+          fi
+
+      - name: Incrementar versão do pom.xml (caso tenha alterações)
+        if: env.CHANGED == 'true'
+        run: |
+            echo "Incrementando versão no pom.xml..."
+            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+            NEW_VERSION="$MAJOR.$MINOR.$((PATCH+1))"
+            mvn versions:set -DnewVersion=$NEW_VERSION
+            mvn versions:commit
+            echo "Nova versão do pom.xml: $NEW_VERSION"
+
       - name: Compile
         run: mvn clean package
+
 
     # Job para pegar a versão do pom.xml
   get-version:
@@ -40,41 +62,14 @@ jobs:
           uses: actions/checkout@v3
 
         - name: Pegar a versão da aplicação do pom.xml
-          id: get_version
           run: |
             VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
             echo "VERSION=$VERSION" >> $GITHUB_ENV       
 
-  # Job para fazer o build e publish da imagem Docker no Docker Hub
-  publish-image:
+
+  # Job para verificar a existência do cluster e ECR
+  verify-aws:
     needs: [compile, get-version]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Baixar código do repositório
-        uses: actions/checkout@v3
-
-      - name: Logar no Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Construir imagem Docker
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }} .
-
-      - name: Push da imagem para o Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }}
-
-      - name: Atualizar imagem do Deployment
-        run: |
-          kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=${{ secrets.DOCKER_USERNAME }}/fiapeats-api:${{ env.VERSION }} --record
-
-
-  # Job para verificar a existência do cluster EKS
-  verify-cluster:
-    needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Configurar credenciais AWS
@@ -84,7 +79,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Verificar ou criar cluster EKS
+      - name: Verificar cluster EKS
         run: |
           echo "Verificando se o cluster EKS existe..."
           if ! aws eks describe-cluster --name eks-cluster --region us-east-1; then
@@ -92,6 +87,58 @@ jobs:
           else
             echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
           fi
+
+      - name: Validar repositório no ECR
+        run: |
+          ECR_REPOSITORY="fiapeats-api"
+          AWS_REGION="us-east-1"
+          
+          echo "Validando se o repositório '${ECR_REPOSITORY}' existe no Amazon ECR..."
+          
+          if ! aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION; then
+            echo "Repositório '${ECR_REPOSITORY}' não encontrado. Por favor, crie o repositório no ECR antes de continuar."
+            exit 1
+          else
+            echo "Repositório '${ECR_REPOSITORY}' encontrado no Amazon ECR."
+          fi    
+  # Job para fazer o build e publish da imagem Docker no Docker Hub
+  publish-image:
+    needs: [compile, get-version, verify-aws]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Obter AWS Account ID
+        id: get-account-id
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+
+      - name: Obter login no Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Construir imagem Docker
+        run: |
+          IMAGE_REPO="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          docker build -t $IMAGE_REPO:${{ env.VERSION }} .
+
+      - name: Push da imagem para o Amazon ECR
+        run: |
+          IMAGE_REPO="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          docker push $IMAGE_REPO:${{ env.VERSION }}
+
+      - name: Atualizar imagem do Deployment no Kubernetes
+        run: |
+          IMAGE_REPO="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:${{ env.VERSION }} --record
 
 
   # Job para deploy no ambiente de desenvolvimento
