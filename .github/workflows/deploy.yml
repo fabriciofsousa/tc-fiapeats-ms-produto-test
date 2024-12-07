@@ -52,10 +52,6 @@ jobs:
       - name: Compile
         run: mvn clean package
 
-      - name: Verificar diretório atual
-        run: |
-          pwd
-          ls -la
 
       - name: Extract Maven project version
         id: project
@@ -141,9 +137,10 @@ jobs:
 
       - name: Construir imagem Docker
         run: |
-          echo "VERSÃO NO AMBIENTE: ${{ env.VERSION }}"
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)  # Captura a versão
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
-          docker build -t $IMAGE_REPO:${{ env.VERSION }} .
+          echo "VERSION=$VERSION"  # Verifique a versão extraída
+          docker build -t $IMAGE_REPO:$VERSION .  # Passa a versão para a tag da imagem
 
       - name: Push da imagem para o Amazon ECR
         run: |
