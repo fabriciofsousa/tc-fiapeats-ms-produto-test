@@ -138,6 +138,8 @@ jobs:
 
       - name: Construir imagem Docker
         run: |
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${{ env.VERSION }}"
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           docker build -t $IMAGE_REPO:${{ env.VERSION }} .
 
