@@ -95,12 +95,13 @@ jobs:
           
           echo "Validando se o repositório '${ECR_REPOSITORY}' existe no Amazon ECR..."
           
-          if ! aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION; then
-            echo "Repositório '${ECR_REPOSITORY}' não encontrado. Por favor, crie o repositório no ECR antes de continuar."
-            exit 1
+          if ! aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION >/dev/null 2>&1; then
+            echo "Repositório '${ECR_REPOSITORY}' não encontrado. Criando no Amazon ECR..."
+            aws ecr create-repository --repository-name $ECR_REPOSITORY --region $AWS_REGION
+            echo "Repositório '${ECR_REPOSITORY}' criado com sucesso!"
           else
-            echo "Repositório '${ECR_REPOSITORY}' encontrado no Amazon ECR."
-          fi    
+            echo "Repositório '${ECR_REPOSITORY}' já existe no Amazon ECR."
+          fi
   # Job para fazer o build e publish da imagem Docker no Docker Hub
   publish-image:
     needs: [compile, get-version, verify-aws]
