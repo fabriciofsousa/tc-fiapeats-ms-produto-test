@@ -127,10 +127,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Obter AWS Account ID
+      - name: Obter AWS Account ID e versão
         id: get-account-id
         run: |
           ACCOUNT_ID=980921733871
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  # Define como variável de ambiente
 
       - name: Obter login no Amazon ECR
