@@ -137,10 +137,11 @@ jobs:
 
       - name: Construir imagem Docker
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) 
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)  # Captura a versão
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           echo "VERSION=$VERSION"
-          docker build -t $IMAGE_REPO:$VERSION .
+          docker build -t $IMAGE_REPO:$VERSION .  # Passa a versão para a tag da imagem
+
 
       - name: Push da imagem para o Amazon ECR
         run: |
