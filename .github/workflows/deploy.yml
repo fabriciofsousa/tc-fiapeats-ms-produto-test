@@ -52,6 +52,11 @@ jobs:
       - name: Compile
         run: mvn clean package
 
+      - name: Configurar Maven
+        run: |
+          sudo apt-get update
+          sudo apt-get install maven
+
       - name: Pegar a versão da aplicação do pom.xml
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
