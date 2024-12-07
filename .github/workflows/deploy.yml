@@ -156,6 +156,14 @@ jobs:
           echo "Imagem: $IMAGE_REPO:$VERSION"
           docker push $IMAGE_REPO:$VERSION
 
+      - name: Configurar kubectl para o EKS
+        run: |
+          aws eks --region us-east-1 update-kubeconfig --name fiapeats-cluster
+
+      - name: Verificar conexão com o Kubernetes
+        run: |
+          kubectl get nodes
+
       - name: Atualizar imagem do Deployment no Kubernetes
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
