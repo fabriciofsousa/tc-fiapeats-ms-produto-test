@@ -52,11 +52,47 @@ jobs:
       - name: Compile
         run: mvn clean package
 
+      - name: Verificar diretório atual
+        run: |
+          pwd
+          ls -la
+
       - name: Pegar a versão da aplicação do pom.xml
         run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=${{ env.VERSION }}"
+          
+          VERSION=$(mvn -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec -q)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${{ env.VERSION }}"
+
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
+
+      - name: Show extracted Maven project version
+        run: echo ${{ steps.project.outputs.version }}
+
+      - name: Install manual libraries
+        run: |
+          mvn install:install-file -Dfile=lib/xyz.jar -DgroupId=com.xyz-DartifactId=xyz -Dversion=8.3.0 -Dpackaging=jar
+
+      - name: Extract version from pom.xml file
+        id: version-extractor
+        uses: dostonhamrakulov/maven-artifact-version-extractor@v1.0
+        with:
+            file_path: ${{ github.workspace }}/pom.xml
+
+      - name: Get the output version
+        run: echo "The found version ${{ steps.version-extractor.outputs.version }}"
+
+
+      - name: Get version
+        run: |
+          VERSION=$( mvn help:evaluate -Dexpression=project.version -q -DforceStdout )
+          echo "::set-output name=version::$VERSION"
+        id: get_version
 
   # Job para verificar a existência do cluster e ECR
   verify-aws:
