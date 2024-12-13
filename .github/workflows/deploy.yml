@@ -130,6 +130,11 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  # Define como variável de ambiente
 
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
+
       - name: Obter login no Amazon ECR
         run: |
           echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
