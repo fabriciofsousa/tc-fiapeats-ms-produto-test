@@ -226,6 +226,15 @@ jobs:
           echo "Versão do projeto: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=980921733871
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+
+
       - name: Baixar a imagem do ECR
         run: |
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
@@ -288,6 +297,15 @@ jobs:
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "Versão do projeto: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=980921733871
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+
 
       - name: Baixar a imagem do ECR
         run: |
