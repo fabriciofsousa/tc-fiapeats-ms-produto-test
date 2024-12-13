@@ -1,0 +1,341 @@
+name: Deploy Automatizado para Kubernetes
+
+on:
+  push:
+    branches:
+      - develop  # Deploy no ambiente de desenvolvimento
+  pull_request:
+    branches:
+      - main  # Monitorando PRs para a branch main
+    types:
+      - closed  # Dispara quando o PR for fechado
+
+jobs:
+  # Job para compilar o projeto
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Download latest JDK 17
+        run: |
+          wget --no-verbose --directory-prefix $RUNNER_TEMP \
+          https://download.oracle.com/java/17/archive/jdk-17.0.12_linux-x64_bin.tar.gz
+
+      - name: Set up JDK from tar.gz
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: jdkfile
+          jdkFile: ${{ runner.temp }}/jdk-17.0.12_linux-x64_bin.tar.gz
+
+      - name: Verificar mudanças no código
+        run: |
+          if git diff --quiet HEAD^ HEAD -- .; then
+            echo "CHANGED=false" >> $GITHUB_ENV
+            echo "Nenhuma alteração detectada na aplicação."
+          else
+            echo "CHANGED=true" >> $GITHUB_ENV
+            echo "Alterações detectadas na aplicação."
+          fi
+
+      - name: Incrementar versão do pom.xml (caso tenha alterações)
+        if: env.CHANGED == 'true'
+        run: |
+            echo "Incrementando versão no pom.xml..."
+            VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+            NEW_VERSION="$MAJOR.$MINOR.$((PATCH+1))"
+            mvn versions:set -DnewVersion=$NEW_VERSION
+            mvn versions:commit
+            echo "Nova versão do pom.xml: $NEW_VERSION"
+
+      - name: Compile
+        run: mvn clean package
+
+
+      - name: Extract Maven project version
+        id: project
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "VERSION=$VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Pegar a versão da aplicação do pom.xml
+        run: |
+          echo "VERSION=${{ env.VERSION }}"
+
+
+  # Job para verificar a existência do cluster e ECR
+  verify-aws:
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Verificar cluster EKS
+        run: |
+          echo "Verificando se o cluster EKS existe..."
+          if ! aws eks describe-cluster --name eks-cluster --region us-east-1; then
+            echo "Cluster não encontrado."
+          else
+            echo "Cluster EKS já existe. Iremos prosseguir com o Deploy..."
+          fi
+
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=980921733871
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+      
+
+      - name: Validar repositório no ECR
+        run: |
+          ECR_REPOSITORY="fiapeats-api"
+          
+          echo "Validando se o repositório '${ECR_REPOSITORY}' existe no Amazon ECR..."
+          
+          if ! aws ecr describe-repositories --repository-names $ECR_REPOSITORY --region $AWS_REGION >/dev/null 2>&1; then
+            echo "Repositório '${ECR_REPOSITORY}' não encontrado. Criando no Amazon ECR..."
+            aws ecr create-repository --repository-name $ECR_REPOSITORY --region $AWS_REGION
+            echo "Repositório '${ECR_REPOSITORY}' criado com sucesso!"
+          else
+            echo "Repositório '${ECR_REPOSITORY}' já existe no Amazon ECR."
+          fi
+  # Job para fazer o build e publish da imagem Docker no Docker Hub
+  publish-image:
+    needs: [ compile, verify-aws ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Obter AWS Account ID e versão
+        id: get-account-id
+        run: |
+          ACCOUNT_ID=980921733871
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  
+
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
+
+      - name: Obter login no Amazon ECR
+        run: |
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Construir imagem Docker
+        run: |
+          # Captura a versão do projeto a partir do Maven
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+          # Define o repositório da imagem
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+
+          echo "Versão detectada: $VERSION"
+
+          # Builda a imagem Docker e passa a versão como build-arg
+          docker build --build-arg JAR_VERSION=$VERSION -t $IMAGE_REPO:$VERSION .
+
+          # Caso seja produção, também criar e push da tag 'latest'
+          if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Ambiente de produção detectado. Criando tag 'latest' para a imagem Docker."
+            docker tag $IMAGE_REPO:$VERSION $IMAGE_REPO:latest
+          else
+            echo "Ambiente de desenvolvimento detectado. Apenas a tag de versão será utilizada."
+          fi
+
+
+      - name: Push da imagem para o Amazon ECR
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          echo "Imagem: $IMAGE_REPO:$VERSION"
+          docker push $IMAGE_REPO:$VERSION
+          
+          # Tag e push para latest apenas para produção
+          if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Fazendo merge na latest"
+            docker tag $IMAGE_REPO:$VERSION $IMAGE_REPO:latest
+            docker push $IMAGE_REPO:latest
+          fi
+
+
+      - name: Atualizar imagem do Deployment no Kubernetes
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Versão detectada: $VERSION"
+          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          
+          # Determinar se o deploy é de produção
+          if [ "${{ github.event_name }}" == "pull_request" ] && [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Deploy no ambiente de produção. Atualizando com a imagem 'latest'..."
+            docker tag $IMAGE_REPO:$VERSION $IMAGE_REPO:latest
+            docker push $IMAGE_REPO:latest
+            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:latest
+          else
+            echo "Deploy no ambiente de desenvolvimento. Atualizando com a imagem versionada..."
+            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:$VERSION
+          fi
+
+  # Job para deploy no ambiente de desenvolvimento
+  deploy-develop:
+    needs: [verify-aws,publish-image]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0'
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
+          
+      - name: Obter versão do projeto
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Versão do projeto: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=980921733871
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+
+
+      - name: Baixar a imagem do ECR
+        run: |
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          echo "Imagem: $IMAGE_REPO:$VERSION"
+          docker pull "${IMAGE_REPO}:${VERSION}"
+
+
+      - name: Substituir a versão da imagem no deployment.yaml
+        run: |
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          VERSION=${{ env.VERSION }}
+          sed -i "s|image: .*|image: $IMAGE_REPO:$VERSION|" kubernetes/deployment.yaml
+
+      - name: Deploy no ambiente de desenvolvimento
+        run: |
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/configMap.yaml
+          kubectl apply -f kubernetes/dashboard.yaml
+          kubectl apply -f kubernetes/hpa.yaml
+          kubectl apply -f kubernetes/metrics.yaml
+          kubectl apply -f kubernetes/secrets.yaml
+          kubectl apply -f kubernetes/service_eks.yaml
+          kubectl apply -f kubernetes/userAdmin.yaml
+
+      - name: Health Check após Deploy
+        run: |
+          kubectl rollout status deployment/fiapeats-api-deployment -n default --timeout=5m
+          kubectl get pods -n default    
+
+  # Job para deploy no ambiente de produção
+  deploy-production:
+    needs: [verify-aws,publish-image, deploy-develop]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0'
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Atualizar configuração do Kubernetes
+        run: |
+          aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
+
+      - name: Obter versão do projeto
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "Imagem: $IMAGE_REPO:$VERSION"
+          docker pull "${IMAGE_REPO}:${VERSION}"
+
+      - name: Logar no Amazon ECR
+        run: |
+          AWS_REGION="us-east-1"
+          AWS_ACCOUNT_ID=980921733871
+          
+          echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
+
+
+      - name: Baixar a imagem do ECR
+        run: |
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          docker pull $IMAGE_REPO:$VERSION
+          echo "Imagem: $IMAGE_REPO:$VERSION"
+
+
+      - name: Substituir a versão da imagem no deployment.yaml
+        run: |
+            IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+            VERSION=${{ env.VERSION }}
+            sed -i "s|image: .*|image: $IMAGE_REPO:$VERSION|" kubernetes/deployment.yaml
+          
+
+      - name: Deploy no ambiente de produção
+        run: |
+          kubectl apply -f kubernetes/deployment.yaml
+          kubectl apply -f kubernetes/ingress.yaml
+          kubectl apply -f kubernetes/service.yaml
+          kubectl apply -f kubernetes/configMap.yaml
+          kubectl apply -f kubernetes/dashboard.yaml
+          kubectl apply -f kubernetes/hpa.yaml
+          kubectl apply -f kubernetes/metrics.yaml
+          kubectl apply -f kubernetes/secrets.yaml
+          kubectl apply -f kubernetes/service_eks.yaml
+          kubectl apply -f kubernetes/userAdmin.yaml
+      - name: Health Check após Deploy
+        run: |
+          kubectl rollout status deployment/fiapeats-api-deployment -n default --timeout=5m
+          kubectl get pods -n default

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fiapeats-api-container
-          image: dilanclima/tc-fiapeats-api:1.1.0
+          image: 980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api:latest
           ports:
             - containerPort: 8080
           env:
@@ -36,19 +36,23 @@ spec:
                   name: fiapeats-secret
                   key: spring.datasource.password
           resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
             requests:
-              cpu: "40m"
+              memory: "256Mi"
+              cpu: "250m"
           readinessProbe:
             httpGet:
               path: /fiapeats/actuator/health
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 90
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /fiapeats/actuator/health
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 105
             periodSeconds: 10
 
       restartPolicy: Always
