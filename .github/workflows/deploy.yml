@@ -128,7 +128,7 @@ jobs:
         run: |
           ACCOUNT_ID=980921733871
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  # Define como variável de ambiente
+          echo "AWS_ACCOUNT_ID=$ACCOUNT_ID" >> $GITHUB_ENV  
 
       - name: Atualizar configuração do Kubernetes
         run: |
@@ -237,7 +237,7 @@ jobs:
 
       - name: Baixar a imagem do ECR
         run: |
-          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           echo "Imagem: $IMAGE_REPO:$VERSION"
           docker pull "${IMAGE_REPO}:${VERSION}"
 
@@ -309,7 +309,7 @@ jobs:
 
       - name: Baixar a imagem do ECR
         run: |
-          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           docker pull $IMAGE_REPO:$VERSION
           echo "Imagem: $IMAGE_REPO:$VERSION"
 
