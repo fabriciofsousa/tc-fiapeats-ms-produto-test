@@ -6,7 +6,9 @@ on:
       - develop  # Deploy no ambiente de desenvolvimento
   pull_request:
     branches:
-      - main  # Deploy no ambiente de produção
+      - main  # Monitorando PRs para a branch main
+    types:
+      - closed  # Dispara quando o PR for fechado
 
 jobs:
   # Job para compilar o projeto
@@ -270,7 +272,7 @@ jobs:
   deploy-production:
     needs: [verify-aws,publish-image, deploy-develop]
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
