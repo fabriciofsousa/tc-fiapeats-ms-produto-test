@@ -183,10 +183,10 @@ jobs:
             echo "Deploy no ambiente de produção. Atualizando com a imagem 'latest'..."
             docker tag $IMAGE_REPO:$VERSION $IMAGE_REPO:latest
             docker push $IMAGE_REPO:latest
-            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:latest --record
+            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:latest
           else
             echo "Deploy no ambiente de desenvolvimento. Atualizando com a imagem versionada..."
-            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:$VERSION --record
+            kubectl set image deployment/fiapeats-api-deployment fiapeats-api-container=$IMAGE_REPO:$VERSION
           fi
 
   # Job para deploy no ambiente de desenvolvimento
@@ -213,6 +213,7 @@ jobs:
       - name: Atualizar configuração do Kubernetes
         run: |
           aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
           
 
       - name: Deploy no ambiente de desenvolvimento
@@ -257,6 +258,7 @@ jobs:
       - name: Atualizar configuração do Kubernetes
         run: |
           aws eks update-kubeconfig --name eks-cluster --region us-east-1
+          kubectl cluster-info
 
       - name: Deploy no ambiente de produção
         run: |
