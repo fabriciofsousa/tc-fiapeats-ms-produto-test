@@ -244,7 +244,7 @@ jobs:
 
       - name: Substituir a versão da imagem no deployment.yaml
         run: |
-          IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
           VERSION=${{ env.VERSION }}
           sed -i "s|image: .*|image: $IMAGE_REPO:$VERSION|" kubernetes/deployment.yaml
 
@@ -316,7 +316,7 @@ jobs:
 
       - name: Substituir a versão da imagem no deployment.yaml
         run: |
-            IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
+            IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
             VERSION=${{ env.VERSION }}
             sed -i "s|image: .*|image: $IMAGE_REPO:$VERSION|" kubernetes/deployment.yaml
           
