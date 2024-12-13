@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fiapeats-api-container
-          image: dilanclima/tc-fiapeats-api:latest
+          image: 980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api:latest
           ports:
             - containerPort: 8080
           env:
