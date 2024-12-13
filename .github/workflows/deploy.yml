@@ -238,8 +238,8 @@ jobs:
       - name: Baixar a imagem do ECR
         run: |
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
-          docker pull $IMAGE_REPO:$VERSION
           echo "Imagem: $IMAGE_REPO:$VERSION"
+          docker pull "${IMAGE_REPO}:${VERSION}"
 
 
       - name: Substituir a versão da imagem no deployment.yaml
@@ -295,8 +295,8 @@ jobs:
       - name: Obter versão do projeto
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "Versão do projeto: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Imagem: $IMAGE_REPO:$VERSION"
+          docker pull "${IMAGE_REPO}:${VERSION}"
 
       - name: Logar no Amazon ECR
         run: |
