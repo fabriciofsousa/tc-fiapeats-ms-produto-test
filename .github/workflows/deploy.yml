@@ -278,12 +278,6 @@ jobs:
           aws eks update-kubeconfig --name eks-cluster --region us-east-1
           kubectl cluster-info
 
-      - name: Obter versão do projeto
-        run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "Imagem: $IMAGE_REPO:$VERSION"
-          docker pull "${IMAGE_REPO}:${VERSION}"
-
       - name: Logar no Amazon ECR
         run: |
           AWS_REGION="us-east-1"
