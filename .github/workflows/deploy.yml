@@ -282,23 +282,20 @@ jobs:
         run: |
           AWS_REGION="us-east-1"
           AWS_ACCOUNT_ID=980921733871
-          
           echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
 
 
       - name: Baixar a imagem do ECR
         run: |
-          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
-          docker pull $IMAGE_REPO:$VERSION
-          echo "Imagem: $IMAGE_REPO:$VERSION"
+          IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api:latest"
+          docker pull $IMAGE_REPO
 
 
       - name: Substituir a versão da imagem no deployment.yaml
         run: |
-            IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
-            VERSION=${{ env.VERSION }}
-            sed -i "s|image: .*|image: $IMAGE_REPO:$VERSION|" kubernetes/deployment.yaml
+            IMAGE_REPO="980921733871.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api:latest"
+            sed -i "s|image: .*|image: $IMAGE_REPO|" kubernetes/deployment.yaml
           
 
       - name: Deploy no ambiente de produção
