@@ -41,7 +41,7 @@ jobs:
           fi
 
       - name: Atualizar versão do pom.xml
-        if: env.CHANGED == 'true'
+        if: env.CHANGED == 'true' && github.ref == 'refs/heads/develop'
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
@@ -51,11 +51,17 @@ jobs:
           mvn versions:set -DnewVersion=$NEW_VERSION
           mvn versions:commit
 
-          # Fazer commit e push das alterações
+      - name: Commit alterações
+        if: github.ref == 'refs/heads/develop'  # Só executa no branch develop
+        run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add pom.xml
           git commit -m "Atualiza versão para $NEW_VERSION"
+
+      - name: Push alterações
+        if: github.ref == 'refs/heads/develop'  # Só executa no branch develop
+        run: |
           git push origin ${{ github.ref }}
 
       - name: Build projeto
