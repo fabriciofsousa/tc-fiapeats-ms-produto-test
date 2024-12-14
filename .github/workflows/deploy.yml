@@ -42,8 +42,18 @@ jobs:
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
-          mvn versions:set -DnewVersion=$MAJOR.$MINOR.$((PATCH+1))
+          NEW_VERSION="$MAJOR.$MINOR.$((PATCH+1))"
+
+          # Atualizar o pom.xml
+          mvn versions:set -DnewVersion=$NEW_VERSION
           mvn versions:commit
+
+          # Fazer commit e push das alterações
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add pom.xml
+          git commit -m "Atualiza versão para $NEW_VERSION"
+          git push origin ${{ github.ref }}
 
       - name: Build projeto
         run: mvn clean package
