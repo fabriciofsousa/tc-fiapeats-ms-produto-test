@@ -257,7 +257,7 @@ jobs:
   deploy-production:
     needs: [verify-aws,publish-image, deploy-develop]
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
