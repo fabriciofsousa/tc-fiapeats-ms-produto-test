@@ -154,7 +154,6 @@ jobs:
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           IMAGE_REPO="${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/fiapeats-api"
-          echo "Imagem: $IMAGE_REPO:$VERSION"
           docker push $IMAGE_REPO:$VERSION
           
           # Tag e push para latest apenas para produção
@@ -255,7 +254,7 @@ jobs:
 
   # Job para deploy no ambiente de produção
   deploy-production:
-    needs: [verify-aws,publish-image, deploy-develop]
+    needs: [verify-aws,publish-image]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
