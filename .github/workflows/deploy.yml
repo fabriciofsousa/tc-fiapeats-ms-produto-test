@@ -199,7 +199,6 @@ jobs:
         run: |
           AWS_REGION="us-east-1"
           AWS_ACCOUNT_ID=980921733871
-          
           echo "Fazendo login no ECR da conta ${AWS_ACCOUNT_ID}..."
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.$AWS_REGION.amazonaws.com
 
@@ -239,7 +238,7 @@ jobs:
   deploy-production:
     needs: [verify-aws,publish-image, deploy-develop]
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
