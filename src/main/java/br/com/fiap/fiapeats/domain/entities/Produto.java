@@ -1,6 +1,7 @@
 package br.com.fiap.fiapeats.domain.entities;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Produto {
@@ -72,5 +73,23 @@ public class Produto {
 
   public String getImagemUrl() {
     return imagemUrl;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Produto produto = (Produto) o;
+    return Objects.equals(id, produto.id) &&
+            Objects.equals(nome, produto.nome) &&
+            Objects.equals(descricao, produto.descricao) &&
+            Objects.equals(valor, produto.valor) &&
+            Objects.equals(categoria, produto.categoria) &&
+            Objects.equals(imagemUrl, produto.imagemUrl);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, nome, descricao, valor, categoria, imagemUrl);
   }
 }

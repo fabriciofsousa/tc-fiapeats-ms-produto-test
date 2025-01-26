@@ -15,14 +15,14 @@ public class SwaggerConfiguration {
         .info(
             new Info()
                 .title("FiapEats")
-                .description("Documentação técnica para serviço de pedidos")
+                .description("Documentação técnica para serviço de produtos")
                 .version("1.0.0"));
   }
 
   @Bean
   public GroupedOpenApi internal() {
     return GroupedOpenApi.builder()
-        .pathsToMatch("/pedido/**", "/cliente/**", "/produto/**", "/pagamento/**")
+        .pathsToMatch("/produto/**")
         .group("interno")
         .build();
   }
