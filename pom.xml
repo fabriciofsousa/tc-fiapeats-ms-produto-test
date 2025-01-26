@@ -160,11 +160,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+<!--COMENTANDO POIS A VALIDACAO DO SONAR ESTA SENDO FEITO PELO GITHUB ACTIONS
 			<plugin>
 				<groupId>org.sonarsource.scanner.maven</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>3.9.1.2184</version>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
