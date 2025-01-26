@@ -95,9 +95,12 @@ jobs:
         with:
           projectBaseDir: .
 
+      - name: Verificar SONAR_TOKEN
+        run: echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}"
+
       - name: Rodar análise do SonarQube
         env:
-          SONAR_TOKEN: b3633232e54ab66db1e7c7fe3f70556312d000ff  # Token hardcoded
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn sonar:sonar -Dsonar.projectKey=tc-fiapeats-ms-produto-test -Dsonar.host.url=https://sonarcloud.io
   verify-aws:
     if: false  # DELETAR
