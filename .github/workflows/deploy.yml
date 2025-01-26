@@ -68,17 +68,26 @@ jobs:
           git push origin ${{ github.ref }}
 
       - name: Build projeto
-        run: mvn clean package
+        run: mvn clean package -Dmaven.test.skip=true
 
       - name: Extrair versão do projeto
         id: project
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+  tests:
+    needs: compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar código do repositório
+        uses: actions/checkout@v2
+
+      - name: Rodar testes unitários e integração com Maven
+        run: mvn clean verify
 
   verify-aws:
     if: false  # DELETAR
-    needs: compile
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Configurar AWS
