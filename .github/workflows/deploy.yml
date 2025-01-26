@@ -16,7 +16,6 @@ permissions:
 env:
   rodar: false  # DELETAR
 
-
 jobs:
   compile:
     runs-on: ubuntu-latest
