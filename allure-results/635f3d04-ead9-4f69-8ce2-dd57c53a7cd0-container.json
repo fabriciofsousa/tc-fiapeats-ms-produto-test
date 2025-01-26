@@ -1,0 +1,1 @@
+{"uuid":"635f3d04-ead9-4f69-8ce2-dd57c53a7cd0","name":"toCategoriaFromCategoriaEntity_shouldReturnCategoriaWithTrimmedDescription_whenCategoriaEntityDescricaoHasLeadingAndTrailingSpaces()","children":["be1a064f-67b0-457a-81d3-ea00acfcd4b6"],"befores":[],"afters":[],"start":1737871290829,"stop":1737871290835}

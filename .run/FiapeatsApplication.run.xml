@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FiapeatsApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="DATASOURCE_PASSWORD" value="pass" />
+      <env name="DATASOURCE_URL" value="jdbc:postgresql://localhost:5434/fiapeatsdb" />
+      <env name="DATASOURCE_USERNAME" value="postgres" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="br.com.fiap.fiapeats.FiapeatsApplication" />
+    <module name="fiapeats" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="br.com.fiap.fiapeats.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
