@@ -85,9 +85,25 @@ jobs:
       - name: Rodar testes unitários e integração com Maven
         run: mvn clean verify
 
+  sonarqube:
+    runs-on: tests
+    needs: build
+    steps:
+      - name: Verificar código do repositório
+        uses: actions/checkout@v2
+
+      - name: Configurar SonarQube Scanner
+        uses: sonarsource/sonarcloud-github-action@v1
+        with:
+          sonar-token: b3633232e54ab66db1e7c7fe3f70556312d000ff
+
+      - name: Rodar análise do SonarQube
+        run: mvn sonar:sonar -Dsonar.projectKey=tc-fiapeats-ms-produto-test -Dsonar.host.url=https://sonarcloud.io/project/overview?id=fabriciofsousa_tc-fiapeats-ms-produto-test
+
+
   verify-aws:
     if: false  # DELETAR
-    needs: tests
+    needs: sonarqube
     runs-on: ubuntu-latest
     steps:
       - name: Configurar AWS
