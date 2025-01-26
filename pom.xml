@@ -17,6 +17,7 @@
 		<java.version>17</java.version>
 		<spotless.version>2.22.8</spotless.version>
 		<sonar.exclusions>**/test/**</sonar.exclusions>
+		<sonar.organization>fiapeats-test</sonar.organization>
 	</properties>
 	<dependencies>
 		<dependency>
