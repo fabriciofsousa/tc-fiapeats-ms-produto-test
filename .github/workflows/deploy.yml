@@ -86,8 +86,8 @@ jobs:
         run: mvn clean verify
 
   sonarqube:
-    runs-on: tests
-    needs: build
+    runs-on: ubuntu-latest
+    needs: tests
     steps:
       - name: Verificar código do repositório
         uses: actions/checkout@v2
