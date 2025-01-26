@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+env:
+  rodar: false  # DELETAR
+
+
 jobs:
   compile:
     runs-on: ubuntu-latest
@@ -74,6 +78,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
   verify-aws:
+    if: env.rodar == 'true'  # DELETAR
     needs: compile
     runs-on: ubuntu-latest
     steps:
@@ -98,6 +103,7 @@ jobs:
           aws ecr create-repository --repository-name fiapeats-api --region us-east-1
 
   publish-image:
+    if: env.rodar == 'true'  # DELETAR
     needs: [ compile, verify-aws ]
     runs-on: ubuntu-latest
     steps:
@@ -185,7 +191,7 @@ jobs:
   deploy-develop:
     needs: [verify-aws,publish-image]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' && env.rodar == 'true' #DELETAR
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
@@ -256,7 +262,7 @@ jobs:
   deploy-production:
     needs: [verify-aws,publish-image]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && env.rodar == 'true' #DELETAR
     steps:
       - name: Baixar código do repositório
         uses: actions/checkout@v3
