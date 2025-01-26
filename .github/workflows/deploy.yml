@@ -92,10 +92,12 @@ jobs:
       - name: Verificar código do repositório
         uses: actions/checkout@v2
 
-      - name: Configurar Java
+      - name: Configurar JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: 17
+          distribution: jdkfile
+          jdkFile: ${{ runner.temp }}/jdk.tar.gz
 
       - name: Configurar SonarQube Scanner
         uses: sonarsource/sonarcloud-github-action@v1
