@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -270,5 +271,57 @@ class ProdutoRepositoryImplTest {
     assertThat(produtoComCategoria.getCategoria().getId()).isEqualTo(categoria.getId());
     assertThat(produtoComCategoria.getCategoria().getDescricao()).isEqualTo(categoria.getDescricao());
     assertThat(produtoComCategoria.getImagemUrl()).isEqualTo(produto.getImagemUrl());
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsComSucesso() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+    ProdutoEntity produtoEntity1 = new ProdutoEntity();
+    ProdutoEntity produtoEntity2 = new ProdutoEntity();
+    Produto produto1 = new Produto(UUID.randomUUID(), "Produto 1", "Descrição 1", BigDecimal.TEN, null, "imagem1.jpg");
+    Produto produto2 = new Produto(UUID.randomUUID(), "Produto 2", "Descrição 2", BigDecimal.valueOf(20), null, "imagem2.jpg");
+
+    when(produtoRepositoryJPA.findAllById(uuids)).thenReturn(Arrays.asList(produtoEntity1, produtoEntity2));
+    when(produtoEntityMapper.toProduto(produtoEntity1)).thenReturn(produto1);
+    when(produtoEntityMapper.toProduto(produtoEntity2)).thenReturn(produto2);
+
+    List<Produto> result = produtoRepositoryImpl.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(result).hasSize(2);
+    assertThat(result).containsExactlyInAnyOrder(produto1, produto2);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsRetornaNotFoundQuandoListaVazia() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+
+    when(produtoRepositoryJPA.findAllById(uuids)).thenReturn(List.of());
+
+    assertThatThrownBy(() -> produtoRepositoryImpl.listarProdutosPorListaDeIds(uuids))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Não foram encontrados produtos!");
+  }
+
+  @Test
+  void toProdutoEntityReturnsNullWhenProdutoIsNull() {
+
+    ProdutoEntity result = produtoEntityMapper.toProdutoEntity(null);
+
+    assertThat(result).isNull();
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsRetornaNotFoundQuandoTodosProdutosSaoNulos() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+    ProdutoEntity produtoEntity1 = new ProdutoEntity();
+    ProdutoEntity produtoEntity2 = new ProdutoEntity();
+
+    when(produtoRepositoryJPA.findAllById(uuids)).thenReturn(Arrays.asList(produtoEntity1, produtoEntity2));
+    when(produtoEntityMapper.toProduto(produtoEntity1)).thenReturn(null);
+    when(produtoEntityMapper.toProduto(produtoEntity2)).thenReturn(null);
+
+    assertThatThrownBy(() -> produtoRepositoryImpl.listarProdutosPorListaDeIds(uuids))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Não foram encontrados produtos!");
   }
 }

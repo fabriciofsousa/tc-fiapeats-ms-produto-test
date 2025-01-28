@@ -1,5 +1,6 @@
 package br.com.fiap.fiapeats.unitTests.external.api.contracts.response;
 
+import br.com.fiap.fiapeats.external.api.contracts.response.ErroResponse;
 import br.com.fiap.fiapeats.external.api.exceptions.RestErrorResponse;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,4 +45,34 @@ class ErrorResponseTest {
     assertThat(response.getErrors()).isEqualTo(erros);
     assertThat(response.getTimestamp()).isNotZero();
   }
-}
+
+    @Test
+    void deveCriarErroResponseComTodosOsCampos() {
+      ErroResponse erroResponse = new ErroResponse("TipoErro", "CodigoErro", "Mensagem de erro");
+
+      assertThat(erroResponse.getTipo()).isEqualTo("TipoErro");
+      assertThat(erroResponse.getCodigo()).isEqualTo("CodigoErro");
+      assertThat(erroResponse.getMensagem()).isEqualTo("Mensagem de erro");
+    }
+
+    @Test
+    void deveCriarErroResponseComConstrutorSemArgumentos() {
+      ErroResponse erroResponse = new ErroResponse();
+
+      assertThat(erroResponse.getTipo()).isNull();
+      assertThat(erroResponse.getCodigo()).isNull();
+      assertThat(erroResponse.getMensagem()).isNull();
+    }
+
+    @Test
+    void deveSetarEObterCamposDeErroResponse() {
+      ErroResponse erroResponse = new ErroResponse();
+      erroResponse.setTipo("TipoErro");
+      erroResponse.setCodigo("CodigoErro");
+      erroResponse.setMensagem("Mensagem de erro");
+
+      assertThat(erroResponse.getTipo()).isEqualTo("TipoErro");
+      assertThat(erroResponse.getCodigo()).isEqualTo("CodigoErro");
+      assertThat(erroResponse.getMensagem()).isEqualTo("Mensagem de erro");
+    }
+  }

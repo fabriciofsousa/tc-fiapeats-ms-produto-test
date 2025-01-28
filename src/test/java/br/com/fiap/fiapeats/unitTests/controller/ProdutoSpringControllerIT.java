@@ -26,7 +26,7 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Sql(scripts = {"/sqlTest.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class ProdutoSpringControllerIntegrationTest {
+public class ProdutoSpringControllerIT {
 
     @LocalServerPort
     private int port;

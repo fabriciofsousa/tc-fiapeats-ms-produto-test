@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,5 +102,49 @@ class ProdutoSpringControllerTest {
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(response);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsComSucesso() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+    List<ProdutoResponse> response = List.of(new ProdutoResponse());
+
+    when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(response);
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(result.getBody()).isEqualTo(response);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsRetornaNotFoundQuandoListaVazia() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+
+    when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(List.of());
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsRetornaNotFoundQuandoListaNula() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+
+    when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(null);
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsComListaDeIdsVazia() {
+    List<UUID> uuids = List.of();
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 }

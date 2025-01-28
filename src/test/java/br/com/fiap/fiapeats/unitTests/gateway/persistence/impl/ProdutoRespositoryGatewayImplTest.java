@@ -131,4 +131,39 @@ class ProdutoRespositoryGatewayImplTest {
         assertThat(resultado).isEmpty();
         verify(produtoRepository, times(1)).listarProdutosPorcategoria(categoriaId);
     }
+
+    @Test
+    void deveListarProdutosPorListaDeIdsComSucesso() {
+        List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+        List<Produto> listaProdutos = Arrays.asList(produto, new Produto(UUID.randomUUID(), "Outro Produto", "Desc", new BigDecimal("20.0"), null, null));
+        when(produtoRepository.listarProdutosPorListaDeIds(uuids)).thenReturn(listaProdutos);
+
+        List<Produto> resultado = produtoRespositoryGateway.listarProdutosPorListaDeIds(uuids);
+
+        assertThat(resultado).isNotEmpty().hasSize(2);
+        verify(produtoRepository, times(1)).listarProdutosPorListaDeIds(uuids);
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHaProdutosParaOsIds() {
+        List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+        when(produtoRepository.listarProdutosPorListaDeIds(uuids)).thenReturn(Arrays.asList());
+
+        List<Produto> resultado = produtoRespositoryGateway.listarProdutosPorListaDeIds(uuids);
+
+        assertThat(resultado).isEmpty();
+        verify(produtoRepository, times(1)).listarProdutosPorListaDeIds(uuids);
+    }
+
+    @Test
+    void deveFalharAoListarProdutosComListaDeIdsNula() {
+        when(produtoRepository.listarProdutosPorListaDeIds(null)).thenThrow(new IllegalArgumentException("Lista de UUIDs inválida"));
+
+        try {
+            produtoRespositoryGateway.listarProdutosPorListaDeIds(null);
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("Lista de UUIDs inválida");
+        }
+    }
 }

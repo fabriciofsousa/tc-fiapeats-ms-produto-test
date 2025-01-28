@@ -50,6 +50,14 @@ class CategoriaRepositoryImplTest {
     }
 
     @Test
+    void categoriaToCategoriaEntityReturnsNullWhenCategoriaIsNull() {
+
+        Categoria result = categoriaEntityMapper.toCategoria(null);
+
+        assertThat(result).isNull();
+    }
+
+    @Test
     void consultarCategoriaInexistente() {
         Categoria categoria = new Categoria(new java.util.Random().nextLong(), "Alimentos");
 

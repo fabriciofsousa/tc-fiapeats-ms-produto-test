@@ -40,6 +40,9 @@ class ProdutoControllerTest {
   @Mock
   private ListarProdutosPorCategoriaUseCase listarProdutosPorCategoriaUseCase;
 
+  @Mock
+  private ListarProdutosPorListaDeIdsUseCase listarProdutosPorListaDeIdsUseCase;
+
   private Produto produto;
   private Categoria categoria;
 
@@ -167,5 +170,40 @@ class ProdutoControllerTest {
 
     assertThat(resultado).isEmpty();
     verify(listarProdutosPorCategoriaUseCase, times(1)).listarProdutosPorCategoria(categoriaId);
+  }
+
+  @Test
+  void deveListarProdutosPorListaDeIdsComSucesso() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+    List<Produto> listaProdutos = Arrays.asList(produto, new Produto(UUID.randomUUID(), "Outro Produto", "Desc", new BigDecimal("20.0"), categoria, null));
+    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(listaProdutos);
+
+    List<ProdutoResponse> resultado = produtoController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(resultado).isNotEmpty().hasSize(2);
+    verify(listarProdutosPorListaDeIdsUseCase, times(1)).ListarProdutosPorListaDeIdsUseCase(uuids);
+  }
+
+  @Test
+  void deveRetornarListaVaziaQuandoNaoHaProdutosParaOsIds() {
+    List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
+    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(Arrays.asList());
+
+    List<ProdutoResponse> resultado = produtoController.listarProdutosPorListaDeIds(uuids);
+
+    assertThat(resultado).isEmpty();
+    verify(listarProdutosPorListaDeIdsUseCase, times(1)).ListarProdutosPorListaDeIdsUseCase(uuids);
+  }
+
+  @Test
+  void deveFalharAoListarProdutosComListaDeIdsNula() {
+    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(null)).thenThrow(new IllegalArgumentException("Lista de UUIDs inválida"));
+
+    try {
+      produtoController.listarProdutosPorListaDeIds(null);
+    } catch (Exception e) {
+      assertThat(e).isInstanceOf(IllegalArgumentException.class)
+              .hasMessageContaining("Lista de UUIDs inválida");
+    }
   }
 }
