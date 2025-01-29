@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin({"http://127.0.0.1:5500", "http://localhost:63342"})
 public class ProdutoSpringController {
 
+  public static final String CORRELATION_ID = "correlationId={";
   private final ProdutoController produtoController;
 
   private final ProdutoMapper produtoMapper;
@@ -49,7 +50,7 @@ public class ProdutoSpringController {
           @RequestBody @Valid CriarProdutoRequest produtoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [criarProduto] ");
@@ -74,7 +75,7 @@ public class ProdutoSpringController {
           @PathVariable UUID id, @RequestBody @Valid EditarProdutoRequest editarProdutoRequest) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [editarProduto] ");
@@ -97,7 +98,7 @@ public class ProdutoSpringController {
   public ResponseEntity<Object> removerProduto(@PathVariable UUID id) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [removerProduto] ");
@@ -120,7 +121,7 @@ public class ProdutoSpringController {
   public ResponseEntity<List<ProdutoResponse>> listarTodosProdutos() {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [listarTodosProdutos] ");
@@ -140,7 +141,7 @@ public class ProdutoSpringController {
   public ResponseEntity<List<ProdutoResponse>> consultarProdutoPorCategoria(
           @PathVariable("categoria") String categoria) {
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [consultarProdutoPorCategoria] ");
@@ -169,7 +170,7 @@ public class ProdutoSpringController {
   public ResponseEntity<List<ProdutoResponse>> listarProdutosPorListaDeIds(@RequestParam @Valid List<UUID> uuids) {
     ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
     log.info(
-            "correlationId={"
+            CORRELATION_ID
                     + ThreadContext.get(Constants.CORRELATION_ID)
                     + "} "
                     + "Solicitacao recebida [listarProdutosPorListaDeIds] ");

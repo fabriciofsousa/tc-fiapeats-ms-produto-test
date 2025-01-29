@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -47,7 +46,7 @@ public class ProdutoSteps {
                 .body(criarProdutoRequest)
                 .when()
                 .post("/fiapeats/produto")
-                .then().extract().path("id");;
+                .then().extract().path("id");
 
         produtoId = UUID.fromString(id);
 
@@ -68,7 +67,7 @@ public class ProdutoSteps {
                 .body(criarProdutoRequest)
                 .when()
                 .post("/fiapeats/produto")
-                .then().extract().path("id");;
+                .then().extract().path("id");
 
         produtoId = UUID.fromString(id);
     }
@@ -180,8 +179,10 @@ public class ProdutoSteps {
         response.then()
                 .statusCode(HttpStatus.OK.value());
 
-        assertNotEquals(criarProdutoRequest, editarProdutoRequest, "Os produtos não são diferentes");
-
+        assertNotEquals(criarProdutoRequest.getNome(), editarProdutoRequest.getNome(), "Os nomes dos produtos não são diferentes");
+        assertNotEquals(criarProdutoRequest.getDescricao(), editarProdutoRequest.getDescricao(), "As descrições dos produtos não são diferentes");
+        assertNotEquals(criarProdutoRequest.getValor(), editarProdutoRequest.getValor(), "Os preços dos produtos não são diferentes");
+        assertNotEquals(criarProdutoRequest.getImagemUrl(), editarProdutoRequest.getImagemUrl(), "As URLs das imagens dos produtos não são diferentes");
     }
 
     @Então("a edição do produto deve falhar com produto não encontrado")

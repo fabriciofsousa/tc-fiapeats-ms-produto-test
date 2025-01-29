@@ -287,8 +287,7 @@ class ProdutoRepositoryImplTest {
 
     List<Produto> result = produtoRepositoryImpl.listarProdutosPorListaDeIds(uuids);
 
-    assertThat(result).hasSize(2);
-    assertThat(result).containsExactlyInAnyOrder(produto1, produto2);
+    assertThat(result).hasSize(2).containsExactlyInAnyOrder(produto1, produto2);
   }
 
   @Test

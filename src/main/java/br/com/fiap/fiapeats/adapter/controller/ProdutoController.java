@@ -105,7 +105,7 @@ public class ProdutoController {
    * @return the list of response DTOs with products corresponding to the provided UUIDs
    */
   public List<ProdutoResponse> listarProdutosPorListaDeIds(List<UUID> uuids) {
-    List<Produto> produto = listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(uuids);
+    List<Produto> produto = listarProdutosPorListaDeIdsUseCase.listarProdutosPorListaDeIdsUseCase(uuids);
     return ProdutoPresenter.toProdutosResponse(produto);
   }
 }

@@ -24,7 +24,7 @@ public class ListarProdutosPorListaDeIdsUseCaseImpl implements ListarProdutosPor
    * @return the list of products corresponding to the provided UUIDs
    */
   @Override
-  public List<Produto> ListarProdutosPorListaDeIdsUseCase(List<UUID> uuids) {
+  public List<Produto> listarProdutosPorListaDeIdsUseCase(List<UUID> uuids) {
     return produtoRepositoryGateway.listarProdutosPorListaDeIds(uuids);
   }
 }

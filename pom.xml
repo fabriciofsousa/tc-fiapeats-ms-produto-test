@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spotless.version>2.22.8</spotless.version>
-		<sonar.exclusions>**/test/**, **/FiapeatsApplicationTest.java</sonar.exclusions>
+		<sonar.exclusions>**/test/**, **/FiapeatsApplicationTest.java, **/RunCucumberTest.java</sonar.exclusions>
 		<sonar.projectKey>fabriciofsousa_tc-fiapeats-ms-produto-test</sonar.projectKey>
 		<sonar.organization>fiapeats-test</sonar.organization>
 	</properties>

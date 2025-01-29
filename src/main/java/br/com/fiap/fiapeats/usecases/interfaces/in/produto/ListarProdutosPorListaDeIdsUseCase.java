@@ -16,5 +16,5 @@ public interface ListarProdutosPorListaDeIdsUseCase {
    * @param uuids the list of UUIDs
    * @return the list of products corresponding to the given UUIDs
    */
-  List<Produto> ListarProdutosPorListaDeIdsUseCase(List<UUID> uuids);
+  List<Produto> listarProdutosPorListaDeIdsUseCase(List<UUID> uuids);
 }

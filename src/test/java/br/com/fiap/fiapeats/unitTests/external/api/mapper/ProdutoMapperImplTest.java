@@ -1,6 +1,5 @@
 package br.com.fiap.fiapeats.unitTests.external.api.mapper;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -8,9 +7,6 @@ import br.com.fiap.fiapeats.domain.entities.Produto;
 import br.com.fiap.fiapeats.external.api.contracts.request.CriarProdutoRequest;
 import br.com.fiap.fiapeats.external.api.contracts.request.EditarProdutoRequest;
 import br.com.fiap.fiapeats.external.api.mapper.ProdutoMapperImpl;
-import br.com.fiap.fiapeats.external.persistence.mapper.ProdutoEntityMapperImpl;
-import br.com.fiap.fiapeats.external.persistence.orm.CategoriaEntity;
-import br.com.fiap.fiapeats.external.persistence.orm.ProdutoEntity;
 import br.com.fiap.fiapeats.usecases.dtos.CriarProdutoDTO;
 import br.com.fiap.fiapeats.usecases.dtos.EditarProdutoDTO;
 import org.junit.jupiter.api.Test;

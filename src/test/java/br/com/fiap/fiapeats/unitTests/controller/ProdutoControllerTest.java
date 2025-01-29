@@ -176,28 +176,28 @@ class ProdutoControllerTest {
   void deveListarProdutosPorListaDeIdsComSucesso() {
     List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
     List<Produto> listaProdutos = Arrays.asList(produto, new Produto(UUID.randomUUID(), "Outro Produto", "Desc", new BigDecimal("20.0"), categoria, null));
-    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(listaProdutos);
+    when(listarProdutosPorListaDeIdsUseCase.listarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(listaProdutos);
 
     List<ProdutoResponse> resultado = produtoController.listarProdutosPorListaDeIds(uuids);
 
     assertThat(resultado).isNotEmpty().hasSize(2);
-    verify(listarProdutosPorListaDeIdsUseCase, times(1)).ListarProdutosPorListaDeIdsUseCase(uuids);
+    verify(listarProdutosPorListaDeIdsUseCase, times(1)).listarProdutosPorListaDeIdsUseCase(uuids);
   }
 
   @Test
   void deveRetornarListaVaziaQuandoNaoHaProdutosParaOsIds() {
     List<UUID> uuids = Arrays.asList(UUID.randomUUID(), UUID.randomUUID());
-    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(Arrays.asList());
+    when(listarProdutosPorListaDeIdsUseCase.listarProdutosPorListaDeIdsUseCase(uuids)).thenReturn(Arrays.asList());
 
     List<ProdutoResponse> resultado = produtoController.listarProdutosPorListaDeIds(uuids);
 
     assertThat(resultado).isEmpty();
-    verify(listarProdutosPorListaDeIdsUseCase, times(1)).ListarProdutosPorListaDeIdsUseCase(uuids);
+    verify(listarProdutosPorListaDeIdsUseCase, times(1)).listarProdutosPorListaDeIdsUseCase(uuids);
   }
 
   @Test
   void deveFalharAoListarProdutosComListaDeIdsNula() {
-    when(listarProdutosPorListaDeIdsUseCase.ListarProdutosPorListaDeIdsUseCase(null)).thenThrow(new IllegalArgumentException("Lista de UUIDs inválida"));
+    when(listarProdutosPorListaDeIdsUseCase.listarProdutosPorListaDeIdsUseCase(null)).thenThrow(new IllegalArgumentException("Lista de UUIDs inválida"));
 
     try {
       produtoController.listarProdutosPorListaDeIds(null);

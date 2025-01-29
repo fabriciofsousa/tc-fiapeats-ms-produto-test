@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-public class CriarProdutoDTOTest {
+class CriarProdutoDTOTest {
     @Test
     void criarProdutoDTOComTodosOsCampos() {
         CriarProdutoDTO dto = new CriarProdutoDTO("Produto 1", "Descrição 1", BigDecimal.TEN, "Categoria 1", "imagem1.jpg");

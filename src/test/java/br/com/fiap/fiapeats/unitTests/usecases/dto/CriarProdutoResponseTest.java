@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
-public class CriarProdutoResponseTest {
+class CriarProdutoResponseTest {
 
     @Test
     void criarProdutoResponseComTodosOsCampos() {

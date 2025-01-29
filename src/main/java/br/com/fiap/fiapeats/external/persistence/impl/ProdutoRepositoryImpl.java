@@ -10,7 +10,6 @@ import br.com.fiap.fiapeats.usecases.exceptions.NotFoundException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProdutoRepositoryImpl implements ProdutoRepository {
 
+  public static final String NAO_FORAM_ENCONTRADOS_PRODUTOS = "Não foram encontrados produtos!";
   private final ProdutoEntityMapper produtoEntityMapper;
   private final ProdutoRepositoryJPA produtoRepositoryJPA;
   private final CategoriaMapper categoriaMapper;
@@ -96,7 +96,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
   @Override
   public List<Produto> listarProdutosPorcategoria(Long idCategoria) {
     List<ProdutoEntity> products = produtoRepositoryJPA.findProductByCategoryId(idCategoria);
-    if (products.isEmpty()) throw new NotFoundException("Não foram encontrados produtos!");
+    if (products.isEmpty()) throw new NotFoundException(NAO_FORAM_ENCONTRADOS_PRODUTOS);
     return products.stream()
             .map(
                     p ->
@@ -122,15 +122,15 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     List<ProdutoEntity> products = produtoRepositoryJPA.findAllById(uuids);
 
     if (products.isEmpty()) {
-      throw new NotFoundException("Não foram encontrados produtos!");
+      throw new NotFoundException(NAO_FORAM_ENCONTRADOS_PRODUTOS);
     }
 
     List<Produto> result = products.stream()
             .map(produtoEntityMapper::toProduto)
-            .collect(Collectors.toList());
+            .toList();
 
     if (result.stream().allMatch(Objects::isNull)) {
-      throw new NotFoundException("Não foram encontrados produtos!");
+      throw new NotFoundException(NAO_FORAM_ENCONTRADOS_PRODUTOS);
     }
 
     return result;
@@ -145,7 +145,7 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
   @Override
   public List<Produto> listarProdutos() {
     List<ProdutoEntity> products = produtoRepositoryJPA.findAll();
-    if (products.isEmpty()) throw new NotFoundException("Não foram encontrados produtos!");
+    if (products.isEmpty()) throw new NotFoundException(NAO_FORAM_ENCONTRADOS_PRODUTOS);
     return products.stream()
             .map(
                     p ->
