@@ -320,7 +320,7 @@
 						<artifactId>gatling-maven-plugin</artifactId>
 						<version>4.3.7</version>
 						<configuration>
-							<simulationClass>org.example.performance.ApiPerformanceSimulation</simulationClass>
+							<simulationClass>br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation</simulationClass>
 						</configuration>
 					</plugin>
 				</plugins>
