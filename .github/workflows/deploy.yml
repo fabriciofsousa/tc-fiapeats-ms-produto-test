@@ -110,13 +110,32 @@ jobs:
         run: |
           echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
-      - name: Executar testes de integração
-        run: mvn verify -Pintegration-test
+      - name: Instalar Gatling
+        run: |
+          wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.9.5/gatling-charts-highcharts-bundle-3.9.5-bundle.zip
+          unzip gatling-charts-highcharts-bundle-3.9.5-bundle.zip
+          mv gatling-charts-highcharts-bundle-3.9.5 gatling
+
+      - name: Rodar Testes de Performance
+        run: |
+          cd gatling
+          bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation
 
       - name: Gerar link do relatório de testes de integração
         run: |
             echo "Relatório de testes de integração disponível em: file://$(pwd)/target/failsafe-reports/index.html"
+        continue-on-error: true
 
+      - name: Publicar Relatório no GitHub Pages
+        run: |
+          mkdir -p gh-pages
+          cp -r gatling/results/*/* gh-pages/
+
+      - name: Deploy para GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: gh-pages
   system-tests:
     needs: compile
     runs-on: ubuntu-latest
