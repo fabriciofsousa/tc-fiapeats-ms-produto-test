@@ -171,58 +171,53 @@ jobs:
             REPORT_DIR="$(pwd)/$REPORT_DIR"
             echo "Diretório esperado: $REPORT_DIR"
             ls -la "$REPORT_DIR" || echo "Diretório não encontrado"
-      
-      
 
-      - name: Capturar Diretório do Relatório (Corrigido)
+      - name: Capturar Diretório do Relatório
         run: |
-          if [ -d "target/gatling" ]; then
-            if [ -f "target/gatling/lastRun.txt" ]; then
-              # Ler apenas a primeira linha do arquivo
-              REPORT_DIR=$(head -n 1 target/gatling/lastRun.txt)
-              REPORT_DIR="$(pwd)/$REPORT_DIR"
-          
-              if [ -d "$REPORT_DIR" ]; then
-                REPORT_NAME=$(basename $REPORT_DIR)
-                echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
-                echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
-                echo "Relatório encontrado: $REPORT_DIR"
+            if [ -d "target/gatling" ]; then
+              if [ -f "target/gatling/lastRun.txt" ]; then
+                REPORT_DIR=$(head -n 1 target/gatling/lastRun.txt)
+                REPORT_DIR="target/gatling/$REPORT_DIR"
+        
+                if [ -d "$REPORT_DIR" ]; then
+                  REPORT_NAME=$(basename $REPORT_DIR)
+                  echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
+                  echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
+                  echo "Relatório encontrado: $REPORT_DIR"
+                else
+                  echo "Diretório do relatório não encontrado: $REPORT_DIR"
+                  exit 0
+                fi
               else
-                echo "Diretório do relatório não encontrado: $REPORT_DIR"
+                echo "Arquivo lastRun.txt não encontrado em target/gatling."
                 exit 0
               fi
             else
-              echo "Arquivo lastRun.txt não encontrado em target/gatling."
+              echo "Diretório target/gatling não encontrado."
               exit 0
             fi
-          else
-            echo "Diretório target/gatling não encontrado."
-            exit 0
-          fi
 
-
-      - name: Publicar Relatório no GitHub Pages
-        if: env.REPORT_DIR != ''
+      - name: Preparar arquivos para o GitHub Pages
         run: |
-          mkdir -p gh-pages
-          cp -r $REPORT_DIR/* gh-pages/
-          echo "Relatório copiado para gh-pages."
+            mkdir -p gh-pages/gatling
+            cp -r $REPORT_DIR/* gh-pages/gatling/
+            echo "Relatório copiado para gh-pages/gatling"
 
-      - name: Deploy para GitHub Pages
-        if: env.REPORT_DIR != ''
+      - name: Publicar no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: gh-pages
+            branch: gh-pages
+            folder: gh-pages
+            clean: true
 
       - name: Exibir URL do Relatório
-        if: env.REPORT_DIR != ''
         run: |
-          REPO_NAME=$(basename $GITHUB_REPOSITORY)
-          USER_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
-          REPORT_URL="https://${USER_NAME}.github.io/${REPO_NAME}/${REPORT_NAME}/index.html"
-          echo "✅ Relatório publicado: ${REPORT_URL}"
-          echo "::notice title=Relatório Gatling::📊 Acesse o relatório aqui 👉 ${REPORT_URL}"
+            REPO_NAME=$(basename $GITHUB_REPOSITORY)
+            USER_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+            REPORT_URL="https://${USER_NAME}.github.io/${REPO_NAME}/gatling/index.html"
+            echo "✅ Relatório publicado: ${REPORT_URL}"
+            echo "::notice title=Relatório Gatling::📊 Acesse o relatório aqui 👉 ${REPORT_URL}"
+    
 
   sonarqube:
     runs-on: ubuntu-latest
