@@ -161,7 +161,18 @@ jobs:
       - name: Listar arquivos gerados
         run: |
           ls -R target/gatling || echo "Nenhum diretório encontrado"
+          
+      - name: Debug - Verificar conteúdo de lastRun.txt
+        run: cat target/gatling/lastRun.txt
 
+      - name: Debug - Verificar caminho absoluto
+        run: |
+            REPORT_DIR=$(cat target/gatling/lastRun.txt)
+            REPORT_DIR="$(pwd)/$REPORT_DIR"
+            echo "Diretório esperado: $REPORT_DIR"
+            ls -la "$REPORT_DIR" || echo "Diretório não encontrado"
+      
+      
 
       - name: Capturar Diretório do Relatório
         run: |
