@@ -159,11 +159,21 @@ jobs:
 
       - name: Capturar Diretório do Relatório
         run: |
-          REPORT_DIR=$(ls -td gatling/results/* | head -1)
-          REPORT_NAME=$(basename $REPORT_DIR)  # Nome exato da pasta do relatório
-          echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
-          echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
-
+          if [ -d "target/gatling" ]; then
+            REPORT_DIR=$(ls -td target/gatling/* | head -1)
+            if [ -z "$REPORT_DIR" ]; then
+              echo "Nenhum relatório encontrado em target/gatling."
+              exit 0
+            else
+              REPORT_NAME=$(basename $REPORT_DIR)
+              echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
+              echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
+              echo "Relatório encontrado: $REPORT_DIR"
+            fi
+          else
+            echo "Diretório target/gatling não encontrado."
+            exit 0
+          fi
       - name: Publicar Relatório no GitHub Pages
         run: |
           mkdir -p gh-pages
