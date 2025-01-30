@@ -41,7 +41,7 @@ class CategoriaRepositoryImplTest {
         CategoriaEntity categoriaEntity = new CategoriaEntity();
         categoriaEntity.setDescricao("Bebidas");
 
-        when(categoriaRepositoryJPA.findByDescricao("Bebidas")).thenReturn(Optional.of(categoriaEntity));
+        when(categoriaRepositoryJPA.findByDescricaoIgnoreCase("Bebidas")).thenReturn(Optional.of(categoriaEntity));
         when(categoriaEntityMapper.toCategoria(categoriaEntity)).thenReturn(categoria);
 
         Categoria result = categoriaRepositoryImpl.consultar(categoria);
@@ -61,7 +61,7 @@ class CategoriaRepositoryImplTest {
     void consultarCategoriaInexistente() {
         Categoria categoria = new Categoria(new java.util.Random().nextLong(), "Alimentos");
 
-        when(categoriaRepositoryJPA.findByDescricao("Alimentos")).thenReturn(Optional.empty());
+        when(categoriaRepositoryJPA.findByDescricaoIgnoreCase("Alimentos")).thenReturn(Optional.empty());
 
         Categoria result = categoriaRepositoryImpl.consultar(categoria);
 

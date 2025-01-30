@@ -1,5 +1,6 @@
 package br.com.fiap.fiapeats.usecases.dtos;
 
+import br.com.fiap.fiapeats.domain.entities.Categoria;
 import br.com.fiap.fiapeats.domain.entities.Produto;
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -12,7 +13,7 @@ public class ProdutoResponse {
 
   private String descricao;
 
-  private String categoria;
+  private Categoria categoria;
 
   private BigDecimal valor;
 
@@ -24,20 +25,16 @@ public class ProdutoResponse {
     this.id = produto.getId();
     this.nome = produto.getNome();
     this.descricao = produto.getDescricao();
-    this.categoria = produto.getCategoria().getDescricao();
+    this.categoria = produto.getCategoria();
     this.valor = produto.getValor();
     this.imagemUrl = produto.getImagemUrl();
-  }
-
-  public ProdutoResponse(UUID id) {
-    this.id = id;
   }
 
   public ProdutoResponse(
       UUID id,
       String nome,
       String descricao,
-      String categoria,
+      Categoria categoria,
       BigDecimal valor,
       String imagemUrl) {
     this.id = id;
@@ -60,7 +57,7 @@ public class ProdutoResponse {
     return descricao;
   }
 
-  public String getCategoria() {
+  public Categoria getCategoria() {
     return categoria;
   }
 

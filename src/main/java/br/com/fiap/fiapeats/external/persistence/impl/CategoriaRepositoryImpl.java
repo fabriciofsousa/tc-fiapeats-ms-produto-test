@@ -22,7 +22,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
     @Override
     public Categoria consultar(Categoria categoria) {
         return categoriaRepositoryJPA
-                .findByDescricao(categoria.getDescricao())
+                .findByDescricaoIgnoreCase(categoria.getDescricao())
                 .map(categoriaEntityMapper::toCategoria)
                 .orElse(null);
     }

@@ -1,5 +1,6 @@
 package br.com.fiap.fiapeats.unitTests.usecases.dto;
 
+import br.com.fiap.fiapeats.domain.entities.Categoria;
 import br.com.fiap.fiapeats.usecases.dtos.ProdutoResponse;
 import org.junit.jupiter.api.Test;
 
@@ -13,12 +14,13 @@ class ProdutoResponseTest {
     @Test
     void criarProdutoResponseComTodosOsCampos() {
         UUID id = UUID.randomUUID();
-        ProdutoResponse response = new ProdutoResponse(id, "Produto 1", "Descrição 1", "Categoria 1", BigDecimal.TEN, "imagem1.jpg");
+        ProdutoResponse response = new ProdutoResponse(id, "Produto 1", "Descrição 1", new Categoria(1L, "Categoria 1"), BigDecimal.TEN, "imagem1.jpg");
 
         assertThat(response.getId()).isEqualTo(id);
         assertThat(response.getNome()).isEqualTo("Produto 1");
         assertThat(response.getDescricao()).isEqualTo("Descrição 1");
-        assertThat(response.getCategoria()).isEqualTo("Categoria 1");
+        assertThat(response.getCategoria().getId()).isEqualTo(1L);
+        assertThat(response.getCategoria().getDescricao()).isEqualTo("Categoria 1");
         assertThat(response.getValor()).isEqualTo(BigDecimal.TEN);
         assertThat(response.getImagemUrl()).isEqualTo("imagem1.jpg");
     }
@@ -39,7 +41,7 @@ class ProdutoResponseTest {
 
     @Test
     void setNomeAlteraNome() {
-        ProdutoResponse response = new ProdutoResponse(UUID.randomUUID(), "Produto 232", "Descrição 1", "Categoria 1", BigDecimal.TEN, "imagem1.jpg");
+        ProdutoResponse response = new ProdutoResponse(UUID.randomUUID(), "Produto 232", "Descrição 1", new Categoria(1L, "Categoria 1"), BigDecimal.TEN, "imagem1.jpg");
 
         assertThat(response.getNome()).isEqualTo("Produto 232");
     }

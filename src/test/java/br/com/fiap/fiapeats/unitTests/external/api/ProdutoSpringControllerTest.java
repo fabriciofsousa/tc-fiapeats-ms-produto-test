@@ -1,11 +1,13 @@
 package br.com.fiap.fiapeats.unitTests.external.api;
 
 import br.com.fiap.fiapeats.adapter.controller.ProdutoController;
+import br.com.fiap.fiapeats.domain.utils.Constants;
 import br.com.fiap.fiapeats.external.api.ProdutoSpringController;
 import br.com.fiap.fiapeats.external.api.contracts.request.CriarProdutoRequest;
 import br.com.fiap.fiapeats.external.api.contracts.request.EditarProdutoRequest;
 import br.com.fiap.fiapeats.external.api.mapper.ProdutoMapper;
 import br.com.fiap.fiapeats.usecases.dtos.*;
+import org.apache.logging.log4j.ThreadContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -48,7 +50,7 @@ class ProdutoSpringControllerTest {
     when(produtoMapper.toCriarProdutoDTO(request)).thenReturn(dto);
     when(produtoController.criarProduto(dto)).thenReturn(response);
 
-    ResponseEntity<CriarProdutoResponse> result = produtoSpringController.criarProduto(request);
+    ResponseEntity<CriarProdutoResponse> result = produtoSpringController.criarProduto(null, request);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThat(result.getBody()).isEqualTo(response);
@@ -64,7 +66,7 @@ class ProdutoSpringControllerTest {
     when(produtoMapper.toEditarProdutoDTO(id, request)).thenReturn(dto);
     when(produtoController.editarProduto(dto)).thenReturn(response);
 
-    ResponseEntity<Object> result = produtoSpringController.editarProduto(id, request);
+    ResponseEntity<Object> result = produtoSpringController.editarProduto(null, id, request);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(response);
@@ -74,7 +76,7 @@ class ProdutoSpringControllerTest {
   void removerProdutoComSucesso() {
     UUID id = UUID.randomUUID();
 
-    ResponseEntity<Object> result = produtoSpringController.removerProduto(id);
+    ResponseEntity<Object> result = produtoSpringController.removerProduto(null, id);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
   }
@@ -85,7 +87,7 @@ class ProdutoSpringControllerTest {
 
     when(produtoController.listarTodosProdutos()).thenReturn(response);
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarTodosProdutos();
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarTodosProdutos(null);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(response);
@@ -98,7 +100,7 @@ class ProdutoSpringControllerTest {
 
     when(produtoController.consultarProdutoPorCategoria(categoria)).thenReturn(response);
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.consultarProdutoPorCategoria(categoria);
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.consultarProdutoPorCategoria(null, categoria);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(response);
@@ -111,7 +113,7 @@ class ProdutoSpringControllerTest {
 
     when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(response);
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(null, uuids);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(response);
@@ -123,7 +125,7 @@ class ProdutoSpringControllerTest {
 
     when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(List.of());
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(null, uuids);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
@@ -134,7 +136,7 @@ class ProdutoSpringControllerTest {
 
     when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(null);
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(null, uuids);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
@@ -143,8 +145,41 @@ class ProdutoSpringControllerTest {
   void listarProdutosPorListaDeIdsComListaDeIdsVazia() {
     List<UUID> uuids = List.of();
 
-    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(uuids);
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(null, uuids);
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+  }
+
+  @Test
+  void criarProdutoComCorrelationId() {
+    String correlationId = UUID.randomUUID().toString();
+    CriarProdutoRequest request = new CriarProdutoRequest();
+    CriarProdutoDTO dto = new CriarProdutoDTO("nome", "descricao", BigDecimal.TEN, "categoria", "imagem");
+    CriarProdutoResponse response = new CriarProdutoResponse(UUID.randomUUID(), "nome", "descricao", BigDecimal.TEN, "categoria", "imagem");
+
+    when(produtoMapper.toCriarProdutoDTO(request)).thenReturn(dto);
+    when(produtoController.criarProduto(dto)).thenReturn(response);
+
+    ResponseEntity<CriarProdutoResponse> result = produtoSpringController.criarProduto(correlationId, request);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(result.getBody()).isEqualTo(response);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isEqualTo(correlationId);
+  }
+
+  @Test
+  void criarProdutoSemCorrelationId() {
+    CriarProdutoRequest request = new CriarProdutoRequest();
+    CriarProdutoDTO dto = new CriarProdutoDTO("nome", "descricao", BigDecimal.TEN, "categoria", "imagem");
+    CriarProdutoResponse response = new CriarProdutoResponse(UUID.randomUUID(), "nome", "descricao", BigDecimal.TEN, "categoria", "imagem");
+
+    when(produtoMapper.toCriarProdutoDTO(request)).thenReturn(dto);
+    when(produtoController.criarProduto(dto)).thenReturn(response);
+
+    ResponseEntity<CriarProdutoResponse> result = produtoSpringController.criarProduto(null, request);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(result.getBody()).isEqualTo(response);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
   }
 }

@@ -47,13 +47,13 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "422", description = "Categoria informada inválida")
           })
   public ResponseEntity<CriarProdutoResponse> criarProduto(
+          @RequestHeader(value = "correlationId", required = false) String correlationId,
           @RequestBody @Valid CriarProdutoRequest produtoRequest) {
-    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [criarProduto] ");
+
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [criarProduto] ");
 
     CriarProdutoDTO criarProdutoDTO = produtoMapper.toCriarProdutoDTO(produtoRequest);
 
@@ -72,13 +72,12 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "422", description = "Categoria informada inválida")
           })
   public ResponseEntity<Object> editarProduto(
+          @RequestHeader(value = "correlationId", required = false) String correlationId,
           @PathVariable UUID id, @RequestBody @Valid EditarProdutoRequest editarProdutoRequest) {
-    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [editarProduto] ");
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [editarProduto] ");
 
     EditarProdutoDTO editarProdutoDTO = produtoMapper.toEditarProdutoDTO(id, editarProdutoRequest);
 
@@ -95,13 +94,13 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso"),
                   @ApiResponse(responseCode = "404", description = "Produto não encontrado")
           })
-  public ResponseEntity<Object> removerProduto(@PathVariable UUID id) {
-    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [removerProduto] ");
+  public ResponseEntity<Object> removerProduto(
+          @RequestHeader(value = "correlationId", required = false) String correlationId,
+          @PathVariable UUID id) {
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [removerProduto] ");
 
     produtoController.removerProduto(id);
 
@@ -118,13 +117,11 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "422", description = "Problema com a requisição"),
                   @ApiResponse(responseCode = "404", description = "Nenhum produto na base")
           })
-  public ResponseEntity<List<ProdutoResponse>> listarTodosProdutos() {
-    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [listarTodosProdutos] ");
+  public ResponseEntity<List<ProdutoResponse>> listarTodosProdutos(@RequestHeader(value = "correlationId", required = false) String correlationId) {
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [listarTodosProdutos] ");
     return ResponseEntity.ok(produtoController.listarTodosProdutos());
   }
 
@@ -139,12 +136,12 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "404", description = "Nenhum produto na base")
           })
   public ResponseEntity<List<ProdutoResponse>> consultarProdutoPorCategoria(
+          @RequestHeader(value = "correlationId", required = false) String correlationId,
           @PathVariable("categoria") String categoria) {
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [consultarProdutoPorCategoria] ");
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [consultarProdutoPorCategoria] ");
 
     return ResponseEntity.ok(produtoController.consultarProdutoPorCategoria(categoria));
   }
@@ -167,13 +164,13 @@ public class ProdutoSpringController {
                   @ApiResponse(responseCode = "404", description = "Nenhum produto encontrado"),
                   @ApiResponse(responseCode = "422", description = "Problema com a requisição")
           })
-  public ResponseEntity<List<ProdutoResponse>> listarProdutosPorListaDeIds(@RequestParam @Valid List<UUID> uuids) {
-    ThreadContext.put(Constants.CORRELATION_ID, UUID.randomUUID().toString());
-    log.info(
-            CORRELATION_ID
-                    + ThreadContext.get(Constants.CORRELATION_ID)
-                    + "} "
-                    + "Solicitacao recebida [listarProdutosPorListaDeIds] ");
+  public ResponseEntity<List<ProdutoResponse>> listarProdutosPorListaDeIds(
+          @RequestHeader(value = "correlationId", required = false) String correlationId,
+          @RequestParam @Valid List<UUID> uuids) {
+    if (correlationId == null || correlationId.isEmpty()) {
+      correlationId = UUID.randomUUID().toString();
+    }
+    generateCorrelationId(correlationId, "Solicitacao recebida [listarProdutosPorListaDeIds] ");
 
     List<ProdutoResponse> produtos = produtoController.listarProdutosPorListaDeIds(uuids);
 
@@ -182,5 +179,13 @@ public class ProdutoSpringController {
     }
 
     return ResponseEntity.ok(produtos);
+  }
+
+  private void generateCorrelationId(String correlationId, String description) {
+    ThreadContext.put(Constants.CORRELATION_ID, correlationId);
+    log.info(CORRELATION_ID
+            + ThreadContext.get(Constants.CORRELATION_ID)
+            + "} "
+            + description);
   }
 }
