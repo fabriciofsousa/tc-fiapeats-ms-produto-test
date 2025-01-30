@@ -142,7 +142,7 @@ jobs:
             echo "Relatório de testes de sistema disponível em: file://$(pwd)/target/cucumber-reports/index.html"
 
   performance-tests:
-    needs: compile
+    #needs: compile #DELETAR
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
@@ -161,7 +161,7 @@ jobs:
       - name: Rodar Testes de Performance
         run: |
           cd gatling
-          bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation
+          bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation -nr -rf ./results
 
       - name: Capturar Diretório do Relatório
         run: |
