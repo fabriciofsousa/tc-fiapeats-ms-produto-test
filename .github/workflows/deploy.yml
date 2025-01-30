@@ -174,7 +174,9 @@ jobs:
             echo "Diretório target/gatling não encontrado."
             exit 0
           fi
+
       - name: Publicar Relatório no GitHub Pages
+        if: env.REPORT_DIR != ''
         run: |
           mkdir -p gh-pages
           cp -r $REPORT_DIR/* gh-pages/
