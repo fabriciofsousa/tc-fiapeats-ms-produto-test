@@ -142,6 +142,7 @@ jobs:
             echo "Relatório de testes de sistema disponível em: file://$(pwd)/target/cucumber-reports/index.html"
 
   performance-tests:
+    needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
@@ -150,74 +151,13 @@ jobs:
       - name: Configurar JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17' # Altere para a versão do JDK que você está utilizando
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Rodar Testes de Performance com Maven
         continue-on-error: true
         run: |
-          mvn gatling:test -Pperformance-test
-
-      - name: Listar arquivos gerados
-        run: |
-          ls -R target/gatling || echo "Nenhum diretório encontrado"
-          
-      - name: Debug - Verificar conteúdo de lastRun.txt
-        run: cat target/gatling/lastRun.txt
-
-      - name: Debug - Verificar caminho absoluto
-        run: |
-            REPORT_DIR=$(cat target/gatling/lastRun.txt)
-            REPORT_DIR="$(pwd)/$REPORT_DIR"
-            echo "Diretório esperado: $REPORT_DIR"
-            ls -la "$REPORT_DIR" || echo "Diretório não encontrado"
-
-      - name: Capturar Diretório do Relatório
-        run: |
-            if [ -d "target/gatling" ]; then
-              if [ -f "target/gatling/lastRun.txt" ]; then
-                REPORT_DIR=$(head -n 1 target/gatling/lastRun.txt)
-                REPORT_DIR="target/gatling/$REPORT_DIR"
-        
-                if [ -d "$REPORT_DIR" ]; then
-                  REPORT_NAME=$(basename $REPORT_DIR)
-                  echo "REPORT_DIR=$REPORT_DIR" >> $GITHUB_ENV
-                  echo "REPORT_NAME=$REPORT_NAME" >> $GITHUB_ENV
-                  echo "Relatório encontrado: $REPORT_DIR"
-                else
-                  echo "Diretório do relatório não encontrado: $REPORT_DIR"
-                  exit 0
-                fi
-              else
-                echo "Arquivo lastRun.txt não encontrado em target/gatling."
-                exit 0
-              fi
-            else
-              echo "Diretório target/gatling não encontrado."
-              exit 0
-            fi
-
-      - name: Preparar arquivos para o GitHub Pages
-        run: |
-            mkdir -p gh-pages/gatling
-            cp -r $REPORT_DIR/* gh-pages/gatling/
-            echo "Relatório copiado para gh-pages/gatling"
-
-      - name: Publicar no GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-            branch: gh-pages
-            folder: gh-pages
-            clean: true
-
-      - name: Exibir URL do Relatório
-        run: |
-            REPO_NAME=$(basename $GITHUB_REPOSITORY)
-            USER_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
-            REPORT_URL="https://${USER_NAME}.github.io/${REPO_NAME}/gatling/index.html"
-            echo "✅ Relatório publicado: ${REPORT_URL}"
-            echo "::notice title=Relatório Gatling::📊 Acesse o relatório aqui 👉 ${REPORT_URL}"
-    
+          mvn gatling:test -Pperformance-test   
 
   sonarqube:
     runs-on: ubuntu-latest
@@ -225,7 +165,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
       - name: Set up JDK 17
         uses: actions/setup-java@v1
         with:
