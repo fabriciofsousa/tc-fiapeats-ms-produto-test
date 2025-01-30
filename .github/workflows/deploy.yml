@@ -158,6 +158,11 @@ jobs:
         run: |
           mvn gatling:test -Pperformance-test
 
+      - name: Listar arquivos gerados
+        run: |
+          ls -R target/gatling || echo "Nenhum diretório encontrado"
+
+
       - name: Capturar Diretório do Relatório
         run: |
           if [ -d "target/gatling" ]; then
