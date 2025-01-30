@@ -154,14 +154,16 @@ jobs:
 
       - name: Instalar Gatling
         run: |
-          wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.9.5/gatling-charts-highcharts-bundle-3.9.5-bundle.zip
-          unzip gatling-charts-highcharts-bundle-3.9.5-bundle.zip
-          mv gatling-charts-highcharts-bundle-3.9.5 gatling
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.9.0/gatling-charts-highcharts-bundle-3.9.0-bundle.zip
+          unzip gatling-charts-highcharts-bundle-3.9.0-bundle.zip -d gatling
+          rm gatling-charts-highcharts-bundle-3.9.0-bundle.zip
+          echo "GATLING_HOME=$(pwd)/gatling/gatling-charts-highcharts-bundle-3.9.0" >> $GITHUB_ENV
 
       - name: Rodar Testes de Performance
         run: |
-          cd gatling
-          bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation -nr -rf ./results
+          $GATLING_HOME/bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation
 
       - name: Capturar Diretório do Relatório
         run: |
