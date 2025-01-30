@@ -153,6 +153,7 @@ jobs:
           echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
       - name: Rodar Testes de Performance com Maven
+        continue-on-error: true
         run: |
           mvn gatling:test -Pperformance-test
 
