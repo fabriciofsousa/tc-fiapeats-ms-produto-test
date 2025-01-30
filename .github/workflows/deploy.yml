@@ -152,18 +152,9 @@ jobs:
         run: |
           echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
-      - name: Instalar Gatling
+      - name: Rodar Testes de Performance com Maven
         run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.9.0/gatling-charts-highcharts-bundle-3.9.0-bundle.zip
-          unzip gatling-charts-highcharts-bundle-3.9.0-bundle.zip -d gatling
-          rm gatling-charts-highcharts-bundle-3.9.0-bundle.zip
-          echo "GATLING_HOME=$(pwd)/gatling/gatling-charts-highcharts-bundle-3.9.0" >> $GITHUB_ENV
-
-      - name: Rodar Testes de Performance
-        run: |
-          $GATLING_HOME/bin/gatling.sh -s br.com.fiap.fiapeats.unitTests.performance.ApiPerformanceSimulation
+          mvn gatling:test -Pperformance-test
 
       - name: Capturar Diretório do Relatório
         run: |
