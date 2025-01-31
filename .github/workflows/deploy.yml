@@ -117,7 +117,7 @@ jobs:
 
       - name: Iniciar aplicação em segundo plano
         run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test &
+          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
           echo "Aguardando aplicação iniciar..."
           sleep 30
 
@@ -310,7 +310,7 @@ jobs:
         run: |
           aws eks update-kubeconfig --name eks-cluster --region us-east-1
           kubectl cluster-info
-          
+
       - name: Obter versão do projeto
         run: |
           VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
