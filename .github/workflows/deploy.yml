@@ -127,7 +127,7 @@ jobs:
 
       - name: Iniciar aplicação em segundo plano e capturar logs
         run: |
-          mvn spring-boot:run      -Dspring-boot.run.profiles=test      -Ddatasource_url=jdbc:h2:mem:testdb      -Dspring.datasource.driver-class-name=org.h2.Driver      -Dspring.datasource.username=sa      -Dspring.datasource.password=password      -Dspring.jpa.database-platform=org.hibernate.dialect.H2Dialect      -Dspring.h2.console.enabled=true &
+          mvn spring-boot:run -Dspring-boot.run.jvmArguments="-DATASOURCE_URL=jdbc:h2:mem:testdb" &
           echo "Aguardando aplicação iniciar..."
           sleep 30 # Aguarda um pouco para garantir que o log comece a ser gerado
       - name: Executar testes de sistema (Cucumber)
