@@ -141,12 +141,6 @@ jobs:
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
 
-      - name: Publicar relatório de testes como artefato
-        uses: actions/upload-artifact@v3
-        with:
-          name: cucumber-report
-          path: target/cucumber-reports/
-
 
   performance-tests:
     needs: compile
