@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.fiap</groupId>
 	<artifactId>fiapeats-Produtos</artifactId>
-	<version>1.0.8</version>
+	<version>1.0.9</version>
 	<name>Produtos</name>
 	<description>Microsservice do fiapeats para Gestão de produtos</description>
 	<properties>
