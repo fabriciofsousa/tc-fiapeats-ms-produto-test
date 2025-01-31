@@ -105,17 +105,18 @@ jobs:
             echo "Relatório de testes de integração disponível em: file://$(pwd)/target/failsafe-reports/index.html"
 
   system-tests:
-    #needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Usar JDK configurado
-        run: |
-          echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17' # Altere para a versão do JDK que você usa
+          distribution: 'temurin'
 
-      - name: Iniciar aplicação em segundo plano
+      - name: Configurar ambiente de teste
         run: |
           export SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
           export SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
@@ -124,17 +125,29 @@ jobs:
           export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
           export SPRING_H2_CONSOLE_ENABLED=true
           export SPRING_DATASOURCE_DATA=classpath:sqlTest.sql
+
+      - name: Iniciar aplicação em segundo plano
+        run: |
           mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
           echo "Aguardando aplicação iniciar..."
-          sleep 60
-          mvn verify -Psystem-test
+
+      - name: Verificar se a aplicação está pronta
+        run: |
+          until curl -s http://localhost:8080/actuator/health | grep -q "UP"; do
+            echo "Aguardando aplicação iniciar..."
+            sleep 5
+          done
+          echo "Aplicação está pronta!"
 
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
 
-      - name: Gerar link do relatório de testes de sistema
-        run: |
-            echo "Relatório de testes de sistema disponível em: file://$(pwd)/target/cucumber-reports/index.html"
+      - name: Publicar relatório de testes como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-report
+          path: target/cucumber-reports/
+
 
   performance-tests:
     needs: compile
