@@ -168,38 +168,178 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 ao logar, selecione o token e cole o valor gerado anteriormente.
 
 ---
-## Documentação APIs (ordem de execução)
+# Documentação APIs (ordem de execução)
 
-O swagger da aplicação poderá ser visualizado através da url: http://localhost:31000/fiapeats/swagger-ui/index.html
+O Swagger da aplicação pode ser acessado através da URL: `http://localhost:8080/fiapeats/swagger-ui/index.html`.
 
-Para criar e pagar um pedido é necessário realizar a execução das APIs na seguinte ordem:
+Abaixo estão os principais endpoints para gerenciamento de produtos, com exemplos de requisições e respostas.
 
-1. Criar um cliente utilizando a rota 'POST /cliente', informando os dados do cliente.
-2. Criar um produto utilizando a rota 'POST /produto', informando os detalhes do produto que deseja cadastrar.
-3. Criar um pedido utilizando a rota 'POST /pedido', informando o id do produto cadastrado no passo 2, o cpf do cliente cadastrado no passo 1 e o valor total do pedido. 
-4. Criar um QR Code de pagamento utilizando a rota 'POST /pagamento', informando o id do pedido criado no passo 3 e a url de notificação que receberá o status de pagamento se aprovado ou recusado.
-5. Atualizar o status do pedido utilizando a rota 'PATCH /pedido/{id}/status' informando o id do pedido criado no itam 3 e o novo status (ex: 2 = Recebido).
-6. Consultar as informações do pedido criado utilizando a rota 'GET /pedido/{id}'.
+---
 
-`Cpf do cliente na criação do pedido é opcional, caso queira pode criar um pedido sem cliente e pular o passo 1`
+## 1. Criar um Produto
+**Descrição**: Cria um novo produto no sistema.
 
-Para outras consultas associadas a pedidos pode utilizar as seguintes rotas:
-- Para consultar todos os pedidos: 'GET /pedidos'
-- Para consultar todos os pedidos de um status de pagamento especificio: 'GET /pedido/{idStatusPagamento}/pagamento'
+**Endpoint**: `POST /produto`
+
+**Exemplo de Requisição**:
+```json
+{
+  "nome": "Refrigerante Guaraná",
+  "descricao": "Refrigerante lata 350ml",
+  "valor": 7.99,
+  "categoria": "Bebida",
+  "imagemUrl": "https://exemplo.com/imagem.png"
+}
+```
+
+**Exemplo de Resposta (201 Created)**:
+```json
+{
+  "id": "fc7c7f37-32ea-465c-ac4b-490685e5a55f",
+  "nome": "Refrigerante Guaraná",
+  "descricao": "Refrigerante lata 350ml",
+  "valor": 7.99,
+  "categoria": {
+    "id": 3,
+    "descricao": "Bebida"
+  },
+  "imagemUrl": "https://exemplo.com/imagem.png"
+}
+```
+
+---
+
+## 2. Listar Todos os Produtos
+**Descrição**: Retorna uma lista de todos os produtos cadastrados.
+
+**Endpoint**: `GET /produto`
+
+**Exemplo de Resposta (200 OK)**:
+```json
+[
+  {
+    "id": "fc7c7f37-32ea-465c-ac4b-490685e5a55f",
+    "nome": "Refrigerante Guaraná",
+    "descricao": "Refrigerante lata 350ml",
+    "valor": 7.99,
+    "categoria": {
+      "id": 3,
+      "descricao": "Bebida"
+    },
+    "imagemUrl": "https://exemplo.com/imagem.png"
+  },
+  {
+    "id": "fa0f9dde-b305-407b-869c-71045853dea8",
+    "nome": "Pizza de Calabresa",
+    "descricao": "Pizza grande com calabresa fatiada",
+    "valor": 49.99,
+    "categoria": {
+      "id": 5,
+      "descricao": "Pizza"
+    },
+    "imagemUrl": "https://exemplo.com/pizza.png"
+  }
+]
+```
+
+---
+
+## 3. Buscar Produto por ID
+**Descrição**: Retorna os detalhes de um produto específico com base no ID.
+
+**Endpoint**: `GET /produto/{id}`
+
+**Exemplo de Resposta (200 OK)**:
+```json
+{
+  "id": "fc7c7f37-32ea-465c-ac4b-490685e5a55f",
+  "nome": "Refrigerante Guaraná",
+  "descricao": "Refrigerante lata 350ml",
+  "valor": 7.99,
+  "categoria": {
+    "id": 3,
+    "descricao": "Bebida"
+  },
+  "imagemUrl": "https://exemplo.com/imagem.png"
+}
+```
+
+---
+
+## 6. Listar Produtos por Categoria
+**Descrição**: Retorna uma lista de produtos que pertencem a uma categoria específica.
+
+**Endpoint**: `GET /produto/categoria/{categoria}`
+
+**Exemplo de Resposta (200 OK)**:
+```json
+[
+  {
+    "id": "fc7c7f37-32ea-465c-ac4b-490685e5a55f",
+    "nome": "Refrigerante Guaraná",
+    "descricao": "Refrigerante lata 350ml",
+    "valor": 7.99,
+    "categoria": {
+      "id": 3,
+      "descricao": "Bebida"
+    },
+    "imagemUrl": "https://exemplo.com/imagem.png"
+  },
+  {
+    "id": "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8",
+    "nome": "Água Mineral",
+    "descricao": "Garrafa de 500ml",
+    "valor": 3.50,
+    "categoria": {
+      "id": 3,
+      "descricao": "Bebida"
+    },
+    "imagemUrl": "https://exemplo.com/agua.png"
+  }
+]
+```
+
+---
+
+## 7. Listar Produtos por Lista de IDs
+**Descrição**: Retorna uma lista de produtos com base em uma lista de IDs fornecida.
+
+**Endpoint**: `GET /produto/listarPorIds?uuids={id1},{id2},{id3}`
+
+**Exemplo de Requisição**:
+```
+GET /produto/listarPorIds?uuids=fc7c7f37-32ea-465c-ac4b-490685e5a55f,fa0f9dde-b305-407b-869c-71045853dea8
+```
+
+**Exemplo de Resposta (200 OK)**:
+```json
+[
+  {
+    "id": "fc7c7f37-32ea-465c-ac4b-490685e5a55f",
+    "nome": "Refrigerante Guaraná",
+    "descricao": "Refrigerante lata 350ml",
+    "valor": 7.99,
+    "categoria": {
+      "id": 3,
+      "descricao": "Bebida"
+    },
+    "imagemUrl": "https://exemplo.com/imagem.png"
+  },
+  {
+    "id": "fa0f9dde-b305-407b-869c-71045853dea8",
+    "nome": "Pizza de Calabresa",
+    "descricao": "Pizza grande com calabresa fatiada",
+    "valor": 49.99,
+    "categoria": {
+      "id": 5,
+      "descricao": "Pizza"
+    },
+    "imagemUrl": "https://exemplo.com/pizza.png"
+  }
+]
+```
 
 
-Para gerenciamento de produtos pode utilizar as seguintes rotas:
-- Para consultar todos os produtos cadastrados: GET /produto
-- Para consultar todos os produtos de uma categoria especifica: GET /produto/categoria/{categoria} 
-- Para excluir um produto: DELETE /produto/{id}
-- Para alterar os dados de um produto: PUT /produto/{id}
-
-
-Para gerenciamento de clientes pode utilizar as seguintes rotas:
-- Para criar um cliente: POST /cliente
-- Para consultar um cliente: GET /cliente/{documento}
-
-`Rota POST /pagamento/notificação foi criada exclusivamente para o recebimento das notificações de pagamento do Mercado Pago. Por isso, na rota de criação do QR Code para pagamento precisa informar essa url de notifição, mas para essa integração funcionar é necessário utilizar o ngrok ou outro serviço para expor a rota.`
 
 ---
 
