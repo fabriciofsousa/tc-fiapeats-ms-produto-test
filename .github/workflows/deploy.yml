@@ -125,10 +125,12 @@ jobs:
           export SPRING_H2_CONSOLE_ENABLED=true
           export SPRING_DATASOURCE_DATA=classpath:sqlTest.sql
 
-      - name: Iniciar aplicação em segundo plano
+      - name: Iniciar aplicação em segundo plano e capturar logs
         run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
+          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties > mvn.log 2>&1 &
           echo "Aguardando aplicação iniciar..."
+          sleep 10 # Aguarda um pouco para garantir que o log comece a ser gerado
+          cat mvn.log
 
       - name: Verificar se a aplicação está pronta
         run: |
