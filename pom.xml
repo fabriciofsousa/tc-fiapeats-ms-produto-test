@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>br.com.fiap</groupId>
-	<artifactId>fiapeats</artifactId>
+	<artifactId>fiapeats-Produtos</artifactId>
 	<version>1.0.0</version>
 	<name>Produtos</name>
 	<description>Microsservice do fiapeats para Gestão de produtos</description>
