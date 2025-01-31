@@ -115,24 +115,8 @@ jobs:
         run: |
           echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
-      - name: Configurar ambiente de teste
-        run: |
-          export DATASOURCE_URL=jdbc:h2:mem:testdb
-          export SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
-          export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
-          export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
-          export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
-          export SPRING_H2_CONSOLE_ENABLED=true
-          export SPRING_DATASOURCE_DATA=classpath:sqlTest.sql
-
-      - name: Build projeto
-        run: mvn clean install
-
       - name: Iniciar aplicação em segundo plano e capturar logs
         run: |
-          java -DDATASOURCE_URL=jdbc:h2:mem:testdb -Dspring.profiles.active=test -jar target/*.jar &
-          echo "Aguardando aplicação iniciar..."
-          sleep 30 # Aguarda um pouco para garantir que o log comece a ser gerado
               - name: Executar testes de sistema (Cucumber)
                 run: mvn verify -Psystem-test
 
