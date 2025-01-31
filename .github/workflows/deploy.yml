@@ -105,16 +105,15 @@ jobs:
             echo "Relatório de testes de integração disponível em: file://$(pwd)/target/failsafe-reports/index.html"
 
   system-tests:
+    #needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Configurar JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17' # Altere para a versão do JDK que você usa
-          distribution: 'temurin'
+      - name: Usar JDK configurado
+        run: |
+          echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
       - name: Configurar ambiente de teste
         run: |
