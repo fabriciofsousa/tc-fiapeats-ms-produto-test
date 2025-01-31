@@ -125,14 +125,17 @@ jobs:
           export SPRING_H2_CONSOLE_ENABLED=true
           export SPRING_DATASOURCE_DATA=classpath:sqlTest.sql
 
+      - name: Build projeto
+        run: mvn clean install
+
       - name: Iniciar aplicação em segundo plano e capturar logs
         run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test -DDATASOURCE_URL=jdbc:h2:mem:testdb -Drun.jvmArguments="-DATASOURCE_URL=jdbc:h2:mem:testdb" &
+          java -DDATASOURCE_URL=jdbc:h2:mem:testdb -jar target/*.jar &
           echo "Aguardando aplicação iniciar..."
           sleep 30 # Aguarda um pouco para garantir que o log comece a ser gerado
+
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
-
 
   performance-tests:
     needs: compile
