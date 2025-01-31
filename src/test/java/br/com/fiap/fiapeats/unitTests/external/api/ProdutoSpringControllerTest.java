@@ -219,6 +219,22 @@ class ProdutoSpringControllerTest {
   }
 
   @Test
+  void criarProdutoComCorrelationIdEmBranco() {
+    CriarProdutoRequest request = new CriarProdutoRequest("Refrigerante", "Lata 350ml", new BigDecimal("5.99"), "Drink", "http://imagem.com/img.png");
+    CriarProdutoDTO dto = new CriarProdutoDTO("Refrigerante", "Lata 350ml", new BigDecimal("5.99"), "Drink", "http://imagem.com/img.png");
+    CriarProdutoResponse response = new CriarProdutoResponse(UUID.randomUUID(), "Refrigerante", "Lata 350ml", new BigDecimal("5.99"), "Drink", "http://imagem.com/img.png");
+
+    when(produtoMapper.toCriarProdutoDTO(request)).thenReturn(dto);
+    when(produtoController.criarProduto(dto)).thenReturn(response);
+
+    ResponseEntity<CriarProdutoResponse> result = produtoSpringController.criarProduto("", request);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    assertThat(result.getBody()).isEqualTo(response);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
+  }
+
+  @Test
   void editarProdutoComCorrelationId() {
     String correlationId = UUID.randomUUID().toString();
     UUID id = UUID.randomUUID();
@@ -232,6 +248,21 @@ class ProdutoSpringControllerTest {
 
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isEqualTo(correlationId);
+  }
+
+  @Test
+  void editarProdutoComCorrelationIdEmBranco() {
+    UUID id = UUID.randomUUID();
+    EditarProdutoRequest request = new EditarProdutoRequest("Refrigerante Atualizado", "Lata 500ml", new BigDecimal("6.99"), "Drink", "http://imagem.com/updated.png");
+    EditarProdutoDTO dto = new EditarProdutoDTO("nome", "descricao", BigDecimal.TEN, "categoria", "imagem", id);
+
+    when(produtoMapper.toEditarProdutoDTO(id, request)).thenReturn(dto);
+    when(produtoController.editarProduto(dto)).thenReturn(null);
+
+    ResponseEntity<Object> result = produtoSpringController.editarProduto("", id, request);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
   }
 
   @Test
@@ -273,6 +304,17 @@ class ProdutoSpringControllerTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
   }
+  @Test
+  void removerProdutoSemCorrelationIdEmBranco() {
+    UUID id = UUID.randomUUID();
+
+    doNothing().when(produtoController).removerProduto(id);
+
+    ResponseEntity<Object> result = produtoSpringController.removerProduto("", id);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
+  }
 
   @Test
   void listarTodosProdutosComCorrelationId() {
@@ -288,6 +330,20 @@ class ProdutoSpringControllerTest {
     assertThat(result.getBody()).isEqualTo(response);
     assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isEqualTo(correlationId);
   }
+  @Test
+  void listarTodosProdutosComCorrelationIdEmBranco() {
+
+    List<ProdutoResponse> response = List.of(new ProdutoResponse());
+
+    when(produtoController.listarTodosProdutos()).thenReturn(response);
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarTodosProdutos("");
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(result.getBody()).isEqualTo(response);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
+  }
+
 
   @Test
   void listarTodosProdutosSemCorrelationId() {
@@ -316,6 +372,20 @@ class ProdutoSpringControllerTest {
     assertThat(result.getBody()).isEqualTo(response);
     assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isEqualTo(correlationId);
   }
+  @Test
+  void consultarProdutoPorCategoriaComCorrelationIdEmBranco() {
+    String categoria = "Drink";
+    List<ProdutoResponse> response = List.of(new ProdutoResponse());
+
+    when(produtoController.consultarProdutoPorCategoria(categoria)).thenReturn(response);
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.consultarProdutoPorCategoria("", categoria);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(result.getBody()).isEqualTo(response);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
+  }
+
 
   @Test
   void consultarProdutoPorCategoriaSemCorrelationId() {
@@ -344,6 +414,21 @@ class ProdutoSpringControllerTest {
     assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(result.getBody()).isEqualTo(produtos);
     assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isEqualTo(correlationId);
+  }
+
+  @Test
+  void listarProdutosPorListaDeIdsComCorrelationIdEmBranco() {
+    String correlationId = "";
+    List<UUID> uuids = List.of(UUID.randomUUID(), UUID.randomUUID());
+    List<ProdutoResponse> produtos = List.of(new ProdutoResponse());
+
+    when(produtoController.listarProdutosPorListaDeIds(uuids)).thenReturn(produtos);
+
+    ResponseEntity<List<ProdutoResponse>> result = produtoSpringController.listarProdutosPorListaDeIds(correlationId, uuids);
+
+    assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(result.getBody()).isEqualTo(produtos);
+    assertThat(ThreadContext.get(Constants.CORRELATION_ID)).isNotNull();
   }
 
   @Test
