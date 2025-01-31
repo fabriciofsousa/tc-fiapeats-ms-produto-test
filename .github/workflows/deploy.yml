@@ -127,18 +127,9 @@ jobs:
 
       - name: Iniciar aplicação em segundo plano e capturar logs
         run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties > mvn.log 2>&1 &
+          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
           echo "Aguardando aplicação iniciar..."
-          sleep 10 # Aguarda um pouco para garantir que o log comece a ser gerado
-          cat mvn.log
-
-      - name: Verificar se a aplicação está pronta
-        run: |
-          until curl -s http://localhost:8080/actuator/health | grep -q "UP"; do
-            echo "Aguardando aplicação iniciar..."
-            sleep 5
-          done
-          echo "Aplicação está pronta!"
+          sleep 30 # Aguarda um pouco para garantir que o log comece a ser gerado
 
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
