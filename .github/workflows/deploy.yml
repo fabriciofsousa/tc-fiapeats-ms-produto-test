@@ -117,7 +117,7 @@ jobs:
 
       - name: Configurar ambiente de teste
         run: |
-          export SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+          export DATASOURCE_URL=jdbc:h2:mem:testdb
           export SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
           export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
           export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
