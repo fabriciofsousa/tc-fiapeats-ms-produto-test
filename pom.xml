@@ -23,7 +23,8 @@
 			**/ProdutoSteps.java <!-- Exclui o cucumber do Sonar -->
 		</sonar.exclusions>
 		<sonar.projectKey>fabriciofsousa_tc-fiapeats-ms-produto-test</sonar.projectKey>
-		<sonar.organization>fiapeats-test</sonar.organization>
+		<sonar.organization>fiap-8soat</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -320,7 +321,7 @@
 						<version>3.1.2</version>
 						<configuration>
 							<includes combine.self="override">
-								<include>**/CucumberTest.java</include>
+								<include>**/RunCucumberTest.java</include>
 							</includes>
 							<excludes combine.self="override">
 							</excludes>
