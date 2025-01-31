@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="FiapeatsApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="FiapeatsApplication" type="Application" factoryName="Application" nameIsGenerated="true" show_console_on_std_out="true">
     <envs>
       <env name="DATASOURCE_PASSWORD" value="pass" />
       <env name="DATASOURCE_URL" value="jdbc:postgresql://localhost:5434/fiapeatsdb" />
