@@ -130,7 +130,6 @@ jobs:
           mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
           echo "Aguardando aplicação iniciar..."
           sleep 30 # Aguarda um pouco para garantir que o log comece a ser gerado
-
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
 
