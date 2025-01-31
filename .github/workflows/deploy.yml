@@ -115,10 +115,8 @@ jobs:
         run: |
           echo "JDK configurado em: ${{ needs.setup-jdk.outputs.jdk-path }}"
 
-      - name: Iniciar aplicação em segundo plano e capturar logs
-        run: |
-              - name: Executar testes de sistema (Cucumber) &
-                run: mvn verify -Psystem-test
+      - name: Executar testes de sistema (Cucumber) &
+        run: mvn verify -Psystem-test
 
   performance-tests:
     needs: compile
