@@ -117,9 +117,17 @@ jobs:
 
       - name: Iniciar aplicação em segundo plano
         run: |
+          export SPRING_DATASOURCE_URL=jdbc:h2:mem:testdb
+          export SPRING_DATASOURCE_DRIVERCLASSNAME=org.h2.Driver
+          export SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          export SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          export SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+          export SPRING_H2_CONSOLE_ENABLED=true
+          export SPRING_DATASOURCE_DATA=classpath:sqlTest.sql
           mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring.config.location=src/test/resources/application-test.properties &
           echo "Aguardando aplicação iniciar..."
           sleep 60
+          mvn verify -Psystem-test
 
       - name: Executar testes de sistema (Cucumber)
         run: mvn verify -Psystem-test
