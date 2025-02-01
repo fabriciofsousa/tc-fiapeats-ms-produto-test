@@ -23,7 +23,6 @@ public class RunCucumberTest {
 
     @LocalServerPort
     private static int port;
-
     @BeforeAll
     public static void setUp() {
         RestAssured.baseURI = System.getProperty("base.url");
