@@ -328,7 +328,7 @@
 						<version>3.1.2</version>
 						<configuration>
 							<includes combine.self="override">
-								<include>**/RunCucumberTest.java</include>
+								<include>**/CucumberTest.java</include>
 							</includes>
 							<excludes combine.self="override">
 							</excludes>

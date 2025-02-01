@@ -6,7 +6,7 @@
       <env name="DATASOURCE_USERNAME" value="postgres" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="br.com.fiap.fiapeats.FiapeatsApplication" />
-    <module name="fiapeats" />
+    <module name="fiapeats-Produtos" />
     <option name="PROGRAM_PARAMETERS" value="-Dspring.profiles.active=test" />
     <extension name="coverage">
       <pattern>

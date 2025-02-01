@@ -105,7 +105,7 @@ jobs:
             echo "Relatório de testes de integração disponível em: file://$(pwd)/target/failsafe-reports/index.html"
 
   system-tests:
-    #needs: compile
+    needs: compile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout código
