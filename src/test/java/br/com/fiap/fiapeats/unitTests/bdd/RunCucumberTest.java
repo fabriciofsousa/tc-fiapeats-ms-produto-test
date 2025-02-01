@@ -1,10 +1,8 @@
 package br.com.fiap.fiapeats.unitTests.bdd;
 
 import io.restassured.RestAssured;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.platform.suite.api.*;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
